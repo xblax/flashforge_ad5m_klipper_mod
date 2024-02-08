@@ -1,0 +1,9 @@
+[submodule "submodules/klipper"]
+	path = submodules/klipper
+	url = https://github.com/Klipper3d/klipper.git
+[submodule "submodules/moonraker"]
+	path = submodules/moonraker
+	url = https://github.com/Arksine/moonraker
+[submodule "submodules/buildroot"]
+	path = submodules/buildroot
+	url = git@github.com:xblax/flashforge_adm5_buildroot_chroot.git

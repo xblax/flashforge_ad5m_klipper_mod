@@ -2,6 +2,13 @@
 cd "$(dirname "$0")"
 set -e
 
+log_info()
+{
+  CYAN='\033[0;36m'
+  NC='\033[0m'
+  echo -e "* ${CYAN}$1${NC}"
+}
+
 # paths
 SCRIPT_DIR="$(pwd)"
 GIT_ROOT="$SCRIPT_DIR/.."
@@ -10,12 +17,12 @@ BUILDROOT="$GIT_ROOT/submodules/buildroot"
 
 CROSS="arm-buildroot-linux-gnueabi"
 HOSTDIR="$BUILDROOT/output/host"
-SYSROOT="$HOSTDIR/$CROSS/sysroot"
-TARGET_PYTHON="$BUILDROOT/output/target/usr/bin/python3"
+SYSROOT="$BUILDROOT/output/host/$CROSS/sysroot"
+TARGET_PYTHON="$BUILDROOT/output/build/python3-3.11.7/python"
 
 # set cross toolchain
 export PATH="$HOSTDIR/bin:$PATH"
-export LD_LIBRARY_PATH="$HOSTDIR/lib:$PATH"
+export LD_LIBRARY_PATH="$HOSTDIR/lib"
 
 export CC=$CROSS-gcc
 export CXX=$CROSS-g++
@@ -23,32 +30,43 @@ export LD=$CROSS-ld
 export AR=$CROSS-ar
 export RANLIB=$CROSS-ranlib
 
-export CFLAGS="-O3 -s --sysroot $SYSROOT -I "
+export CFLAGS="-O3 -s --sysroot $SYSROOT"
 export CXXFLAGS="-O3 -s --sysrot $SYSROOT"
 export LDFLAGS="-s --sysroot $SYSROOT"
 
-# create python host venv
+# prepare build
 rm -rf $BUILD_DIR > /dev/null
 mkdir -p $BUILD_DIR
 cd $BUILD_DIR
-python3 -m venv host_venv
+export PIP_DISABLE_PIP_VERSION_CHECK=1
+log_info "Purge pip cache"
+pip cache purge &> /dev/null
+
+log_info "Start building wheels in $(pwd) ... "
 
 # create cross venv and activate
-host_venv/bin/python3 -m pip install crossenv
-host_venv/bin/python3 -m crossenv --machine=armv7l --sysroot="$SYSROOT" "$TARGET_PYTHON" cross_venv
+python3 -m pip install crossenv
+python3 -m crossenv --machine=armv7l --sysroot=$SYSROOT "$TARGET_PYTHON" cross_venv
 source cross_venv/bin/activate
+
+log_info "Build moonraker wheels ..."
 
 # build moonraker wheels
 mkdir moonraker_wheels
 MOONRAKER_DIR="$GIT_ROOT/submodules/moonraker"
 # pillow needs seperate build with special parameters for cross-compilation
-pip wheel -w moonraker_wheels --config-settings="--build-option=build_ext --disable-platform-guessing" pillow==10.2.0
-pip wheel -w moonraker_wheel/ -r "$MOONRAKER_DIR/scripts/moonraker-requirements.txt"
+pip wheel -w moonraker_wheels/ --config-settings="--build-option=build_ext --disable-platform-guessing" pillow==10.2.0
+pip wheel -w moonraker_wheels/ -r "$MOONRAKER_DIR/scripts/moonraker-requirements.txt"
 # fix libuv build
 export LIBUV_CONFIGURE_HOST=$CROSS
-pip wheel -w moonraker_wheel/ -r "$MOONRAKER_DIR/scripts/moonraker-speedups.txt"
+pip wheel -w moonraker_wheels/ -r "$MOONRAKER_DIR/scripts/moonraker-speedups.txt"
+
+log_info "Build klipper wheels ..."
 
 # build klipper wheels
 mkdir klipper_wheels
 KLIPPER_DIR="$GIT_ROOT/submodules/klipper"
 pip wheel -w klipper_wheels/ -r "$KLIPPER_DIR/scripts/klippy-requirements.txt"
+
+log_info "Done"
+pwd

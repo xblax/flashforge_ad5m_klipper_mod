@@ -10,10 +10,10 @@ log_info()
 
 create_version()
 {
-    pushd $1
-    version="$(git describe)-ffadm5_buildroot-$(date +%Y%m%d)"
+    pushd $1 > /dev/null
+    version="$(git describe)-ADM5-$(date +%Y%m%d)"
     popd
-    echo $version
+    echo $version > /dev/null
 }
 
 # paths

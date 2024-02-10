@@ -1,0 +1,56 @@
+#!/bin/sh
+#
+# Start telnet....
+#
+set -e
+chroot_dir="/data/.klipper_mod/chroot"
+
+
+prepare_chroot() {
+    # mount bind virtual filesystems + tmp
+    for dir in /dev /dev/pts/proc /sys /run /tmp; do mount -o bind $dir $chroot_dir$dir; done
+    # mount bind data
+    mount -o bind /data $chroot_dir/mnt/data
+    # mount bind original root, remount ro
+    mount -o bind / $chroot_dir/mnt/orig_root
+    mount -o bind,remount,ro $chroot_dir/mnt/orig_root
+}
+
+start() {
+    printf "Starting klipper mod: "
+    chroot $chroot_dir /etc/init/init_chroot.sh
+    [ $? = 0 ] && echo "OK" || echo "FAIL"
+}
+
+stop() {
+    printf "Stopping klipper mod: "
+    chroot $chroot_dir /etc/init/stop_chroot.sh
+    [ $? = 0 ] && echo "OK" || echo "FAIL"
+}
+
+setup() {
+    # called once from install script
+    prepare_chroot
+    chroot $chroot_dir /etc/init/setup_chroot.sh
+}
+
+case "$1" in
+    start)
+        start
+        ;;
+    stop)
+        stop
+        ;;
+    restart|reload)
+        stop
+        start
+        ;;
+    setup)
+        setup
+        ;;
+    *)
+        echo "Usage: $0 {start|stop|restart}"
+        exit 1
+esac
+
+exit $?

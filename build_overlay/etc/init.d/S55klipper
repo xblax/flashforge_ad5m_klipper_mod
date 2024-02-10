@@ -1,0 +1,42 @@
+#!/bin/sh
+#
+# Starts klipper service.
+#
+set -ex
+
+PYTHON=/root/printer_software/klipper/klippy-env/bin/python3
+KLIPPER=/root/printer_software/klipper/klippy/klippy.py
+KLIPPER_CONF=/root/printer_data/config/printer.cfg
+KLIPPER_LOG=/root/printer_data/logs/klipper.log
+KLIPPER_UDS=/tmp/uds
+PID_FILE=/run/klipper.pid
+
+start() {
+    start-stop-daemon -S -b -m -p $PID_FILE --exec $PYTHON -- $KLIPPER $KLIPPER_CONF -l $KLIPPER_LOG -a $KLIPPER_UDS
+}
+
+stop() {
+    start-stop-daemon -K -q -p $PID_FILE
+}
+restart() {
+    stop
+    sleep 1
+    start
+}
+
+case "$1" in
+    start)
+        start
+        ;;
+    stop)
+        stop
+        ;;
+    restart|reload)
+        restart
+        ;;
+  *)
+        echo "Usage: $0 {start|stop|restart}"
+        exit 1
+esac
+
+exit $?

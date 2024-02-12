@@ -9,8 +9,8 @@ mod_dir="/data/.klipper_mod"
 chroot_dir="$mod_dir/chroot"
 
 # log files for init process
-log_file="/root/klipper_mod_init.log"
-log_file_err="/root/klipper_mod_err.log"
+log_file="/root/mod_init.log"
+log_file_debug="/root/mod_init_debug.log"
 
 # marker files allow to intervene in init process
 # marker files in mod root home
@@ -25,7 +25,7 @@ usb_debug_script="mod_debug.sh"
 
 uninstall() {
      rm -rf $mod_dir || true
-     rm -f /root/klipper_mod* || true
+     rm -f /root/mod_init* || true
      rm -f "$0" || true # remove this script
      exit 0
 }
@@ -46,16 +46,16 @@ check_usb_marker() {
     for sd in sda sdb; do
         for i in 1 2 3 4 ""; do
             if [ -e /dev/$sd$i ]; then
-                mount -o ro /dev/$sd$1 /mnt || continue
+                mount -t vfat -o ro,codepage=437,iocharset=utf8 /dev/$sd$i /mnt || continue
                 # check for mod marker usb
                 usb_mod_marker=$(ls -1 /mnt/ | grep "^klipper_mod" | head -n1)
                 # check for flashforge update on usb
                 usb_update_marker=$(ls -1 /mnt/ | grep "^Adventurer.*tgz" | head -n1)
-                [ -n $usb_update_marker ] || usb_update_marker=$(ls -1 /mnt/ | grep "^flashforge_init.sh" | head -n1)
+                [ -n "$usb_update_marker" ] || usb_update_marker=$(ls -1 /mnt/ | grep "^flashforge_init.sh" | head -n1)
                 umount /dev/$sd$i || true;
 
-                if ([ -z "$usb_mod_marker" ] || [ -z "$usb_update_marker" ]); then
-                    usb_drive = "$sd$i"
+                if ([ -n "$usb_mod_marker" ] || [ -n "$usb_update_marker" ]); then
+                    usb_drive="$sd$i"
                     echo "Found marker file."
                     break 2;
                 fi
@@ -66,10 +66,10 @@ check_usb_marker() {
     # check for debug marker. copy init logs and start debug script if detected
     if [ "$usb_mod_marker" = "$usb_marker_debug" ]; then
         echo "Found debug marker $usb_mod_marker on $usb_drive.";
-        mount /dev/$usb_drive /mnt || true
+        mount -t vfat -o codepage=437,iocharset=utf8 /dev/$usb_drive /mnt || true
         sync
         echo "Copy init log files."
-        cp -f /root/klipper_mod* /mnt/ || true
+        cp -f /root/mod_init* /mnt/ || true
         sync
         if [ -f /mnt/$usb_debug_script ]; then
             echo "Execute debug script."
@@ -79,18 +79,18 @@ check_usb_marker() {
     fi
 
     # bail, if we found a flashforge update
-    if [ -z "$usb_update_marker" ]; then
-        echo "Skip klipper mod init due to flashforge update '$usb_update_marker' found on $usb_drive."
+    if [ -n "$usb_update_marker" ]; then
+        echo "Skip Klipper Mod init due to flashforge update '$usb_update_marker' found on $usb_drive."
         exit 0;
     fi
 
     # allow to boot into stock linux, if skip marker is present
     if [ "$usb_mod_marker" = "$usb_marker_skip" ]; then
-        echo "Skip klipper mod init due to skip marker '$usb_update_marker' found on $usb_drive."
+        echo "Skip Klipper Mod init due to skip marker '$usb_mod_marker' found on $usb_drive."
         exit 0
     # remove mod, if remove marker is present
     elif [ "$usb_mod_marker" = "$usb_marker_remove" ]; then
-        echo "Uninstall klipper mod due to remove maker '$usb_update_marker' found on $usb_drive."
+        echo "Uninstall Klipper Mod due to remove maker '$usb_mod_marker' found on $usb_drive."
         uninstall
         exit 0
     fi
@@ -101,13 +101,13 @@ check_mod_marker() {
 
     # check if mod is installed on /data, else skip init.
     if [ ! -d $chroot_dir ]; then
-        echo "Klipper mod not found on /data partition. Skip init.";
+        echo "Klipper Mod not found on /data partition. Skip init.";
         exit 0;
     fi
 
     # allow to boot into stock linux, if skip marker is present
     if [ -f $mod_marker_skip ]; then
-        echo "Skip klipper mod init once due to skip maker $mod_marker_skip."
+        echo "Skip Klipper Mod init once due to skip maker $mod_marker_skip."
         rm -f $mod_marker_skip
         sync
         exit 0
@@ -115,7 +115,7 @@ check_mod_marker() {
 
     # remove mod, if remove marker is present
     if [ -f $mod_marker_remove ]; then
-        echo "Uninstall klipper mod due to remove maker $mod_marker_remove."
+        echo "Uninstall Klipper Mod due to remove maker $mod_marker_remove."
         uninstall
         exit 0
     fi
@@ -140,7 +140,7 @@ teardown_chroot() {
 }
 
 start_klipper_mod() {
-    echo "Start klipper mod init ..."
+    echo "Start Klipper Mod initialization"
     check_usb_marker
     mount_data
     check_mod_marker
@@ -149,17 +149,17 @@ start_klipper_mod() {
     # now we have hijacked the init process and let it go :-)
     kill -9 $PPID
     sync # make sure our logs are saved
-} > $log_file 2> $log_file_err
+} > $log_file 2> $log_file_debug
 
 start() {
     # rotate init logs
     mv -f $log_file $log_file.old || true
-    mv -f $log_file_err $log_file_err.old || true
+    mv -f $log_file_debug $log_file_debug.old || true
     start_klipper_mod
 }
 
 stop() {
-    printf "Stop klipper mod ..."
+    printf "Stop Klipper Mod"
     chroot $chroot_dir /etc/init/stop_chroot.sh
     teardown_chroot
 }
@@ -168,7 +168,6 @@ setup() {
     # called once from install script
     prepare_chroot
     chroot $chroot_dir /etc/init/setup_chroot.sh
-    chroot $chroot_dir /etc/init/init_chroot.sh  # todo remove
 }
 
 case "$1" in

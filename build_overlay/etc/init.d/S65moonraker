@@ -1,28 +1,28 @@
 #!/bin/sh
 #
-# Starts moonraker service.
+# Start moonraker
 #
 
 PYTHON=/root/printer_software/moonraker/moonraker-env/bin/python3
 MOONRAKER=/root/printer_software/moonraker/moonraker/moonraker.py
 PRINTER_DATA=/root/printer_data
 PRINTER_DATA_TMP=/root/printer_data/tmp
+PRINTER_DATA_GCODE=/mnt/data/gcodes
 PID_FILE=/run/moonraker.pid
 
 start() {
-    rm -rf $PRINTER_DATA_TMP && mkdir -p $PRINTER_DATA_TMP
+    rm -rf $PRINTER_DATA_TMP && mkdir -p $PRINTER_DATA_TMP # clean temp
+    mkdir -p $PRINTER_DATA_GCODE    # this is symlinked, make sure the target exists
     export TMPDIR=$PRINTER_DATA_TMP # without TMPDIR moonraker writes to /tmp which is a ramdisk
-    start-stop-daemon -S -q -b -m -p $PID_FILE --exec $PYTHON -- $MOONRAKER -d $PRINTER_DATA_DIR
-    [ $? = 0 ] && echo "OK" || echo "FAIL"
+    start-stop-daemon -S -b -m -p $PID_FILE --exec $PYTHON -- $MOONRAKER -d $PRINTER_DATA
 }
 
 stop() {
     start-stop-daemon -K -p $PID_FILE
-    [ $? = 0 ] && echo "OK" || echo "FAIL"
 }
 restart() {
     stop
-    sleep 1
+    sleep 2
     start
 }
 

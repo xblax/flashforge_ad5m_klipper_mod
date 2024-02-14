@@ -1,0 +1,38 @@
+#!/bin/sh
+#
+# Starts busbox httpd for fluidd.
+#
+
+WEBROOT=/root/printer_software/web/mainsail
+PID_FILE=/run/httpd_mainsail.pid
+
+start() {
+    # start busybox httpd
+    start-stop-daemon -S -b -m -p $PID_FILE --exec httpd -- -p 8080 -f -h $WEBROOT
+}
+
+stop() {
+    start-stop-daemon -K -p $PID_FILE
+}
+restart() {
+    stop
+    sleep 1
+    start
+}
+
+case "$1" in
+  start)
+        start
+        ;;
+  stop)
+        stop
+        ;;
+  restart|reload)
+        restart
+        ;;
+  *)
+        echo "Usage: $0 {start|stop|restart}"
+        exit 1
+esac
+
+exit $?

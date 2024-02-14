@@ -1,0 +1,21 @@
+#!/bin/sh
+#
+# Trigger serial bootup sequence for Flashforge Eboard MCU.
+#
+
+start() {
+    /usr/libexec/boot_eboard_mcu
+}
+
+case "$1" in
+  start)
+        start
+        ;;
+  stop)
+        ;;
+  *)
+        echo "Usage: $0 {start|stop}"
+        exit 1
+esac
+
+exit $?

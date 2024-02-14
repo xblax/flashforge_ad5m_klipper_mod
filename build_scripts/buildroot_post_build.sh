@@ -59,6 +59,19 @@ cp -r klippy docs config README.md COPYING $TARGET_ROOT/root/printer_software/kl
 create_version ./ > $TARGET_ROOT/root/printer_software/klipper/klippy/.version
 popd
 
+# update os-release
+pushd $GIT_ROOT
+KLIPPER_MOD_VERSION=$(git describe --tags)
+popd
+
+cat << EOF > $TARGET_ROOT/etc/os_release
+NAME=Buildroot-ADM5
+VERSION=-$KLIPPER_MOD_VERSION
+ID=buildroot
+VERSION_ID=$KLIPPER_MOD_VERSION
+PRETTY_NAME="Klipper Mod $KLIPPER_MOD_VERSION"
+EOF
+
 ##############################
 # install moonraker
 ##############################
@@ -94,8 +107,8 @@ then
 fi
 mkdir -p $TARGET_ROOT/root/printer_software/web/mainsail
 unzip $GIT_ROOT/prebuilt/mainsail.zip -d $TARGET_ROOT/root/printer_software/web/mainsail
-# set instances db to 'browser'
-sed -i 's\moonraker\browser\g' $TARGET_ROOT/root/printer_software/web/mainsail/config.json
+# set moonraker port
+sed -i 's\"port": null\"port": 7125\g' $TARGET_ROOT/root/printer_software/web/mainsail/config.json
 
 ##############################
 # install fluidd

@@ -122,10 +122,12 @@ check_mod_marker() {
 }
 
 prepare_chroot() {
+    # we need to mount /dev/pts, here because it doenst exists at this init stage for some reason
+    mkdir /dev/pts
+    mount -o gid=5,mode=620,ptmxmode=0666 -t devpts devpts /dev/pts
+
     # mount bind virtual filesystems + tmp
-    # do not mount bind /dev/pts here, because it doesnt't exist at this init stage for some reason
-    # chroot environment will mount own devpts
-    for dir in /dev /proc /sys /run /tmp; do mount -o bind $dir $chroot_dir$dir; done
+    for dir in /dev /dev/pts /proc /sys /run /tmp; do mount -o bind $dir $chroot_dir$dir; done
     # mount bind data
     mount -o bind /data $chroot_dir/mnt/data
     # mount bind original root, remount ro
@@ -136,7 +138,7 @@ prepare_chroot() {
 teardown_chroot() {
     umount -f $chroot_dir/mnt/data || true
     umount -f $chroot_dir/mnt/orig_root || true
-    for dir in /dev /proc /sys /run /tmp; do umount -f $chroot_dir$dir || true; done
+    for dir in /dev /dev/pts /proc /sys /run /tmp; do umount -f $chroot_dir$dir || true; done
 }
 
 start_klipper_mod() {

@@ -8,7 +8,7 @@ PID_FILE=/run/httpd_mainsail.pid
 
 start() {
     # start busybox httpd
-    start-stop-daemon -S -b -m -p $PID_FILE --exec httpd -- -p 8080 -f -h $WEBROOT
+    start-stop-daemon -S -b -m -p $PID_FILE --exec httpd -- -p 4000 -f -h $WEBROOT
 }
 
 stop() {

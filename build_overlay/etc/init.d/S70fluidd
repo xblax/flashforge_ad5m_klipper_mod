@@ -8,7 +8,7 @@ PID_FILE=/run/httpd_fluidd.pid
 
 start() {
     # start busybox httpd
-    start-stop-daemon -S -b -m -p $PID_FILE --exec httpd -- -p 8081 -f -h $WEBROOT
+    start-stop-daemon -S -b -m -p $PID_FILE --exec httpd -- -p 4001 -f -h $WEBROOT
 }
 
 stop() {

@@ -51,11 +51,11 @@ xz -dc $WORK_DIR/chroot.tar.xz | tar -xf - -C $CHROOT_DIR
 sync
 
 # do intial setup
-./S90klipper_mod setup
+$CHROOT_DIR/etc/S90klipper_mod setup
 sync
 
 # install initfile
-cp $WORK_DIR/S90klipper_mod /etc/init.d
+cp $CHROOT_DIR/etc/S90klipper_mod /etc/init.d/
 sync
 
 # update end image

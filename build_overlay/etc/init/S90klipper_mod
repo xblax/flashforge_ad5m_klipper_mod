@@ -1,6 +1,6 @@
 #!/bin/sh
 #
-# Init script for Klipper Mod
+# Init Script for Klipper Mod - running in Flashforge Host System
 #
 set -ex # abort on errors, print scripts steps
 

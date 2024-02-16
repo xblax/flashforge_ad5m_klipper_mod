@@ -44,7 +44,7 @@ log_info "Install Klipper"
 mkdir -p $TARGET_ROOT/root/printer_software/klipper/
 
 # copy prebuild env or wheels
-if [ -d $GIT_ROOT/prebuilt/klippy-env.tar.xz ]
+if [ -f $GIT_ROOT/prebuilt/klippy-env.tar.xz ]
 then
   tar -xf $GIT_ROOT/prebuilt/klippy-env.tar.xz -C $TARGET_ROOT/root/printer_software/klipper/
 else
@@ -64,7 +64,7 @@ pushd $GIT_ROOT
 KLIPPER_MOD_VERSION=$(git describe --tags)
 popd
 
-cat << EOF > $TARGET_ROOT/etc/os_release
+cat << EOF > $TARGET_ROOT/etc/os-release
 NAME=Buildroot-ADM5
 VERSION=-$KLIPPER_MOD_VERSION
 ID=buildroot
@@ -80,7 +80,7 @@ log_info "Install Moonraker"
 mkdir -p $TARGET_ROOT/root/printer_software/moonraker
 
 # copy prebuilt env or wheels
-if [ -d $GIT_ROOT/prebuilt/moonraker-env.tar.xz ]
+if [ -f $GIT_ROOT/prebuilt/moonraker-env.tar.xz ]
 then
   tar -xf $GIT_ROOT/prebuilt/moonraker-env.tar.xz -C $TARGET_ROOT/root/printer_software/moonraker/
 else

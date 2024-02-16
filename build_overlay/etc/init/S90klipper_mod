@@ -123,8 +123,11 @@ check_mod_marker() {
 
 prepare_chroot() {
     # we need to mount /dev/pts, here because it doenst exists at this init stage for some reason
-    mkdir /dev/pts
-    mount -o gid=5,mode=620,ptmxmode=0666 -t devpts devpts /dev/pts
+    # check if it is there, because this function is also used during install
+    if [ ! -d /dev/pts ]; then
+        mkdir /dev/pts
+        mount -o gid=5,mode=620,ptmxmode=0666 -t devpts devpts /dev/pts
+    fi
 
     # mount bind virtual filesystems + tmp
     for dir in /dev /dev/pts /proc /sys /run /tmp; do mount -o bind $dir $chroot_dir$dir; done

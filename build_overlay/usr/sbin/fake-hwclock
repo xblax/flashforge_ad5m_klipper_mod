@@ -14,6 +14,7 @@ if [ "$FILE"x = ""x ] ; then
     FILE=/etc/fake-hwclock.data
 fi
 
+
 # Midnight on the day of this release, used as a sanity check when
 # saving
 HWCLOCK_EPOCH="2016-04-15 00:00:00"
@@ -30,7 +31,8 @@ if [ "$2"x = "force"x ] ; then
 fi
 
 case $COMMAND in
-    save)
+    save|stratum|step|periodic)
+        # stratum, step, periodic are set as command by busybox ntpd
         if [ -e $FILE ] ; then
             NOW_SEC=$(date -u '+%s')
             if $FORCE || [ $NOW_SEC -ge $HWCLOCK_EPOCH_SEC ] ; then
@@ -56,11 +58,15 @@ case $COMMAND in
                 echo "Current system time: $(date -u '+%Y-%m-%d %H:%M:%S')"
                 echo "fake-hwclock saved clock information is in the past: $SAVED"
                 echo "To set system time to this saved clock anyway, use \"force\""
-            fi      
+            fi
         else
             echo "Unable to read saved clock information: $FILE does not exist"
         fi
         ;;
+    unsync)
+        # unsync cmd from busybox ntpd when connection to ntp server is lost
+        true
+	;;
     *)
         echo $0: Unknown command $COMMAND
         exit 1

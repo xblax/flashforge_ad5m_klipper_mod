@@ -1,0 +1,68 @@
+#!/bin/sh
+#
+# Trivial script to load/save current contents of the kernel clock
+# from/to a file. Helpful as a *bootstrap* clock on machines where
+# there isn't a useful RTC driver (e.g. on development boards). Using
+# NTP is still recommended on these machines to get to real time sync
+# once more of the system is up and running.
+#
+# Copyright 2012-2016 Steve McIntyre <93sam@debian.org>
+#
+# License: GPLv2, see COPYING
+
+if [ "$FILE"x = ""x ] ; then
+    FILE=/etc/fake-hwclock.data
+fi
+
+# Midnight on the day of this release, used as a sanity check when
+# saving
+HWCLOCK_EPOCH="2016-04-15 00:00:00"
+HWCLOCK_EPOCH_SEC="1460678400"
+
+COMMAND=$1
+if [ "$COMMAND"x = ""x ] ; then
+    COMMAND="save"
+fi
+
+FORCE=false
+if [ "$2"x = "force"x ] ; then
+    FORCE=true
+fi
+
+case $COMMAND in
+    save)
+        if [ -e $FILE ] ; then
+            NOW_SEC=$(date -u '+%s')
+            if $FORCE || [ $NOW_SEC -ge $HWCLOCK_EPOCH_SEC ] ; then
+                date -u '+%Y-%m-%d %H:%M:%S' > $FILE
+            else
+		echo "Time travel detected!"
+                echo "fake-hwclock release date is in the future: $HWCLOCK_EPOCH"
+                echo "Current system time: $(date -u '+%Y-%m-%d %H:%M:%S')"
+                echo "To force the saved system clock backwards in time anyway, use \"force\""
+            fi
+        else
+            date -u '+%Y-%m-%d %H:%M:%S' > $FILE
+        fi
+        ;;
+    load)
+        if [ -e $FILE ] ; then
+            SAVED="$(cat $FILE)"
+            SAVED_SEC=$(date -u -d "$SAVED" '+%s')
+            NOW_SEC=$(date -u '+%s')
+            if $FORCE || [ $NOW_SEC -le $SAVED_SEC ] ; then
+                date -u -s "$SAVED"
+            else
+                echo "Current system time: $(date -u '+%Y-%m-%d %H:%M:%S')"
+                echo "fake-hwclock saved clock information is in the past: $SAVED"
+                echo "To set system time to this saved clock anyway, use \"force\""
+            fi      
+        else
+            echo "Unable to read saved clock information: $FILE does not exist"
+        fi
+        ;;
+    *)
+        echo $0: Unknown command $COMMAND
+        exit 1
+        ;;
+esac

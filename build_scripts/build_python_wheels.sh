@@ -40,7 +40,7 @@ export AR=$CROSS-ar
 export RANLIB=$CROSS-ranlib
 
 export CFLAGS="-O3 -s --sysroot $SYSROOT"
-export CXXFLAGS="-O3 -s --sysrote $SYSROOT"
+export CXXFLAGS="-O3 -s --sysroot $SYSROOT"
 export LDFLAGS="-s --sysroot $SYSROOT"
 
 # prepare build

@@ -1,6 +1,9 @@
 #!/bin/sh
 # "Init" process for chroot environment
 
+mkdir -p /dev/shm
+mkdir -p /run/lock/subsys
+
 # mount swap
 swapon /mnt/swap
 # set hostname

@@ -41,6 +41,8 @@ mount_data() {
 
 # check for marker files on usb
 check_usb_marker() {
+    # wait for usb devices to appear
+    sleep 2
 
     # scan for mountable drives with marker files
     for sd in sda sdb; do
@@ -145,7 +147,7 @@ teardown_chroot() {
 }
 
 start_klipper_mod() {
-    echo "Start Klipper Mod initialization"
+    echo "Start Klipper Mod Init" | tee /dev/kmsg
     check_usb_marker
     mount_data
     check_mod_marker

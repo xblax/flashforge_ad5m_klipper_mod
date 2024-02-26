@@ -1,5 +1,5 @@
-CC = arm-buildroot-linux-gnueabi-gcc
-CFLAGS = -Wall -g -O2 -shared -fPIC -flto -fwhole-program -fno-use-linker-plugin
+CC = arm-buildroot-linux-gnueabihf-gcc
+CFLAGS = -Wall -g -O3 -shared -fPIC -flto -fwhole-program -fno-use-linker-plugin
 LDFLAGS = -shared
 
 SRC_FILES = $(wildcard *.c)

@@ -34,7 +34,8 @@ then
     exit 0
 fi
 
-MOD_INIT_FILE="/etc/init.d/S90klipper_mod"
+MOD_INIT_FILE="/etc/init.d/S00klipper_mod"
+MOD_INIT_FILE_OLD="/etc/init.d/S90klipper_mod"
 MOD_DIR="/data/.klipper_mod"
 
 # update start image
@@ -43,6 +44,7 @@ xzcat $WORK_DIR/img/install_start.img.xz > /dev/fb0
 
 # uninstall previous mod version if present
 rm -f $MOD_INIT_FILE
+rm -f $MOD_INIT_FILE_OLD
 rm -rf $MOD_DIR
 
 # check free space, we require 512MB before installation for saftey reason
@@ -62,11 +64,11 @@ xz -dc $WORK_DIR/chroot.tar.xz | tar -xf - -C $CHROOT_DIR
 sync
 
 # do intial setup
-$CHROOT_DIR/etc/init/S90klipper_mod setup
+$CHROOT_DIR/etc/init/S00klipper_mod setup
 sync
 
 # install initfile
-cp $CHROOT_DIR/etc/init/S90klipper_mod /etc/init.d/
+cp $CHROOT_DIR/etc/init/S00klipper_mod /etc/init.d/
 sync
 
 # update end image

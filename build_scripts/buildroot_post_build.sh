@@ -156,6 +156,8 @@ ln -s /mnt/data/gcodes $TARGET_ROOT/root/printer_data/gcodes
 ##############################
 log_info "Install Klipperscreen"
 
+mkdir -p $TARGET_ROOT/root/printer_software/KlipperScreen/
+
 if [ -f $GIT_ROOT/prebuilt/KlipperScreen-env.tar.xz ]
 then
   tar -xf $GIT_ROOT/prebuilt/KlipperScreen-env.tar.xz -C $TARGET_ROOT/root/printer_software/KlipperScreen/

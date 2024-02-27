@@ -6,4 +6,7 @@
 	url = git@github.com:xblax/flashforge_adm5_buildroot_chroot.git
 [submodule "submodules/klipper"]
 	path = submodules/klipper
-	url = git@github.com:xblax/klipper.git
+    url = git@github.com:xblax/klipper.git
+[submodule "submodules/KlipperScreen"]
+	path = submodules/KlipperScreen
+	url = git@github.com:consp/KlipperScreen.git

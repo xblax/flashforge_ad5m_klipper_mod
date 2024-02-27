@@ -13,14 +13,14 @@ The mod is designed to be fully removable and not break any functions of the sto
 - Ethernet LAN (DHCP only)
 - SSH root access. Login: `root`, Password: `klipper`
 - "Dual boot" with stock Flashforge system
+- Printer control via Display with [KlipperScreen](https://github.com/KlipperScreen/KlipperScreen)
 
 ## What's not working
-- Printer control via Display
 - Camera
 - WiFi
 - Buzzer
 
-Support for WiFi and Camera will likely come in a later version. There are no plans for Display or Buzzer support at the moment.
+Support for WiFi and Camera will likely come in a later version. There are no plans for Buzzer support at the moment.
 
 ## Documentation
 

@@ -1,0 +1,43 @@
+#!/bin/sh
+#
+# Start klipperscreen
+#
+
+PYTHON=/root/printer_software/KlipperScreen/KlipperScreen-env/bin/python3
+KLIPPERSCREEN=/root/printer_software/KlipperScreen/screen.py
+PID_FILE=/run/klipperscreen.pid
+
+export DISPLAY=:0.0
+
+start() {
+    # fix loaders
+    /usr/bin/gdk-pixbuf-query-loaders > /usr/lib/gdk-pixbuf-2.0/2.10.0/loaders.cache
+    start-stop-daemon -S -b -m -p $PID_FILE --exec $PYTHON -- $KLIPPERSCREEN
+}
+
+stop() {
+    start-stop-daemon -K -q -p $PID_FILE
+}
+
+restart() {
+    stop
+    sleep 2
+    start
+}
+
+case "$1" in
+    start)
+        start
+        ;;
+    stop)
+        stop
+        ;;
+    restart|reload)
+        restart
+        ;;
+  *)
+        echo "Usage: $0 {start|stop|restart}"
+        exit 1
+esac
+
+exit $?

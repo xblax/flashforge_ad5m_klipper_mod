@@ -154,6 +154,8 @@ ln -fs /mnt/orig_root/opt/tslib-1.12/etc/ts.conf "$TARGET_ROOT/etc/ts.conf"
 ##############################
 log_info "Install Klipperscreen"
 
+mkdir -p $TARGET_ROOT/root/printer_software/KlipperScreen/
+
 if [ -f $GIT_ROOT/prebuilt/KlipperScreen-env.tar.xz ]
 then
   tar -xf $GIT_ROOT/prebuilt/KlipperScreen-env.tar.xz -C $TARGET_ROOT/root/printer_software/KlipperScreen/

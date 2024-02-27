@@ -25,10 +25,6 @@ PATH=$PATH:$BUILDROOT/output/host/bin:$BUILDROOT/output/host
 
 # move unwantend initscripts to init.o (optional)
 mkdir -p $TARGET_ROOT/etc/init.o
-mv $TARGET_ROOT/etc/init.d/S01syslogd $TARGET_ROOT/etc/init.o/ || true
-mv $TARGET_ROOT/etc/init.d/S02klogd $TARGET_ROOT/etc/init.o/ || true
-mv $TARGET_ROOT/etc/init.d/S02sysctl $TARGET_ROOT/etc/init.o/ || true
-mv $TARGET_ROOT/etc/init.d/S30dbus $TARGET_ROOT/etc/init.o/ || true
 mv $TARGET_ROOT/etc/init.d/S35iptables $TARGET_ROOT/etc/init.o/ || true
 mv $TARGET_ROOT/etc/init.d/S40iwd $TARGET_ROOT/etc/init.o/ || true
 
@@ -36,6 +32,22 @@ mv $TARGET_ROOT/etc/init.d/S40iwd $TARGET_ROOT/etc/init.o/ || true
 rm -rf $TARGET_ROOT/root/setup
 rm -rf $TARGET_ROOT/root/printer_data
 rm -rf $TARGET_ROOT/root/printer_software
+
+# save build time for fake-hwclock
+date -u '+%Y-%m-%d %H:%M:%S' > $TARGET_ROOT/etc/fake-hwclock.data
+
+# update os-release
+pushd $GIT_ROOT
+KLIPPER_MOD_VERSION=$(git describe --tags)
+popd
+
+cat << EOF > $TARGET_ROOT/etc/os-release
+NAME=Buildroot-ADM5
+VERSION=-$KLIPPER_MOD_VERSION
+ID=buildroot
+VERSION_ID=$KLIPPER_MOD_VERSION
+PRETTY_NAME="Klipper Mod $KLIPPER_MOD_VERSION"
+EOF
 
 ##############################
 # install klipper
@@ -70,19 +82,6 @@ echo `pwd`
 cp -r klippy docs config README.md COPYING $TARGET_ROOT/root/printer_software/klipper/
 create_version ./ > $TARGET_ROOT/root/printer_software/klipper/klippy/.version
 popd
-
-# update os-release
-pushd $GIT_ROOT
-KLIPPER_MOD_VERSION=$(git describe --tags)
-popd
-
-cat << EOF > $TARGET_ROOT/etc/os-release
-NAME=Buildroot-ADM5
-VERSION=-$KLIPPER_MOD_VERSION
-ID=buildroot
-VERSION_ID=$KLIPPER_MOD_VERSION
-PRETTY_NAME="Klipper Mod $KLIPPER_MOD_VERSION"
-EOF
 
 ##############################
 # install moonraker

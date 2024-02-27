@@ -18,15 +18,7 @@ BUILDROOT="$GIT_ROOT/submodules/buildroot"
 
 HOSTDIR="$BUILDROOT/output/host"
 TARGET_PYTHON="$BUILDROOT/output/build/python3-3.11.7/python"
-
-if [ -z "$HARDFLOAT" ]; then
-	HF=""
-	CROSS="arm-buildroot-linux-gnueabi"
-else
-	HF="+vfpv4+simd"
-	CROSS="arm-buildroot-linux-gnueabihf"
-fi
-
+CROSS="arm-buildroot-linux-gnueabihf"
 SYSROOT="$BUILDROOT/output/host/$CROSS/sysroot"
 
 # set cross toolchain
@@ -40,7 +32,7 @@ export AR=$CROSS-ar
 export RANLIB=$CROSS-ranlib
 
 export CFLAGS="-O3 -s --sysroot $SYSROOT"
-export CXXFLAGS="-O3 -s --sysrote $SYSROOT"
+export CXXFLAGS="-O3 -s --sysroot $SYSROOT"
 export LDFLAGS="-s --sysroot $SYSROOT"
 
 # prepare build
@@ -55,7 +47,7 @@ log_info "Start building wheels in $(pwd) ... "
 
 # create cross venv and activate
 python3 -m pip install crossenv
-python3 -m crossenv --machine=armv7l$HF --sysroot=$SYSROOT "$TARGET_PYTHON" cross_venv
+python3 -m crossenv --machine=armv7l --sysroot=$SYSROOT "$TARGET_PYTHON" cross_venv
 source cross_venv/bin/activate
 
 log_info "Build moonraker wheels ..."

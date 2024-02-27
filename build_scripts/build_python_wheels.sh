@@ -69,5 +69,10 @@ mkdir klipper_wheels
 KLIPPER_DIR="$GIT_ROOT/submodules/klipper"
 pip wheel -w klipper_wheels/ -r "$KLIPPER_DIR/scripts/klippy-requirements.txt"
 
+log_info "Building klipperscreen wheels ..."
+mkdir klipperscreen_wheels
+KLIPPERSCREEN_DIR="$GIT_ROOT/submodules/KlipperScreen"
+pip wheel -w klipperscreen_wheels/ -r "$KLIPPERSCREEN_DIR/scripts/KlipperScreen-requirements.txt"
+
 log_info "Done"
 pwd

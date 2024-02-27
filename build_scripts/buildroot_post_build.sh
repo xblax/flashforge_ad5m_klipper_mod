@@ -21,6 +21,7 @@ SCRIPT_DIR="$(dirname "$0")"
 GIT_ROOT="$SCRIPT_DIR/.."
 BUILDROOT="$GIT_ROOT/submodules/buildroot"
 TARGET_ROOT="$1"
+PATH=$PATH:$BUILDROOT/output/host/bin:$BUILDROOT/output/host
 
 # move unwantend initscripts to init.o (optional)
 mkdir -p $TARGET_ROOT/etc/init.o
@@ -46,7 +47,7 @@ mkdir -p $TARGET_ROOT/root/printer_software/klipper/
 # copy prebuild env or wheels
 if [ -f $GIT_ROOT/prebuilt/klippy-env.tar.xz ]
 then
-  tar -xf $GIT_ROOT/prebuilt/klippy-env.tar.xz -C $TARGET_ROOT/root/printer_software/klipper/
+  tar -xf $GIT_ROOT/prebuilt/klippy-env.tar.xz -C "$TARGET_ROOT/root/printer_software/klipper/"
 else
   mkdir -p $TARGET_ROOT/root/setup/
   cp -r $GIT_ROOT/prebuilt/wheels/klipper_wheels $TARGET_ROOT/root/setup/
@@ -54,7 +55,18 @@ else
 fi
 
 # install klippy pyhton sources
+cp $SCRIPT_DIR/components/klipper/no-gcc-check.patch $GIT_ROOT/submodules/klipper
 pushd $GIT_ROOT/submodules/klipper/
+pushd klippy/chelper
+make
+popd
+if patch -r - -b -N -p1 < no-gcc-check.patch;
+then
+    log_info "Skipping patch, already applied"
+else
+    log_info "Patch applied"
+fi
+echo `pwd`
 cp -r klippy docs config README.md COPYING $TARGET_ROOT/root/printer_software/klipper/
 create_version ./ > $TARGET_ROOT/root/printer_software/klipper/klippy/.version
 popd
@@ -123,6 +135,16 @@ mkdir -p $TARGET_ROOT/root/printer_software/web/fluidd
 unzip $GIT_ROOT/prebuilt/fluidd.zip -d $TARGET_ROOT/root/printer_software/web/fluidd
 
 ##############################
+# install X11 scripts
+##############################
+log_info "Install X11 requirements"
+rm -f "$TARGET_ROOT/etc/ts.conf"
+ln -fs /mnt/orig_root/opt/tslib-1.12/etc/pointercal "$TARGET_ROOT/etc/pointercal"
+ln -fs /mnt/orig_root/opt/tslib-1.12/etc/ts.conf "$TARGET_ROOT/etc/ts.conf"
+cp $GIT_ROOT/printer_configs/X11/xinitrc "$TARGET_ROOT/etc/X11/xinit/"
+cp $GIT_ROOT/printer_configs/X11/xorg.conf "$TARGET_ROOT/etc/X11/"
+
+##############################
 # install printer configs
 ##############################
 
@@ -131,3 +153,24 @@ mkdir -p $TARGET_ROOT/root/printer_data/config
 mkdir -p $TARGET_ROOT/root/printer_data/logs
 cp -r $GIT_ROOT/printer_configs/* $TARGET_ROOT/root/printer_data/config/
 ln -s /mnt/data/gcodes $TARGET_ROOT/root/printer_data/gcodes
+
+##############################
+# install klipperscreen
+##############################
+log_info "Install Klipperscreen"
+
+if [ -f $GIT_ROOT/prebuilt/KlipperScreen-env.tar.xz ]
+then
+  tar -xf $GIT_ROOT/prebuilt/KlipperScreen-env.tar.xz -C $TARGET_ROOT/root/printer_software/KlipperScreen/
+else
+  mkdir -p $TARGET_ROOT/root/setup/
+  cp -r $GIT_ROOT/prebuilt/wheels/KlipperScreen_wheels $TARGET_ROOT/root/setup/
+  cat $GIT_ROOT/submodules/KlipperScreen/scripts/KlipperScreen-requirements.txt > $TARGET_ROOT/root/setup/KlipperScreen_wheels/requirements.txt
+fi
+
+# Python sources
+mkdir -p $TARGET_DIR/root/printer_software/KlipperScreen
+pushd $GIT_ROOT/submodules/KlipperScreen/
+cp -r screen.py docs README.md LICENSE ks_includes panels styles scripts $TARGET_ROOT/root/printer_software/KlipperScreen/
+create_version ./ > $TARGET_ROOT/root/printer_software/KlipperScreen/.version
+popd

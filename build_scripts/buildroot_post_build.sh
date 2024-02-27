@@ -25,7 +25,6 @@ TARGET_ROOT="$1"
 # move unwantend initscripts to init.o (optional)
 mkdir -p $TARGET_ROOT/etc/init.o
 mv $TARGET_ROOT/etc/init.d/S35iptables $TARGET_ROOT/etc/init.o/ || true
-mv $TARGET_ROOT/etc/init.d/S40iwd $TARGET_ROOT/etc/init.o/ || true
 
 # clean up root, if containing old build artefacts
 rm -rf $TARGET_ROOT/root/setup

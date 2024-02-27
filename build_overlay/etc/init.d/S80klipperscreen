@@ -10,7 +10,7 @@ PID_FILE=/run/klipperscreen.pid
 export DISPLAY=:0.0
 
 start() {
-    # fix loaders
+    # fix loaders, for now we do this dynamicly, can problable be moved to a overlay file
     /usr/bin/gdk-pixbuf-query-loaders > /usr/lib/gdk-pixbuf-2.0/2.10.0/loaders.cache
     start-stop-daemon -S -b -m -p $PID_FILE --exec $PYTHON -- $KLIPPERSCREEN
 }

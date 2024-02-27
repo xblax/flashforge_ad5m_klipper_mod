@@ -1,4 +1,4 @@
-CC = arm-buildroot-linux-gnueabi-gcc
+CC = arm-buildroot-linux-gnueabihf-gcc
 CFLAGS = -Wall -g -O2 -shared -fPIC -flto -fwhole-program -fno-use-linker-plugin
 LDFLAGS = -shared
 

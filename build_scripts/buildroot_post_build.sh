@@ -164,3 +164,11 @@ if ! grep dbus $TARGET_ROOT/etc/shadow;
 then
     echo "dbus:*:::::::" >> $TARGET_ROOT/etc/shadow
 fi
+=======
+##############################
+# install X11 scripts
+##############################
+log_info "Install X11 requirements"
+rm -f "$TARGET_ROOT/etc/ts.conf"
+ln -fs /mnt/orig_root/opt/tslib-1.12/etc/pointercal "$TARGET_ROOT/etc/pointercal"
+ln -fs /mnt/orig_root/opt/tslib-1.12/etc/ts.conf "$TARGET_ROOT/etc/ts.conf"

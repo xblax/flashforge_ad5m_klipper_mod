@@ -2,10 +2,15 @@
 #
 # Show mod start screen on framebuffer.
 #
+KLIPPERSCREEN_PID_FILE=/run/klipperscreen.pid
 
 start() {
     backlight 50
-    xzcat /usr/share/klipper_mod/fb/mod_start.img.xz > /dev/fb0
+    if ! kill -s 0 `cat $KLIPPERSCREEN_PID_FILE`; then
+        xzcat /usr/share/klipper_mod/fb/mod_start.img.xz > /dev/fb0
+    else 
+        xzcat /usr/share/klipper_mod/fb/klipperscreen_starting.img.xz > /dev/fb0
+    fi
 }
 
 case "$1" in

@@ -13,7 +13,6 @@ start() {
     # fix loaders, for now we do this dynamicly, can problable be moved to a overlay file
     /usr/bin/gdk-pixbuf-query-loaders > /usr/lib/gdk-pixbuf-2.0/2.10.0/loaders.cache
     # show the user something to look at
-    xzcat /usr/share/klipper_mod/fb/klipperscreen_starting.img.xz > /dev/fb0
     start-stop-daemon -S -b -m -p $PID_FILE --exec $PYTHON -- $KLIPPERSCREEN
 }
 

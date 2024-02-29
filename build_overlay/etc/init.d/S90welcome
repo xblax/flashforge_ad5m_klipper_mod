@@ -2,6 +2,7 @@
 #
 # Show mod start screen on framebuffer.
 #
+KLIPPERSCREEN_PID_FILE=/run/klipperscreen.pid
 
 start() {
     # set to first, the LCD values are not initialized properly
@@ -9,7 +10,11 @@ start() {
     # 1% would be 100% and 100% would be 1%
     backlight 0
     backlight 50
-    xzcat /usr/share/klipper_mod/fb/mod_start.img.xz > /dev/fb0
+    if ! kill -s 0 `cat $KLIPPERSCREEN_PID_FILE`; then
+        xzcat /usr/share/klipper_mod/fb/mod_start.img.xz > /dev/fb0
+    else 
+        xzcat /usr/share/klipper_mod/fb/klipperscreen_starting.img.xz > /dev/fb0
+    fi
 }
 
 case "$1" in

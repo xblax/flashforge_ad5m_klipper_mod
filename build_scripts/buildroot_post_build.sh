@@ -140,3 +140,11 @@ mkdir -p $TARGET_ROOT/root/printer_data/config
 mkdir -p $TARGET_ROOT/root/printer_data/logs
 cp -r $GIT_ROOT/printer_configs/* $TARGET_ROOT/root/printer_data/config/
 ln -s /mnt/data/gcodes $TARGET_ROOT/root/printer_data/gcodes
+
+##############################
+# install X11 scripts
+##############################
+log_info "Install X11 requirements"
+rm -f "$TARGET_ROOT/etc/ts.conf"
+ln -fs /mnt/orig_root/opt/tslib-1.12/etc/pointercal "$TARGET_ROOT/etc/pointercal"
+ln -fs /mnt/orig_root/opt/tslib-1.12/etc/ts.conf "$TARGET_ROOT/etc/ts.conf"

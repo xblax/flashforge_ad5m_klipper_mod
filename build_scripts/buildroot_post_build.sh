@@ -21,6 +21,7 @@ SCRIPT_DIR="$(dirname "$0")"
 GIT_ROOT="$SCRIPT_DIR/.."
 BUILDROOT="$GIT_ROOT/submodules/buildroot"
 TARGET_ROOT="$1"
+PATH=$PATH:$BUILDROOT/output/host/bin:$BUILDROOT/output/host
 
 # move unwantend initscripts to init.o (optional)
 mkdir -p $TARGET_ROOT/etc/init.o
@@ -65,7 +66,17 @@ else
 fi
 
 # install klippy pyhton sources
+cp $SCRIPT_DIR/components/klipper/no-gcc-check.patch $GIT_ROOT/submodules/klipper
 pushd $GIT_ROOT/submodules/klipper/
+pushd klippy/chelper
+make
+popd
+if patch -r - -b -N -p1 < no-gcc-check.patch;
+then
+    log_info "Skipping patch, already applied"
+else
+    log_info "Patch applied"
+fi
 cp -r klippy docs config README.md COPYING $TARGET_ROOT/root/printer_software/klipper/
 create_version ./ > $TARGET_ROOT/root/printer_software/klipper/klippy/.version
 popd

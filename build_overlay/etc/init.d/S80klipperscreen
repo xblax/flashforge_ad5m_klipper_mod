@@ -6,6 +6,7 @@
 PYTHON=/root/printer_software/KlipperScreen/KlipperScreen-env/bin/python3
 KLIPPERSCREEN=/root/printer_software/KlipperScreen/screen.py
 PID_FILE=/run/klipperscreen.pid
+NCIENESS=10
 
 export DISPLAY=:0.0
 export LANG=en_US.UTF8
@@ -15,7 +16,7 @@ start() {
     # fix loaders, for now we do this dynamicly, can problable be moved to a overlay file
     /usr/bin/gdk-pixbuf-query-loaders > /usr/lib/gdk-pixbuf-2.0/2.10.0/loaders.cache
     # show the user something to look at
-    start-stop-daemon -S -b -m -p $PID_FILE --exec $PYTHON -- $KLIPPERSCREEN
+    start-stop-daemon -S -b -m -p $PID_FILE -N $NICENESS --exec $PYTHON -- $KLIPPERSCREEN
 }
 
 stop() {

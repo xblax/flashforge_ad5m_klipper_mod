@@ -81,6 +81,9 @@ cp -r klippy docs config README.md COPYING $TARGET_ROOT/root/printer_software/kl
 create_version ./ > $TARGET_ROOT/root/printer_software/klipper/klippy/.version
 popd
 
+# install g-code shell extension
+cp $GIT_ROOT/build_scripts/components/klipper/gcode_shell_command.py $TARGET_ROOT/root/printer_software/klipper/klippy/extras/
+
 ##############################
 # install moonraker
 ##############################

@@ -142,7 +142,6 @@ log_info "Install printer configs"
 mkdir -p $TARGET_ROOT/root/printer_data/config
 mkdir -p $TARGET_ROOT/root/printer_data/logs
 cp -r $GIT_ROOT/printer_configs/* $TARGET_ROOT/root/printer_data/config/
-ln -s /mnt/data/gcodes $TARGET_ROOT/root/printer_data/gcodes
 
 ###############################
 # Fix dbus user if not present

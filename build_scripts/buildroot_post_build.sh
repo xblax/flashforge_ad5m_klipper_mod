@@ -17,7 +17,7 @@ create_version()
 }
 
 # paths
-SCRIPT_DIR="$(dirname "$0")"
+SCRIPT_DIR=$( cd -- "$( dirname -- "$0" )" &> /dev/null && pwd )
 GIT_ROOT="$SCRIPT_DIR/.."
 BUILDROOT="$GIT_ROOT/submodules/buildroot"
 TARGET_ROOT="$1"
@@ -66,11 +66,15 @@ else
 fi
 
 # install klippy pyhton sources
-cp $SCRIPT_DIR/components/klipper/no-gcc-check.patch $GIT_ROOT/submodules/klipper
 pushd $GIT_ROOT/submodules/klipper/
+
 pushd klippy/chelper
+cp $SCRIPT_DIR/components/klipper/Makefile .
 make
+rm Makefile
+
 popd
+cp $SCRIPT_DIR/components/klipper/no-gcc-check.patch .
 if patch -r - -b -N -p1 < no-gcc-check.patch;
 then
     log_info "Skipping patch, already applied"
@@ -78,6 +82,8 @@ else
     log_info "Patch applied"
 fi
 cp -r klippy docs config README.md COPYING $TARGET_ROOT/root/printer_software/klipper/
+rm no-gcc-check.patch
+
 create_version ./ > $TARGET_ROOT/root/printer_software/klipper/klippy/.version
 popd
 

@@ -17,15 +17,19 @@ setup_static_data()
     mv "$1" "$static_dir/$1"
   fi
 
-  # symlink the target to the static data
+  # symlink the target to the static data dir
   rm -rf "$1"
-  ln -s "$static_dir/$1" "$1"
+  ln -s "$static_dir$1" "$1"
 }
 
 # keep essential network settings
 setup_static_data /etc/hostname
 setup_static_data /var/lib/iwd
 setup_static_data /etc/network/interfaces
+
+# keep dropbear keys (that is a symlink to /var/run/dropbear originally)
+rm -f /etc/dropbear
+mkdir -p /etc/dropbear
 setup_static_data /etc/dropbear
 
 # keep moonraker database

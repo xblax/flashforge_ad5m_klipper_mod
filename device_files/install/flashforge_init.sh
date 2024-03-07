@@ -37,15 +37,18 @@ fi
 MOD_INIT_FILE="/etc/init.d/S00klipper_mod"
 MOD_INIT_FILE_OLD="/etc/init.d/S90klipper_mod"
 MOD_DIR="/data/.klipper_mod"
+# chroot is replaced on mod upate or reinstall
+# other data in .klipper_mod is kept, unless uninstalled
+CHROOT_DIR="${MOD_DIR}/chroot"
 
 # update start image
 xzcat $WORK_DIR/img/install_start.img.xz > /dev/fb0
 # --------------------------------
 
-# uninstall previous mod version if present
+# uninstall previous mod version if present - keep other data in .klipper_mod
 rm -f $MOD_INIT_FILE
 rm -f $MOD_INIT_FILE_OLD
-rm -rf $MOD_DIR
+rm -rf $CHROOT_DIR
 
 # check free space, we require 512MB before installation for saftey reason
 FREE_SPACE=$(df /data | tail -1 | tr -s ' ' | cut -d' ' -f4)
@@ -58,7 +61,6 @@ then
 fi
 
 # unpack chroot environment
-CHROOT_DIR="${MOD_DIR}/chroot"
 mkdir -p $CHROOT_DIR
 xz -dc $WORK_DIR/chroot.tar.xz | tar -xf - -C $CHROOT_DIR
 sync

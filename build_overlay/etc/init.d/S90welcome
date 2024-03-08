@@ -4,6 +4,7 @@
 #
 
 start() {
+    backlight 50
     xzcat /usr/share/klipper_mod/fb/mod_start.img.xz > /dev/fb0
 }
 

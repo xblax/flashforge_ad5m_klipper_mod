@@ -1,0 +1,15 @@
+#!/bin/sh
+# Fake systemctl, provided for compatibility with other scripts
+echo "Note: This system does not use systemd."
+
+case "$1" in
+  reboot)
+        reboot
+        ;;
+  poweroff)
+	poweroff
+        ;;
+  *)
+        echo "Usage: systemctl {reboot|poweroff}"
+        exit 1
+esac

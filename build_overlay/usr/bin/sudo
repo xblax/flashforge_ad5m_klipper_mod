@@ -1,0 +1,3 @@
+#!/bin/sh
+# Fake sudo, provided for compatibility with other scripts
+exec "$@"

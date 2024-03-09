@@ -1,0 +1,33 @@
+#!/bin/sh
+# Completly uninstall Klipper Mod system from the system
+
+usage() {
+    echo "Usage: uninstall-klipper-mod [-f]"
+    echo "  -f  Force uninstall without confirmation"
+    exit 1
+}
+
+if [ "$#" -gt 1 ]; then
+    echo "Error: Too many arguments."
+    usage
+fi
+
+force=false
+if [ "$#" -eq 1 ] && [ "$1" = "-f" ]; then
+    force=true
+elif [ "$#" -eq 1 ]; then
+    echo "Error: Invalid argument."
+    usage
+fi
+
+if [ "$force" = false ]; then
+    read -p "Klipper Mod will be removed from the printer. Do you want to proceed? (Y/n): " choice
+    case "$choice" in
+        Y )   ;;
+        n|N ) echo "Aborted."; exit 0;;
+        * )   echo "Invalid choice. Aborted."; exit 1;;
+    esac
+fi
+
+touch /root/.reboot_and_remove
+reboot

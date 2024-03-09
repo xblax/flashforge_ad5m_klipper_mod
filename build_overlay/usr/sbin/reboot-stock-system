@@ -1,0 +1,5 @@
+#!/bin/sh
+# Reboot to the printer stock system
+set -e
+touch /root/.reboot_stock_once
+reboot

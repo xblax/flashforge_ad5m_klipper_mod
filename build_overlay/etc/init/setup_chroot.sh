@@ -35,6 +35,10 @@ setup_static_data /etc/network/interfaces
 rm -f /etc/dropbear
 mkdir -p /etc/dropbear
 setup_static_data /etc/dropbear
+# keep /root/.ssh
+mkdir -p /root/.ssh
+chmod 700 /root/.ssh
+setup_static_data /root/.ssh
 
 # keep moonraker database
 mkdir -p /root/printer_data/database

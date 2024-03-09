@@ -4,7 +4,7 @@ remove_action () {
 #
 # Unmount the device.  The user should really unmount it before
 # disconnecting
-   umount ${1}
+   umount ${2}
 #
 # Delete the directory in ${mountdir}
    rm -rf ${2}

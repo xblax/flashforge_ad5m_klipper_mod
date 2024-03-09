@@ -53,3 +53,10 @@ if [ -d /media/klipper_mod/ ]; then
     rsync -rltvK /media/klipper_mod/* /
 fi
 umount /media
+
+##############################
+# install done
+##############################
+
+audio midi -m /usr/share/midis/getitem.mid &
+exit 0

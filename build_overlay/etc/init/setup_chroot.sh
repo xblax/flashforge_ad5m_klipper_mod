@@ -4,8 +4,12 @@
 # prepare swap
 fallocate -l 128M /mnt/swap
 mkswap /mnt/swap
+chmod 0600 /mnt/swap
 
+##############################
 # static data setup
+##############################
+
 static_dir="/mnt/data/.klipper_mod/static"
 mkdir -p $static_dir
 
@@ -38,3 +42,14 @@ setup_static_data /root/printer_data/database
 # keep gcode files
 mkdir -p /root/printer_data/gcodes
 setup_static_data /root/printer_data/gcodes
+
+##############################
+# user provided overlay
+##############################
+
+# install usb flash drive is mounted to /media if available
+if [ -d /media/klipper_mod/ ]; then
+    # copy everything into the chroot
+    rsync -rltvK /media/klipper_mod/* /
+fi
+umount /media

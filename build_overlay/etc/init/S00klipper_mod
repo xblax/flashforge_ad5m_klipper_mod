@@ -23,11 +23,18 @@ usb_marker_debug="klipper_mod_debug"
 # debug script is started from usb if debug marker is found
 usb_debug_script="mod_debug.sh"
 
+continue_flashforge_boot() {
+    # continue with booth of the flashforge system
+    # add boot delay, because otherwise in case of warm reboot from klipper mod
+    # the flashforge sofware might fail to initialize (probably related to MCU state)
+    sleep 5
+    exit 0
+}
+
 uninstall() {
-     rm -rf $mod_dir || true
-     rm -f /root/mod_init* || true
-     rm -f "$0" || true # remove this script
-     exit 0
+    rm -rf $mod_dir || true
+    rm -f /root/mod_init* || true
+    rm -f "$0" || true # remove this script
 }
 
 mount_data() {
@@ -83,18 +90,18 @@ check_usb_marker() {
     # bail, if we found a flashforge update
     if [ -n "$usb_update_marker" ]; then
         echo "Skip Klipper Mod init due to flashforge update '$usb_update_marker' found on $usb_drive."
-        exit 0;
+        continue_flashforge_boot
     fi
 
     # allow to boot into stock linux, if skip marker is present
     if [ "$usb_mod_marker" = "$usb_marker_skip" ]; then
         echo "Skip Klipper Mod init due to skip marker '$usb_mod_marker' found on $usb_drive."
-        exit 0
+        continue_flashforge_boot
     # remove mod, if remove marker is present
     elif [ "$usb_mod_marker" = "$usb_marker_remove" ]; then
         echo "Uninstall Klipper Mod due to remove maker '$usb_mod_marker' found on $usb_drive."
         uninstall
-        exit 0
+        continue_flashforge_boot
     fi
 }
 
@@ -112,14 +119,14 @@ check_mod_marker() {
         echo "Skip Klipper Mod init once due to skip maker $mod_marker_skip."
         rm -f $mod_marker_skip
         sync
-        exit 0
+        continue_flashforge_boot
     fi
 
     # remove mod, if remove marker is present
     if [ -f $mod_marker_remove ]; then
         echo "Uninstall Klipper Mod due to remove maker $mod_marker_remove."
         uninstall
-        exit 0
+        continue_flashforge_boot
     fi
 }
 

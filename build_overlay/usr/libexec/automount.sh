@@ -1,10 +1,10 @@
-i#!/bin/busybox ash
+#!/bin/busybox ash
 #
 remove_action () {
 #
 # Unmount the device.  The user should really unmount it before
 # disconnecting
-  umount ${1}
+   umount ${1}
 #
 # Delete the directory in ${mountdir}
    rm -rf ${2}
@@ -14,10 +14,22 @@ remove_action () {
 # the script.
 #
 # Execute only if the device already exists; otherwise exit
-if [ ! -b ${MDEV} ] ; then exit 0 ; fi
+
+#1>  /dev/fd1
+#0<  /dev/fd0
+#2>> /dev/shm/mdev_err.txt
+
+mountdir="/media"
+if [ ! -b ${MDEV} ] ; 
+then 
+    if [ ! -d "${mountdir}/${MDEV}"];
+    then
+        echo EXIT?
+        exit 0 ; 
+    fi
+fi
 #
 # Make mountdir a var in case the pmount default directory ever changes
-mountdir="/media"
 #
 # Flag for whether or not we have a partition.  0=no, 1=yes, default no
 partition=0
@@ -25,15 +37,13 @@ partition=0
 # File descriptors 0, 1, and 2 are closed before launching this script.
 # Many linux utilities are hard-coded to work with these file descriptors.
 # So we need to manually open them.
-0<  /dev/fd0
-1>  /dev/fd1
 #
 # Note that the redirect of stderr to a temporary logfile in /dev/shm in
 # append mode is commented out.  Uncomment if you want to debug problems.
-# 2>> /dev/shm/mdev_err.txt
 #
 # Uncomment next line for debug data dump to /dev/shm/mdevlog.txt.
 # env >> /dev/shm/mdevlog.txt
+
 #
 # Check for various conditions during an "add" operation
 if [ "X${ACTION}" == "Xadd" ] ; then
@@ -83,6 +93,7 @@ if [ "X${ACTION}" == "Xremove" ] ; then
       fi
    done
 fi
+
 #
 # If not flagged as a partition, bail out.
 if [ ${partition} -ne 1 ] ; then exit 0 ; fi
@@ -94,13 +105,16 @@ if [ "X${ACTION}" == "Xadd" ] ; then
    mkdir -p ${mountdir}/${MDEV}
 #
 # Mount the directory in ${mountdir}
-   mount -o noatime /dev/${MDEV} ${mountdir}/${MDEV}
+   mount -t vfat -o ro,codepage=437,iocharset=utf8,noatime /dev/${MDEV} ${mountdir}/${MDEV}
+   rm -f /root/printer_data/gcodes/usb
+   ln -s /media/${MDEV} /root/printer_data/gcodes/usb
 #
 # The "remove" action.
 elif [ "X${ACTION}" == "Xremove" ] ; then
 #
 # Get info from /proc/mounts, and call remove_action to unmount the
 # device and remove the associated directory
+   rm -f /root/printer_data/gcodes/usb
    procmounts=$(grep "^/dev/${MDEV} ${mountdir}/" /proc/mounts)
    remove_action ${procmounts}
 fi

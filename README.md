@@ -29,29 +29,28 @@ Klipper Mod for the ADM5 is designed to be fully removable and not break any fun
 
 ## Getting Started
 
-Download test latest [release build](https://github.com/xblax/flashforge_adm5_klipper_mod/releases) and read through the documentation for [Installation](docs/INSTALL.md) and [Slicing](docs/SLICING.md). Also make yourself familiar with the [uninstall](docs/UNINSTALL.md) methods, to understand how you can uninstall the mod if you don't like it.
+Download test latest [Release Build](https://github.com/xblax/flashforge_adm5_klipper_mod/releases) and read through the documentation for [Installation](docs/INSTALL.md) and [Slicing](docs/SLICING.md). Also make yourself familiar with the [Uninstall](docs/UNINSTALL.md) methods, to get rid of the mod if you don't like it.
 
-The Klipper Mod is currently provided in two variants: 
+The Klipper Mod for ADM5 (Pro) is currently provided in two variants: 
 - Default variant without on-screen GUI control application
-- KlipperScreen variant with fully-fledged [KlipperScreen](docs/KLIPPER_SCREEN.md) installation
-
-If you encounter any issues with the KlipperScreen variant that could be caused by resource exhaustion (mostly system RAM), please try if the issue also occurs with the default variant.
+- KlipperScreen variant with fully-fledged [KlipperScreen](docs/KLIPPER_SCREEN.md) installation. If you encounter any issues that could be caused by resource exhaustion (mostly system RAM), please check if the issue also occurs with the default variant.
 
 You are welcome to participate int the [GitHub Discussions](https://github.com/xblax/flashforge_adm5_klipper_mod/discussions) or open a new [Issue](https://github.com/xblax/flashforge_adm5_klipper_mod/issues) if you find any bugs.
 
 
 ## Documentation
 
-The documentation is split into several topics:
+Due to the beta stage the documentation is not fully-completed. The documentation is split into several topics:
 
-- [Install](docs/INSTALL.md)
-- [Uninstall](docs/UNINSTALL.md)
-- [Slicing](docs/SLICING.md)
-- [Wifi](docs/WIFI.md)
-- [Remote Control](docs/REMOTE_CONTROL.md)
+- [Install](docs/INSTALL.md): Install Klipper Mod on Flashforge ADM5 (Pro)
+- [Uninstall](docs/UNINSTALL.md): Uninstall Klipper Mod
+- [Slicing](docs/SLICING.md): Configure your Slicer for Klipper
+- [Wifi](docs/WIFI.md): Methods to Configure Wifi
+- [Remote Control](docs/REMOTE_CONTROL.md): Access the printer from the Web
 - [Klipper Screen](docs/KLIPPER_SCREEN.md)
 - [Linux Environment](docs/LINUX.md)
 - [Camera](docs/CAMERA.md)
 - [USB](docs/USB.md)
 - [LCD](docs/LCD.md)
 - [Buzzer](docs/BUZZER.md)
+- [Build Instructions](docs/BUILDING.md)

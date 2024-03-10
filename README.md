@@ -1,26 +1,31 @@
-# Klipper Mod for Flashforge Adventurer M5 (Pro)
+
+[![Mainsail](docs/images/mainsail_01_thumb.jpg)](docs/images/mainsail_01.jpg)
+[![Fluidd](docs/images/fluidd_01_thumb.png)](docs/images/fluidd_01.png)
+[![NoScreen](docs/images/no_screen_01_thumb.jpg)](docs/images/no_screen_01.jpg)
+[![KlipperScreen](docs/images/klipper_screen_01_thumb.jpg)](docs/images/klipper_screen_01.jpg)
+
+# Klipper Mod for Flashforge Adventurer 5M (Pro)
+
 This is an unofficial mod to run Moonraker, custom Klipper, Mainsail & Fluidd on the Flashforge ADM5 (Pro) 3D printers and unlock the full power of open source software.
 
-This mod is still in an early stage. The base features are functional, but it's not a polished and ready-to-use replacement for all stock features. 
+*This mod is currently in beta stage.* Many features are implemented already but they need to be tested thoroughly and polished a bit by early adopters.
 
-The mod is designed to be fully removable and not break any functions of the stock software. But if you install it, then please be aware, that you risk to loose warranty or damage the printer. Proceed at your own risk if you want to try this mod!
+Klipper Mod for the ADM5 is designed to be fully removable and not break any functions of the stock software. But if you install it, then please be aware, that you risk to loose your warranty or damage the printer. *Proceed at your own risk if you want to use this mod!*
 
-## What's working
-- Klipper 0.11
-- Moonraker on port 7125
-- Mainsail on port 4000
-- Fluidd on port 4001
-- Ethernet LAN (DHCP only)
+## Feature Overview
+- [Klipper](https://www.klipper3d.org/) 0.11 -- with improved configuration and default macros
+- [Moonraker](https://github.com/Arksine/moonraker) on port 7125
+- [Mainsail](https://docs.mainsail.xyz/) on port 4000
+- [Fluidd](https://docs.fluidd.xyz/) on port 4001
+- [KlipperScreen](https://klipperscreen.readthedocs.io/en/latest/) -- separate preview build
+- Camera streaming via [ustreamer](https://github.com/pikvm/ustreamer) on port 8080
+- Network access: Ethernet LAN and WiFi via [iwd](https://iwd.wiki.kernel.org/)
+- Customized Linux environment based on [Buildroot](https://buildroot.org/)
 - SSH root access. Login: `root`, Password: `klipper`
-- "Dual boot" with stock Flashforge system
-
-## What's not working
-- Printer control via Display
-- Camera
-- WiFi
-- Buzzer
-
-Support for WiFi and Camera will likely come in a later version. There are no plans for Display or Buzzer support at the moment.
+- [Audio](https://pypi.org/project/ff-adm5-audio/) via buzzer (can play simple Midis)
+- [LCD backlight](https://pypi.org/project/ff-ad5m-backlight/) control 
+- Automatic USB flash drive mounting
+- "Dual boot" with stock Flashforge software
 
 ## Documentation
 

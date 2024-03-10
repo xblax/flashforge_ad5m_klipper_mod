@@ -6,11 +6,11 @@
 
 # Klipper Mod for Flashforge Adventurer 5M (Pro)
 
-This is an unofficial mod to run Moonraker, custom Klipper, Mainsail & Fluidd on the Flashforge ADM5 (Pro) 3D printers and unlock the full power of open source software.
+This is an *unofficial* mod to run Moonraker, custom Klipper, Mainsail & Fluidd on the Flashforge ADM5 (Pro) 3D printers and unlock the full power of open source software.
 
 *This mod is currently in beta stage.* Many features are implemented already but they need to be tested thoroughly and polished a bit by early adopters.
 
-Klipper Mod for the ADM5 is designed to be fully removable and not break any functions of the stock software. But if you install it, then please be aware, that you risk to loose your warranty or damage the printer. *Proceed at your own risk if you want to use this mod!*
+Klipper Mod for the ADM5 is designed to be fully removable and not break any functions of the stock software. *If you install it, then please be aware, that you risk to loose your warranty or damage the printer. Proceed at your own risk if you want to use this mod!*
 
 ## Feature Overview
 - [Klipper](https://www.klipper3d.org/) 0.11 -- with improved configuration and default macros
@@ -27,30 +27,31 @@ Klipper Mod for the ADM5 is designed to be fully removable and not break any fun
 - Automatic USB flash drive mounting
 - "Dual boot" with stock Flashforge software
 
+## Getting Started
+
+Download test latest [release build](https://github.com/xblax/flashforge_adm5_klipper_mod/releases) and read through the documentation for [Installation](docs/INSTALL.md) and [Slicing](docs/SLICING.md). Also make yourself familiar with the [uninstall](docs/UNINSTALL.md) methods, to understand how you can uninstall the mod if you don't like it.
+
+The Klipper Mod is currently provided in two variants: 
+- Default variant without on-screen GUI control application
+- KlipperScreen variant with fully-fledged [KlipperScreen](docs/KLIPPER_SCREEN.md) installation
+
+If you encounter any issues with the KlipperScreen variant that could be caused by resource exhaustion (mostly system RAM), please try if the issue also occurs with the default variant.
+
+You are welcome to participate int the [GitHub Discussions](https://github.com/xblax/flashforge_adm5_klipper_mod/discussions) or open a new [Issue](https://github.com/xblax/flashforge_adm5_klipper_mod/issues) if you find any bugs.
+
+
 ## Documentation
 
-### Installation
+The documentation is split into several topics:
 
-The mod uses the installation mechanism of the stock firmware. Download the latest `Adventurer5M-*.tgz` release to a USB flash drive and plug it in before starting the printer. Note: if you are using the 5M Pro, please rename the archive to `Adventurer5MPro-*.tgz`, otherwise it's not detected by the installer.
-
-After successful installation, the printer will by default start the mod system instead. If the mod is re-installed or updated, all local modifications are lost. Only the G-Code files are retained.
-
-At the moment, the mod only allows installations on printers that were updated to version 2.4.5 of the stock firmware.
-
-### Uninstallation and Dual Boot
-
-The startup process can be controlled via "marker" files on a USB flash drive.
-
-- `klipper_mod_skip` - the printer boots to stock system, while this file detected
-- `klipper_mod_remove` - the mod uninstalls itself and boots to stock system
-- `klipper_mod_debug` - please check the code, if needed
-
-Have only one of these files on a flash drive at the same time, otherwise a random one will be detected during startup.
-
-### Technical Overview
-
-The mod is self-contained in a [chroot](https://en.wikipedia.org/wiki/Chroot) environment. Therefore it's relatively safe to change the printer configuration without breaking the printer's stock functionality if you want to go back. The mod system environment is based on [Buildroot](https://buildroot.org/) embedded Linux.
-
-Be careful if you insist to break out of the jail. The host system is mounted read-only to `/mnt/orig_root`.
-
-The printer data partition is mounted to `/mnt/data` and G-Codes can be found in `/mnt/data/gcodes`. The mod system itself lives in the `.klipper_mod` folder on the data partition. Do not attempt to delete it while running the mod.
+- [Install](docs/INSTALL.md)
+- [Uninstall](docs/UNINSTALL.md)
+- [Slicing](docs/SLICING.md)
+- [Wifi](docs/WIFI.md)
+- [Remote Control](docs/REMOTE_CONTROL.md)
+- [Klipper Screen](docs/KLIPPER_SCREEN.md)
+- [Linux Environment](docs/LINUX.md)
+- [Camera](docs/CAMERA.md)
+- [USB](docs/USB.md)
+- [LCD](docs/LCD.md)
+- [Buzzer](docs/BUZZER.md)

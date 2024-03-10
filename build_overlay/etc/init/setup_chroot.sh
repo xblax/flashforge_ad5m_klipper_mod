@@ -1,5 +1,6 @@
 #!/bin/sh
 # This script is called once after inital setup
+set -x
 
 # prepare swap
 fallocate -l 128M /mnt/swap

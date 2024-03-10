@@ -17,9 +17,13 @@ If you want to use WPA2-Enterprise look [here](https://iwd.wiki.kernel.org/netwo
 * `iwlist scanning` or `iwctl station wlan0 get-networks`  to view the networks in range (and detected), if your network is missing, wait a bit and perform `iwctl station wlan0 scan`
 * `iwctl station wlan0 connect [SSID]` and enter the preshared key, or `iwctl --passphrase [PSK] station wlan0 connect [SSID]`
 
+### Alternative
+
+Edit the the SSID.psk file in `/var/lib/iwd`, see below for an example.
+
 ## With usb
 
-The `klipper_mod` dir on a usb drive can be used as an overlay. Everything present on the usb while booting will be copied to the system.
+The `klipper_mod` dir on a usb drive [can be used as an overlay](INSTALL.md). Everything present on the usb while booting will be copied to the system.
 This can be used to configure wifi.
 
 Warning: not not forget to remove the installation file or the system will be reinstalled.

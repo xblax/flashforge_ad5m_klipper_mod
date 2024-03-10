@@ -1,3 +1,4 @@
 prebuilt/mainsail*
 prebuilt/fluidd*
 device_files/images/fb
+*.md.backup

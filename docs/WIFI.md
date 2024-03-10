@@ -13,7 +13,7 @@ If you want to use WPA2-Enterprise look [here](https://iwd.wiki.kernel.org/netwo
 ## With Ethernet
 
 * Connect the printer to ethernet port
-* SSH to the printer and [log in as root](https://github.com/xblax/flashforge_adm5_klipper_mod/blob/master/README.md)
+* SSH to the printer and [log in as root](../README.md)
 * `iwlist scanning` or `iwctl station wlan0 get-networks`  to view the networks in range (and detected), if your network is missing, wait a bit and perform `iwctl station wlan0 scan`
 * `iwctl station wlan0 connect [SSID]` and enter the preshared key, or `iwctl --passphrase [PSK] station wlan0 connect [SSID]`
 

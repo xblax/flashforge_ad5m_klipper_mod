@@ -16,5 +16,5 @@ To connect to the printer, use the following physical printer settings:
 # Known issues
 
 * Some slicers output G17 codes, which are not yet supported in the klipper version used and can cause warnings.  
-  For example, in OrcaSlicer this is caused by the default z-hop method selected.
-  Please change it from `spiral` in place of `slope` in the printer configuration of your profile.
+  For example, in OrcaSlicer this is caused by the default z-hop method selected.  
+  Please change it from `spiral` to `slope` in the printer configuration of your profile.

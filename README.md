@@ -46,7 +46,6 @@ Due to the beta stage the documentation is not fully-completed. The documentatio
 - [Uninstall](docs/UNINSTALL.md): Uninstall Klipper Mod
 - [Slicing](docs/SLICING.md): Configure your Slicer for Klipper
 - [Wifi](docs/WIFI.md): Methods to Configure Wifi
-- [Remote Control](docs/REMOTE_CONTROL.md): Access the printer from the Web
 - [Klipper Screen](docs/KLIPPER_SCREEN.md)
 - [Linux Environment](docs/LINUX.md)
 - [Camera](docs/CAMERA.md)

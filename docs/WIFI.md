@@ -1,36 +1,31 @@
 # WiFi
 
-WiFi on the mod is controlled by [iwd](https://iwd.wiki.kernel.org/). The preshared keys are stored in `/var/lib/iwd` and the configuration is stored in `/etc/iwd`. For the configuration file format look [here](https://iwd.wiki.kernel.org/networkconfigurationsettings).
+WiFi in Klipper Mod for the ADM5 is controlled by the [iNet wireless daemon](https://iwd.wiki.kernel.org/) (iwd). 
 
-Warning: WiFi settings are not persistent! The `/var/lib/iwd` directory and `/etc/iwd/main.conf` will be reset on (re)installation.
+Wifi network settings are stored in `/var/lib/iwd` and the iwd daemon is configured in `/etc/iwd`. For the configuration file format look [here](https://iwd.wiki.kernel.org/networkconfigurationsettings).
 
-# Setting up a basic WiFi connection on the FF AD5M Klipper mod 
+## Setting up a basic WiFi connection
 
-Normally all connections use DHCP, if you want to set a manual IP, look [here](https://iwd.wiki.kernel.org/ipconfiguration). <br />
+Normally all WiFi connections use DHCP, if you want to set a manual IP, look [here](https://iwd.wiki.kernel.org/ipconfiguration). <br />
 If you want to encrypt the PSK storage, look [here](https://iwd.wiki.kernel.org/profile_encryption). <br />
 If you want to use WPA2-Enterprise look [here](https://iwd.wiki.kernel.org/networkconfigurationsettings) for the correct settings.
 
-## With Ethernet
+### Configure via Ethernet / SSH
 
 * Connect the printer to ethernet port
 * SSH to the printer and [log in as root](../README.md)
 * `iwlist scanning` or `iwctl station wlan0 get-networks`  to view the networks in range (and detected), if your network is missing, wait a bit and perform `iwctl station wlan0 scan`
 * `iwctl station wlan0 connect [SSID]` and enter the preshared key, or `iwctl --passphrase [PSK] station wlan0 connect [SSID]`
 
-### Alternative
+Alternatively, edit the the SSID.psk file in `/var/lib/iwd`, see below for an example.
 
-Edit the the SSID.psk file in `/var/lib/iwd`, see below for an example.
+### Configure via USB
 
-## With usb
+The `klipper_mod` dir on a usb drive can be used as an [overlay for custom config files](INSTALL.md) that are copied to the mod during installation. This can be used to set-up the initial WiFi connection.
 
-The `klipper_mod` dir on a usb drive [can be used as an overlay](INSTALL.md). Everything present on the usb while booting will be copied to the system.
-This can be used to configure wifi.
+To setup WiFi using this method you can add a file to the `klipper_mod` directory on the usb drive for the SSID 'EXAMPLE_SSID' with passphrase `********`:
 
-Warning: not not forget to remove the installation file or the system will be reinstalled.
-
-To setup using this method you can add a file to the `klipper_mod` directory on the usb drive for the SSID 'EXAMPLE_SSID' with passphrase `********`:
-
-Create the USB drive File: `klipper_mod/var/lib/iwd/EXAMPLE_SSID.psk`
+Create the USB drive file: `klipper_mod/var/lib/iwd/EXAMPLE_SSID.psk`
 ```conf
 [Settings]
 AutoConnect=True
@@ -39,9 +34,9 @@ AutoConnect=True
 Passphrase=********
 ```
 
-Once the system stars it should connect to your network.
+Install the mod as described in [Install](INSTALL.md) and after installation the printer should connect to your network.
 
-## With KlipperScreen
+### Configure with KlipperScreen
 
 Once klipperscreen has started:
 * Press settings
@@ -53,6 +48,6 @@ Once klipperscreen has started:
   * This might take a moment. If the screen does not proceed after about 10 seconds, press the save button again.
 
 
-# Additional information
+## Additional information
 
 For more commands and advanced usage of iwd, see the [linux kernel page for iwd](https://iwd.wiki.kernel.org/gettingstarted) or the [arch linux example page](https://wiki.archlinux.org/title/iwd).

@@ -63,6 +63,12 @@ do_setup()
         exit 0
     fi
 
+    # calculate checksums to be printed in the log
+    if ls /mnt/Adventurer5M*; then
+      md5sum /mnt/Adventurer5M*
+    fi
+    md5sum $WORK_DIR/chroot.tar.xz
+
     # unpack chroot environment
     mkdir -p $CHROOT_DIR
     xz -dc $WORK_DIR/chroot.tar.xz | tar -xf - -C $CHROOT_DIR

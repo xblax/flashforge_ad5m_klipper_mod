@@ -14,6 +14,13 @@ NICENESS=10
 XORG_ARGS=":0.0 vt01 -s 0 -noreset -allowMouseOpenFail"
 
 start() {
+
+    # first find ts_uinput event
+    TSEVENT=$(basename `find /sys/devices/virtual/input/ -name "event*"`)
+    printf "Using $TSEVENT for touchscreen input\n"
+    sed -i "s/\(Option.*\)event.*\"/\1$TSEVENT\"/g" /etc/X11/xorg.conf
+
+    # Then start xorg
 	printf "Starting Xorg: "
 	start-stop-daemon -S -q -b -m -p $PIDFILE -N 10 --exec $BIN -- $XORG_ARGS
 	[ $? = 0 ] && sleep 3 && echo "OK" || echo "FAIL"

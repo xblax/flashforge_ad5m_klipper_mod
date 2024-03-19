@@ -1,0 +1,26 @@
+#!/bin/sh
+#
+# Show mod start screen on framebuffer.
+#
+
+start() {
+    # set to first, the LCD values are not initialized properly
+    # which is done when disable/enable is triggered. Otherwise
+    # 1% would be 100% and 100% would be 1%
+    backlight 0
+    backlight 50
+    xzcat /usr/share/klipper_mod/fb/mod_start.img.xz > /dev/fb0
+}
+
+case "$1" in
+  start)
+        start
+        ;;
+  stop)
+        ;;
+  *)
+        echo "Usage: $0 {start|stop}"
+        exit 1
+esac
+
+exit $?

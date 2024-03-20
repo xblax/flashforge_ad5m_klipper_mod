@@ -3,7 +3,8 @@ SHELL := /bin/bash
 BUILD := build_scripts/build.sh
 VARIANTS = lite klipperscreen
 
-all: sdk lite klipperscreen uninstall checksums
+all: packages checksums
+packages: sdk lite klipperscreen uninstall
 
 # SDK targets
 sdk: sdk_package
@@ -53,5 +54,5 @@ uninstall: uninstall_package
 uninstall_package:
 	$(BUILD) package_uninstall
 
-checksums:
+checksums: packages
 	$(BUILD) checksums

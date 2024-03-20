@@ -3,7 +3,7 @@ SHELL := /bin/bash
 BUILD := build_scripts/build.sh
 VARIANTS = lite klipperscreen
 
-all: sdk lite uninstall checksums
+all: sdk lite klipperscreen uninstall checksums
 
 # SDK targets
 sdk: sdk_package

@@ -1,29 +1,20 @@
 #!/bin/bash
-cd "$(dirname "$0")"
 set -e
 
-log_info()
-{
-  CYAN='\033[0;36m'
-  NC='\033[0m'
-  echo -e "* ${CYAN}$1${NC}"
-}
+SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
+source $SCRIPT_DIR/../env.sh
 
-# paths
-
-SCRIPT_DIR="$(pwd)"
-GIT_ROOT="$SCRIPT_DIR/.."
-BUILD_DIR="$GIT_ROOT/build_output/wheels/"
-BUILDROOT="$GIT_ROOT/submodules/buildroot"
-
-HOSTDIR="$BUILDROOT/output/host"
-TARGET_PYTHON="$BUILDROOT/output/build/python3-3.11.7/python"
+BUILD_DIR="$BUILD_OUT/wheels/"
+HOST_DIR="$BUILDROOT_SDK/host"
 CROSS="arm-buildroot-linux-gnueabihf"
-SYSROOT="$BUILDROOT/output/host/$CROSS/sysroot"
+SYSROOT="$HOST_DIR/$CROSS/sysroot"
+TARGET_PYTHON="$BUILDROOT_SDK/build/python3-3.11.7/python"
+# using the sysroot pyhton does not work for some reason
+# TARGET_PYTHON="$SYSROOT/usr/bin/python3"
 
 # set cross toolchain
-export PATH="$HOSTDIR/bin:$PATH"
-export LD_LIBRARY_PATH="$HOSTDIR/lib"
+export PATH="$HOST_DIR/bin:$HOST_DIR/usr/bin:$PATH"
+export LD_LIBRARY_PATH="$HOST_DIR/lib:$HOST_DIR/usr/lib:$HOST_DIR/lib64:$HOST_DIR/usr/lib64"
 
 export CC=$CROSS-gcc
 export CXX=$CROSS-g++
@@ -31,9 +22,9 @@ export LD=$CROSS-ld
 export AR=$CROSS-ar
 export RANLIB=$CROSS-ranlib
 
-export CFLAGS="-O3 -s --sysroot $SYSROOT"
-export CXXFLAGS="-O3 -s --sysroot $SYSROOT"
-export LDFLAGS="-s --sysroot $SYSROOT"
+export CFLAGS="-O3 -s"
+export CXXFLAGS="-O3 -s"
+export LDFLAGS="-s"
 
 # prepare build
 rm -rf $BUILD_DIR > /dev/null

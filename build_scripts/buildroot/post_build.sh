@@ -1,12 +1,9 @@
 #!/bin/bash
 set -e
 
-log_info()
-{
-  CYAN='\033[0;36m'
-  NC='\033[0m'
-  echo -e "* ${CYAN}$1${NC}"
-}
+SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
+source $SCRIPT_DIR/../env.sh
+source $BASE_DIR/.mod_env
 
 create_version()
 {
@@ -17,11 +14,7 @@ create_version()
 }
 
 # paths
-SCRIPT_DIR=$( cd -- "$( dirname -- "$0" )" &> /dev/null && pwd )
-GIT_ROOT="$SCRIPT_DIR/.."
-BUILDROOT="$GIT_ROOT/submodules/buildroot"
-TARGET_ROOT="$1"
-PATH=$PATH:$BUILDROOT/output/host/bin:$BUILDROOT/output/host
+TARGET_ROOT="$TARGET_DIR"
 
 # move unwantend initscripts to init.o (optional)
 mkdir -p $TARGET_ROOT/etc/init.o
@@ -69,12 +62,12 @@ fi
 pushd $GIT_ROOT/submodules/klipper/
 
 pushd klippy/chelper
-cp $SCRIPT_DIR/components/klipper/Makefile .
+cp $BUILD_SCRIPTS/components/klipper/Makefile .
 make
 rm Makefile
 
 popd
-cp $SCRIPT_DIR/components/klipper/no-gcc-check.patch .
+cp $BUILD_SCRIPTS/components/klipper/no-gcc-check.patch .
 if patch -r - -b -N -p1 < no-gcc-check.patch;
 then
     log_info "Skipping patch, already applied"
@@ -171,32 +164,39 @@ fi
 rm -f $TARGET_ROOT/etc/init.d/S60nfs
 
 ##############################
-# install X11 scripts
+# Only for variant "klipperscreen"
 ##############################
-log_info "Install X11 requirements"
-rm -f "$TARGET_ROOT/etc/ts.conf"
-ln -fs /mnt/orig_root/opt/tslib-1.12/etc/pointercal "$TARGET_ROOT/etc/pointercal"
-ln -fs /mnt/orig_root/opt/tslib-1.12/etc/ts.conf "$TARGET_ROOT/etc/ts.conf"
 
-##############################
-# install klipperscreen
-##############################
-log_info "Install Klipperscreen"
-
-mkdir -p $TARGET_ROOT/root/printer_software/KlipperScreen/
-
-if [ -f $GIT_ROOT/prebuilt/KlipperScreen-env.tar.xz ]
+if [ "$MOD_VARIANT" == "klipperscreen" ]
 then
-  tar -xf $GIT_ROOT/prebuilt/KlipperScreen-env.tar.xz -C $TARGET_ROOT/root/printer_software/KlipperScreen/
-else
-  mkdir -p $TARGET_ROOT/root/setup/
-  cp -r $GIT_ROOT/prebuilt/wheels/KlipperScreen_wheels $TARGET_ROOT/root/setup/
-  cat $GIT_ROOT/submodules/KlipperScreen/scripts/KlipperScreen-requirements.txt > $TARGET_ROOT/root/setup/KlipperScreen_wheels/requirements.txt
-fi
+    ##############################
+    # install X11 scripts
+    ##############################
+    log_info "Install X11 requirements"
+    rm -f "$TARGET_ROOT/etc/ts.conf"
+    ln -fs /mnt/orig_root/opt/tslib-1.12/etc/pointercal "$TARGET_ROOT/etc/pointercal"
+    ln -fs /mnt/orig_root/opt/tslib-1.12/etc/ts.conf "$TARGET_ROOT/etc/ts.conf"
 
-# Python sources
-mkdir -p $TARGET_DIR/root/printer_software/KlipperScreen
-pushd $GIT_ROOT/submodules/KlipperScreen/
-cp -r screen.py docs README.md LICENSE ks_includes panels styles scripts $TARGET_ROOT/root/printer_software/KlipperScreen/
-create_version ./ > $TARGET_ROOT/root/printer_software/KlipperScreen/.version
-popd
+    ##############################
+    # install klipperscreen
+    ##############################
+    log_info "Install Klipperscreen"
+
+    mkdir -p $TARGET_ROOT/root/printer_software/KlipperScreen/
+
+    if [ -f $GIT_ROOT/prebuilt/KlipperScreen-env.tar.xz ]
+    then
+      tar -xf $GIT_ROOT/prebuilt/KlipperScreen-env.tar.xz -C $TARGET_ROOT/root/printer_software/KlipperScreen/
+    else
+      mkdir -p $TARGET_ROOT/root/setup/
+      cp -r $GIT_ROOT/prebuilt/wheels/KlipperScreen_wheels $TARGET_ROOT/root/setup/
+      cat $GIT_ROOT/submodules/KlipperScreen/scripts/KlipperScreen-requirements.txt > $TARGET_ROOT/root/setup/KlipperScreen_wheels/requirements.txt
+    fi
+
+    # Python sources
+    mkdir -p $TARGET_DIR/root/printer_software/KlipperScreen
+    pushd $GIT_ROOT/submodules/KlipperScreen/
+    cp -r screen.py docs README.md LICENSE ks_includes panels styles scripts $TARGET_ROOT/root/printer_software/KlipperScreen/
+    create_version ./ > $TARGET_ROOT/root/printer_software/KlipperScreen/.version
+    popd
+fi

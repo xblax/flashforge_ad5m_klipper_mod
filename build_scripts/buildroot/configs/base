@@ -2,7 +2,7 @@
 # Merged with SDK config.
 
 # Build Options
-BR2_ROOTFS_POST_BUILD_SCRIPT="../../build_scripts/buildroot_post_build.sh"
+BR2_ROOTFS_POST_BUILD_SCRIPT="$(BR2_EXTERNAL_ADM5_PATH)/post_build.sh"
 BR2_TARGET_ROOTFS_TAR=y
 
 # Toolchain Overrides (use SDK)

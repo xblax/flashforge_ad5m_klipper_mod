@@ -199,7 +199,7 @@ checksums()
 }
 
 cd $GIT_ROOT
-GIT_VERSION=$(git describe --dirty=-dirty)
+GIT_VERSION=$(git describe)
 
 # run command
 $@

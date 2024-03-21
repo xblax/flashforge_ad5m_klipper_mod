@@ -1,0 +1,14 @@
+#! /bin/sh
+
+case "$1" in
+	stop)
+	    	xzcat /usr/share/klipper_mod/fb/mod_shutdown.img.xz > /dev/fb0
+		;;
+	start|restart|reload)
+ 		exit 0
+		;;
+	*)
+		echo "Usage: $0 {stop}"
+		exit 1
+		;;
+esac

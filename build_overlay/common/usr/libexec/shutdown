@@ -1,0 +1,11 @@
+#!/bin/sh
+
+/etc/init.d/rcK
+
+sync
+
+for mnt in `cat /proc/mounts | awk '{ print $2 }' | grep '/media'`;
+do
+    umount $mnt
+done
+# now we wait ...

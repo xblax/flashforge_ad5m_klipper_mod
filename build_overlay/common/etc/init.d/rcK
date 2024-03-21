@@ -8,6 +8,8 @@ for i in $(ls -r /etc/init.d/S??*) ;do
 
      # Ignore dangling symlinks (if any).
      [ ! -f "$i" ] && continue
+     # ignore klipper
+     [ "$i" = "/etc/init.d/S60klipper" ] && continue
 
      case "$i" in
 	*.sh)

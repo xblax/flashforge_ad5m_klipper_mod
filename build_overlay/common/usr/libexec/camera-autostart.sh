@@ -39,7 +39,7 @@ start() {
         fi
     done
 
-    start-stop-daemon -S -b -m -p $PID_FILE --exec ustreamer -- -d /dev/$DEVNAME -r $resolution -m MJPEG -w 1 -I MMAP -c HW -s* -p 8080
+    start-stop-daemon -S -b -m -p $PID_FILE --exec ustreamer -- -d /dev/$DEVNAME -r $resolution -m MJPEG --device-timeout=2 -w 1 -I MMAP -c HW -s* -p 8080
     [ $? -eq 0 ] && logger -t $TAG "started ustreamer for /dev/$DEVNAME with res $resolution" || logger -t $TAG "failed to start ustreamer"
 }
 

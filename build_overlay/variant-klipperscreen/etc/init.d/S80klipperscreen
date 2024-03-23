@@ -3,24 +3,16 @@
 # Start klipperscreen
 #
 
-PYTHON=/root/printer_software/KlipperScreen/KlipperScreen-env/bin/python3
-KLIPPERSCREEN=/root/printer_software/KlipperScreen/screen.py
-KLIPPERSCREEN_DIR=/root/printer_software/KlipperScreen
-KLIPPERSCREEN_CONFIG=/root/printer_data/config/KlipperScreen.conf
-KLIPPERSCREEN_LOGFILE=/var/log/KlipperScreen.log
+KLIPPERSCREEN_SCRIPT=/root/printer_software/KlipperScreen/start.sh
 PID_FILE=/run/klipperscreen.pid
 KLIPPERSCREEN_NICENESS=10
-
-export DISPLAY=:0.0
-export LANG=en_US.UTF8
-export LC_ALL=en_US.UTF8
 
 start() {
     # fix loaders, for now we do this dynamicly, can problable be moved to a overlay file
     /usr/bin/gdk-pixbuf-query-loaders > /usr/lib/gdk-pixbuf-2.0/2.10.0/loaders.cache
     # goto the dir to execute the script
     cd $KLIPPERSCREEN_DIR
-    start-stop-daemon -S -b -m -p $PID_FILE -N $KLIPPERSCREEN_NICENESS --exec $PYTHON -- $KLIPPERSCREEN --logfile $KLIPPERSCREEN_LOGFILE --config $KLIPPERSCREEN_CONFIG
+    start-stop-daemon -S -b -m -p $PID_FILE -N $KLIPPERSCREEN_NICENESS --exec /bin/sh -- -c $KLIPPERSCREEN_SCRIPT
 }
 
 stop() {

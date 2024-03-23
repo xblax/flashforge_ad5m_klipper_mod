@@ -196,7 +196,7 @@ then
     # Python sources
     mkdir -p $TARGET_DIR/root/printer_software/KlipperScreen
     pushd $GIT_ROOT/submodules/KlipperScreen/
-    cp -r screen.py docs README.md LICENSE ks_includes panels styles scripts $TARGET_ROOT/root/printer_software/KlipperScreen/
+    cp -r screen.py start.sh docs README.md LICENSE ks_includes panels styles scripts $TARGET_ROOT/root/printer_software/KlipperScreen/
     create_version ./ > $TARGET_ROOT/root/printer_software/KlipperScreen/.version
     popd
 fi

@@ -158,11 +158,6 @@ then
     echo "dbus:*:::::::" >> $TARGET_ROOT/etc/shadow
 fi
 
-###############################
-# Remove nfs server start components
-###############################
-rm -f $TARGET_ROOT/etc/init.d/S60nfs
-
 ##############################
 # Only for variant "klipperscreen"
 ##############################

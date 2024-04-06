@@ -1,10 +1,10 @@
 # Top Level Makefile for Flashfore AD5M Klipper Mod
 SHELL := /bin/bash
 BUILD := build_scripts/build.sh
-VARIANTS = lite klipperscreen
+VARIANTS = lite klipperscreen guppyscreen
 
 all: packages checksums
-packages: sdk lite klipperscreen uninstall
+packages: sdk lite klipperscreen guppyscreen uninstall
 
 # SDK targets
 sdk: sdk_package

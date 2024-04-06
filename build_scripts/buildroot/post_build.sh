@@ -195,3 +195,16 @@ then
     create_version ./ > $TARGET_ROOT/root/printer_software/KlipperScreen/.version
     popd
 fi
+
+if [ "$MOD_VARIANT" == "guppyscreen" ]
+then
+    # files are in the overlay
+    log_info "Installing guppyscreen"
+    ## add calibration data for tslib uinput calibrated device
+    rm -f "$TARGET_ROOT/etc/ts.conf"
+    ln -fs /mnt/orig_root/opt/tslib-1.12/etc/pointercal "$TARGET_ROOT/etc/pointercal"
+    ln -fs /mnt/orig_root/opt/tslib-1.12/etc/ts.conf "$TARGET_ROOT/etc/ts.conf"
+
+    mkdir -p $TARGET_ROOT/root/printer_software/guppyscreen/
+    cp $GIT_ROOT/prebuilt/guppyscreen $TARGET_ROOT/root/printer_software/guppyscreen/
+fi

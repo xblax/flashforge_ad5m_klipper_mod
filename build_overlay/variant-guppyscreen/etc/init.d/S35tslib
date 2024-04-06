@@ -1,0 +1,52 @@
+#!/bin/sh
+#
+# Starts Xorg
+#
+
+BIN=/usr/bin/ts_uinput
+PIDFILE=/var/run/ts_uinput.pid
+NICENESS=9
+
+
+# variables must be present or ts_uinput will fail. uinput needs to be loaded
+
+export TSLIB_TSDEVICE=/dev/input/event0
+export   TSLIB_PLUGINDIR=/usr/lib/ts
+export  TSLIB_CONFFILE=/etc/ts.conf
+export  TSLIB_CALIBFILE=/etc/pointercal
+export TSLIB_FBDEVICE=/dev/fb0
+
+TSLIB_ARGS=""
+
+start() {
+	printf "Starting tslib uinput interface: "
+	start-stop-daemon -S -q -b -m -p $PIDFILE -N $NICENESS --exec $BIN -- $TSLIB_ARGS
+	[ $? = 0 ] && sleep 3 && echo "OK" || echo "FAIL"
+}
+
+stop() {
+	printf "Stopping tslib uinput interface:  "
+	start-stop-daemon -K -q -p $PIDFILE
+	[ $? = 0 ] && echo "OK" || echo "FAIL"
+}
+
+restart() {
+	stop
+	sleep 2
+	start
+}
+
+case "$1" in
+	start)
+		start
+	;;
+	stop)
+		stop
+	;;
+	restart|reload)
+		restart
+	;;
+	*)
+		echo "Usage: $0 {start|stop|restart}"
+	exit 1
+esac

@@ -207,4 +207,6 @@ then
 
     mkdir -p $TARGET_ROOT/root/printer_software/guppyscreen/
     cp $GIT_ROOT/prebuilt/guppyscreen $TARGET_ROOT/root/printer_software/guppyscreen/
+    # config symlink
+    ln -s /root/printer_data/config/guppyscreen.json /root/printer_software/guppyscreen/guppyscreen.json
 fi

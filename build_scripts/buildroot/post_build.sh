@@ -110,6 +110,9 @@ cp -r moonraker docs LICENSE README.md $TARGET_ROOT/root/printer_software/moonra
 create_version ./ > $TARGET_ROOT/root/printer_software/moonraker/moonraker/.version
 popd
 
+# install moonraker timelapse plugin (from git)
+curl "https://raw.githubusercontent.com/mainsail-crew/moonraker-timelapse/main/component/timelapse.py" -o "$TARGET_ROOT/root/printer_software/moonraker/moonraker/components/timelapse.py"
+
 ##############################
 # install mainsail
 ##############################

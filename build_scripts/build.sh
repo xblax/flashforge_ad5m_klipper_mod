@@ -5,6 +5,7 @@ set -e
 SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 source $SCRIPT_DIR/env.sh
 
+MULTICORE=-j$(nproc)
 #####################################################
 ###### Buildroot Common Build Helper Functions ######
 #####################################################
@@ -22,7 +23,7 @@ buildroot_prepare() # args: path config_generator variant_name
 
 	# setup make environment, use external tree
     if [ ! -f Makefile ]; then
-  		make O="$PWD" BR2_EXTERNAL="$BUILDROOT_EXT" -C "$BUILDROOT_GIT" allnoconfig
+  		make O="$PWD" BR2_EXTERNAL="$BUILDROOT_EXT" -C "$BUILDROOT_GIT" $MULTICORE allnoconfig
   		echo "MOD_VARIANT=\"$variant\"" > .mod_env
     fi
 
@@ -33,7 +34,7 @@ buildroot_prepare() # args: path config_generator variant_name
 
 	# generate new config from defconfigs
     $br_config_generator
-    make olddefconfig
+    make $MULTICORE olddefconfig
 
 	# restore old config if unchanged (keep timestamp)
     if [ -f .config_old ] && cmp --silent .config .config_old
@@ -53,7 +54,7 @@ buildroot_build_always() # args: path make_command
 {
 	br_path="$1";
 	br_name=$(basename "$1")
-	br_make="$2"
+	br_make="$2 $MULTICORE"
 
 	pushd "$br_path" > /dev/null
 
@@ -79,7 +80,7 @@ buildroot_build_if_needed() # args: path make_command target_file
 {
 	br_path="$1";
 	br_name=$(basename "$1")
-	br_make="$2"
+	br_make="$2 $MULTICORE"
 	br_target_file="$3"
 
 	pushd "$br_path" > /dev/null

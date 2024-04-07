@@ -34,6 +34,9 @@ AutoConnect=True
 Passphrase=********
 ```
 
+> [!WARNING]
+> Make sure you use linux line endings and do NOT use windows notepad to create or edit the file.
+
 Install the mod as described in [Install](INSTALL.md) and after installation the printer should connect to your network.
 
 ### Configure with KlipperScreen

@@ -31,6 +31,7 @@ setup_static_data()
 setup_static_data /etc/hostname
 setup_static_data /var/lib/iwd
 setup_static_data /etc/network/interfaces
+setup_static_data /etc/wpa_supplicant.conf
 
 # keep dropbear keys (that is a symlink to /var/run/dropbear originally)
 rm -f /etc/dropbear

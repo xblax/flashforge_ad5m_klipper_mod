@@ -1,4 +1,4 @@
-# Top Level Makefile for Flashfore ADM5 Klipper Mod
+# Top Level Makefile for Flashfore AD5M Klipper Mod
 SHELL := /bin/bash
 BUILD := build_scripts/build.sh
 VARIANTS = lite klipperscreen

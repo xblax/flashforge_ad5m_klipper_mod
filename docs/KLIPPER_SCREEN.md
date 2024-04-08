@@ -4,7 +4,7 @@
 
 The klipper mod contains a Xorg installation and runs [klipperscreen](https://github.com/KlipperScreen/KlipperScreen) on top of that.
 
-Klipperscreen should run as-is but not everything has been checked for proper operation. If you find a specific klipperscreen related bug please report an issue. For other bugs please also check if it occurs with the normal version (e.g. out of memory errors). You can also [join the discussion](https://github.com/xblax/flashforge_adm5_klipper_mod/discussions/12).
+Klipperscreen should run as-is but not everything has been checked for proper operation. If you find a specific klipperscreen related bug please report an issue. For other bugs please also check if it occurs with the normal version (e.g. out of memory errors). You can also [join the discussion](https://github.com/xblax/flashforge_ad5m_klipper_mod/discussions/12).
 
 # Basic configuration
 

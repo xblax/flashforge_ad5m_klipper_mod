@@ -1,11 +1,11 @@
 # Slicing
 
 > [!WARNING]
-> Slicer profiles intended for the ADM5 with stock Flashforge software do not work out of the box with this mod. Make sure to update the printer profile as described below.
+> Slicer profiles intended for the AD5M with stock Flashforge software do not work out of the box with this mod. Make sure to update the printer profile as described below.
 
 ## Printer profile
 
-Existing ADM5 profiles can be used a baseline. But make sure to configure at least the following settings in the printer profile:
+Existing AD5M profiles can be used a baseline. But make sure to configure at least the following settings in the printer profile:
 
 * GCODE output style should be _klipper_
 * Do _*not*_ use the default FlashForge OrcaSlicer settings, they do not contain proper start/end sequences. 

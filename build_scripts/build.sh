@@ -1,5 +1,5 @@
 # !/bin/bash
-# Build Wrapper Script for ADM5 Klipper Mod
+# Build Wrapper Script for AD5M Klipper Mod
 set -e
 
 SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )

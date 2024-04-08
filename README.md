@@ -6,12 +6,12 @@
 
 # Klipper Mod for Flashforge Adventurer 5M (Pro)
 
-This is an *unofficial* mod to run Moonraker, custom Klipper, Mainsail & Fluidd on the Flashforge ADM5 (Pro) 3D printers and unlock the full power of open source software.
+This is an *unofficial* mod to run Moonraker, custom Klipper, Mainsail & Fluidd on the Flashforge AD5M (Pro) 3D printers and unlock the full power of open source software.
 
-Klipper Mod for the ADM5 is designed to be fully removable and not break any functions of the stock software.
+Klipper Mod for the AD5M is designed to be fully removable and not break any functions of the stock software.
 
 > [!CAUTION]
-> *If you want to install this mod to your ADM5 (Pro) then be aware, that you risk to loose your warranty or damage the printer. Proceed at your own risk if you want to try this mod!*
+> *If you want to install this mod to your AD5M (Pro) then be aware, that you risk to loose your warranty or damage the printer. Proceed at your own risk if you want to try this mod!*
 
 *This mod is currently in beta stage.* Many features are implemented already but they need to be tested thoroughly and polished a bit by early adopters.
 
@@ -35,13 +35,13 @@ All features of the mod run directly on the printer built-in system (Allwinner T
 
 ## Getting Started
 
-Download test latest [Release Build](https://github.com/xblax/flashforge_adm5_klipper_mod/releases) and read through the documentation for [Installation](docs/INSTALL.md) and [Slicing](docs/SLICING.md). Also make yourself familiar with the [Uninstall](docs/UNINSTALL.md) methods, to get rid of the mod if you don't like it.
+Download test latest [Release Build](https://github.com/xblax/flashforge_ad5m_klipper_mod/releases) and read through the documentation for [Installation](docs/INSTALL.md) and [Slicing](docs/SLICING.md). Also make yourself familiar with the [Uninstall](docs/UNINSTALL.md) methods, to get rid of the mod if you don't like it.
 
-The Klipper Mod for ADM5 (Pro) is currently provided in two variants: 
+The Klipper Mod for AD5M (Pro) is currently provided in two variants: 
 - Default variant without on-screen GUI control application
 - Alpha KlipperScreen variant with fully-fledged [KlipperScreen](docs/KLIPPER_SCREEN.md) installation. If you encounter any issues that could be caused by resource exhaustion (mostly system RAM), please check if the issue also occurs with the default variant.
 
-You are welcome to participate int the [GitHub Discussions](https://github.com/xblax/flashforge_adm5_klipper_mod/discussions) or open a new [Issue](https://github.com/xblax/flashforge_adm5_klipper_mod/issues) if you find any bugs.
+You are welcome to participate int the [GitHub Discussions](https://github.com/xblax/flashforge_ad5m_klipper_mod/discussions) or open a new [Issue](https://github.com/xblax/flashforge_ad5m_klipper_mod/issues) if you find any bugs.
 
 ## Documentation
 

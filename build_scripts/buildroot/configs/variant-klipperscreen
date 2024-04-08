@@ -1,4 +1,4 @@
-# KlipperScreen variant of ADM5 Klipper Mod
+# KlipperScreen variant of AD5M Klipper Mod
 
 # Variant Overlays
 BR2_ROOTFS_OVERLAY="../../build_overlay/common ../../build_overlay/variant-klipperscreen"

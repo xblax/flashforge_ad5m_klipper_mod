@@ -23,7 +23,10 @@ mv $TARGET_ROOT/etc/init.d/S35iptables $TARGET_ROOT/etc/init.o/ || true
 # clean up root, if containing old build artefacts
 rm -rf $TARGET_ROOT/root/setup
 rm -rf $TARGET_ROOT/root/printer_data
-rm -rf $TARGET_ROOT/root/printer_software
+rm -rf $TARGET_ROOT/root/printer_software/klipper
+rm -rf $TARGET_ROOT/root/printer_software/KlipperScreen
+rm -rf $TARGET_ROOT/root/printer_software/moonraker
+rm -rf $TARGET_ROOT/root/printer_software/web
 
 # save build time for fake-hwclock
 date -u '+%Y-%m-%d %H:%M:%S' > $TARGET_ROOT/etc/fake-hwclock.data
@@ -145,9 +148,9 @@ cp -r $GIT_ROOT/printer_configs/* $TARGET_ROOT/root/printer_data/config/
 ###############################
 # Fix dbus user if not present
 ###############################
-if ! grep dbus $TARGET_ROOT/etc/groups;
+if ! grep dbus $TARGET_ROOT/etc/group;
 then
-    echo "dbus:x:101:dbus" >> $TARGET_ROOT/etc/groups
+    echo "dbus:x:101:dbus" >> $TARGET_ROOT/etc/group
 fi
 if ! grep dbus $TARGET_ROOT/etc/passwd;
 then
@@ -205,8 +208,6 @@ then
     ln -fs /mnt/orig_root/opt/tslib-1.12/etc/pointercal "$TARGET_ROOT/etc/pointercal"
     ln -fs /mnt/orig_root/opt/tslib-1.12/etc/ts.conf "$TARGET_ROOT/etc/ts.conf"
 
-    mkdir -p $TARGET_ROOT/root/printer_software/guppyscreen/
-    cp $GIT_ROOT/prebuilt/guppyscreen $TARGET_ROOT/root/printer_software/guppyscreen/
     # config symlink
-    ln -s /root/printer_data/config/guppyscreen.json /root/printer_software/guppyscreen/guppyscreen.json
+    ln -s /root/printer_data/config/guppyconfig.json $TARGET_ROOT/root/printer_software/guppyscreen/guppyconfig.json
 fi

@@ -66,5 +66,5 @@
   "prompt_emergency_stop": true,
   "thumbnail_path": "/root/printer_data/thumbnails",
   "touch_calibrated": false,
-  "wpa_supplicant": "/var/run/wpa_supplicant"
+  "wpa_supplicant": "/var/run/wpa_supplicant/wlan0"
 }

@@ -1,0 +1,6 @@
+config BR2_PACKAGE_PYTHON_FF_AD5M_BACKLIGHT
+	bool "python-ff-ad5m-backlight"
+	help
+	  Basic tool for managing the backlight of the FlashForge Adventurer 5m (Pro)
+
+	  https://github.com/consp/flashforge_ad5m_backlight

@@ -1,0 +1,17 @@
+config BR2_PACKAGE_USTREAMER
+	bool "ustreamer"
+	depends on BR2_TOOLCHAIN_HEADERS_AT_LEAST_3_16 # V4L2_EVENT_SOURCE_CHANGE
+	depends on BR2_TOOLCHAIN_HAS_THREADS
+	depends on BR2_USE_MMU
+	depends on !BR2_STATIC_LIBS
+	depends on BR2_TOOLCHAIN_HAS_ATOMIC
+	select BR2_PACKAGE_JPEG
+	select BR2_PACKAGE_LIBEVENT
+	select BR2_PACKAGE_LIBBSD
+	select BR2_PACKAGE_LIBGPIOD
+	help
+	  Lightweight and fast MJPEG-HTTP streamer
+
+	  https://github.com/pikvm/ustreamer
+
+comment "ustreamer needs a toolchain w/ threads, headers >= 3.16, dynamic library"

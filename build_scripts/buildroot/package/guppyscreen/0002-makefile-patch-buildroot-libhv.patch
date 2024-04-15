@@ -1,0 +1,17 @@
+diff --git a/libhv/Makefile.in b/libhv/Makefile.in
+index 0816ec6..e852c2b 100644
+--- a/libhv/Makefile.in
++++ b/libhv/Makefile.in
+@@ -151,9 +151,9 @@ ifeq ($(USE_MULTIMAP), yes)
+ 	CPPFLAGS += -DUSE_MULTIMAP
+ endif
+ 
+-CPPFLAGS += $(addprefix -D, $(DEFINES))
+-CPPFLAGS += $(addprefix -I, $(INCDIRS))
+-CPPFLAGS += $(addprefix -I, $(SRCDIRS))
++override CPPFLAGS += $(addprefix -D, $(DEFINES))
++override CPPFLAGS += $(addprefix -I, $(INCDIRS))
++override CPPFLAGS += $(addprefix -I, $(SRCDIRS))
+ 
+ # LDFLAGS
+ ifeq ($(OS), Windows)

@@ -48,7 +48,7 @@ EOF
 log_info "Install Klipper"
 mkdir -p $TARGET_ROOT/root/printer_software/klipper/
 
-# copy prebuild env or wheels
+# copy prebuilt env or wheels
 if [ -f $GIT_ROOT/prebuilt/klippy-env.tar.xz ]
 then
   tar -xf $GIT_ROOT/prebuilt/klippy-env.tar.xz -C $TARGET_ROOT/root/printer_software/klipper/
@@ -108,7 +108,7 @@ create_version ./ > $TARGET_ROOT/root/printer_software/moonraker/moonraker/.vers
 popd
 
 # install moonraker timelapse plugin (from git)
-curl "https://raw.githubusercontent.com/mainsail-crew/moonraker-timelapse/main/component/timelapse.py" -o "$TARGET_ROOT/root/printer_software/moonraker/moonraker/components/timelapse.py"
+cp $GIT_ROOT/prebuilt/moonraker-plugins/timelapse/timelapse.py "$TARGET_ROOT/root/printer_software/moonraker/moonraker/components/timelapse.py"
 
 ##############################
 # install mainsail

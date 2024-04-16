@@ -1,0 +1,11 @@
+config BR2_PACKAGE_LIBDOM
+	bool "libdom"
+	select BR2_PACKAGE_LIBWAPCAPLET
+        select BR2_PACKAGE_LIBHUBBUB
+        select BR2_PACKAGE_LIBPARSERUTILS
+	help
+          LibDOM is an implementation of the W3C DOM, written in C. 
+          It is currently in development for use with NetSurf and is 
+          intended to be suitable for use in other projects too.
+
+	  http://www.netsurf-browser.org/projects/libdom/

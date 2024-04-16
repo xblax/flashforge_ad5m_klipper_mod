@@ -1,0 +1,7 @@
+config BR2_PACKAGE_LIBPARSERUTILS
+	bool "libparserutils"
+	help
+          LibParserUtils is a library for building efficient parsers, written in C. 
+          It was developed as part of the NetSurf project
+
+          https://www.netsurf-browser.org/projects/libparserutils/

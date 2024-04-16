@@ -1,0 +1,8 @@
+config BR2_PACKAGE_LIBSVGTINY_PIXBUF
+	bool "libsvgtiny-pixbuf"
+    select BR2_PACKAGE_LIBSVGTINY
+    select BR2_PACKAGE_CAIRO
+    select BR2_PACKAGE_LIBXML2
+    select BR2_PACKAGE_GDK_PIXBUF
+	help
+	  Lightweight SVG loader for gdk-pixbuf without dependency to librsvg

@@ -12,8 +12,9 @@ Existing AD5M profiles can be used a baseline. But make sure to configure at lea
 * Edit the printer profile to use the [START_PRINT](../printer_configs/macros.cfg#L10) and [END_PRINT](../printer_configs/macros.cfg#L46) as described in macros.cfg as start/end macros.
 
 > **Example:**  
-> `START_PRINT BED_TEMP={first_layer_bed_temperature[0]} EXTRUDER_TEMP={first_layer_temperature[0]}`  
-> Variables may differ depending on the slicer used.
+> `START_PRINT BED_TEMP={first_layer_bed_temperature[0]} EXTRUDER_TEMP={first_layer_temperature[0]}`
+
+Variables may differ depending on the slicer used.
 
 ## Automatic Bed Leveling and Nozzle Priming
 

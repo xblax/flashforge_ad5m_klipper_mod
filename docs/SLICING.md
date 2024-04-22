@@ -29,9 +29,3 @@ The `START_PRINT` macro will automatically print a purge line before print. This
 To connect to the printer, use the following physical printer settings:
 * Host type: `moonraker`, `klipper` or `klipper (via moonraker)`
 * Hostname, IP or URL: `x.y.z.a:7125` (replace with your ip)
-
-## Known Issues
-
-* Some slicers output G17 codes, which are not yet supported in the klipper version used and can cause warnings.  
-  For example, in OrcaSlicer this is caused by the default z-hop method selected.  
-  Please change it from `spiral` to `slope` in the printer configuration of your profile.

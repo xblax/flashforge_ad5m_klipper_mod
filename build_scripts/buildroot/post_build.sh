@@ -134,7 +134,7 @@ sed -i 's\"port": null\"port": 7125\g' $TARGET_ROOT/root/printer_software/web/ma
 log_info "Install Fluidd"
 if [ ! -f $GIT_ROOT/prebuilt/fluidd.zip ]
 then
-  wget -P $GIT_ROOT/prebuilt/ https://github.com/fluidd-core/fluidd/releases/download/v1.28.0/fluidd.zip
+  wget -P $GIT_ROOT/prebuilt/ https://github.com/fluidd-core/fluidd/releases/download/v1.30.0/fluidd.zip
 fi
 mkdir -p $TARGET_ROOT/root/printer_software/web/fluidd
 unzip $GIT_ROOT/prebuilt/fluidd.zip -d $TARGET_ROOT/root/printer_software/web/fluidd

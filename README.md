@@ -21,9 +21,10 @@ Klipper Mod for the AD5M is designed to be fully removable and not break any fun
 - [Moonraker](https://github.com/Arksine/moonraker) on port 7125
 - [Mainsail](https://docs.mainsail.xyz/) on port 4000
 - [Fluidd](https://docs.fluidd.xyz/) on port 4001
-- [KlipperScreen](https://klipperscreen.readthedocs.io/en/latest/) ‒ separate preview build
-- [Guppyscreen](https://github.com/ballaswag/guppyscreen) ‒ separate preview build
+- [KlipperScreen](https://klipperscreen.readthedocs.io/en/latest/) ‒ separate  build variant
+- [Guppyscreen](https://github.com/ballaswag/guppyscreen) ‒ separate preview build variant
 - Camera streaming via [ustreamer](https://github.com/pikvm/ustreamer) on port 8080
+- [Moonraker-timelapse](https://github.com/mainsail-crew/moonraker-timelapse) support
 - Network access: Ethernet LAN and WiFi via [iwd](https://iwd.wiki.kernel.org/)
 - Customized Linux environment based on [Buildroot](https://buildroot.org/)
 - SSH root access. Login: `root`, Password: `klipper`

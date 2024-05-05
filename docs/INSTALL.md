@@ -13,7 +13,7 @@ The mod uses the same installation mechanism as the stock software:
 2) Plug in the drive before starting the printer. 
 3) Successful installation will be indicated on the display when finished.
 
-The mod installer currently requires that printers were updated to version 2.4.5 or 2.6.5 of the stock Flashforge firmware.
+The mod installer currently requires that printers were updated to at least version 2.4.5 of the stock Flashforge firmware. Please check the release page for versions that are known to work.
 
 After installation the printer will by default start the Klipper Mod system instead of the stock Flashforge software. It is still possible to start the stock software without uninstalling the mod, if needed. See section [Dual Boot](#dual-boot) below.
 

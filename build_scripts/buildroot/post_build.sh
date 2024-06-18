@@ -120,7 +120,7 @@ cp $GIT_ROOT/prebuilt/moonraker-plugins/timelapse/timelapse.py "$TARGET_ROOT/roo
 log_info "Install Mainsail"
 if [ ! -f $GIT_ROOT/prebuilt/mainsail.zip ]
 then
-  wget -P $GIT_ROOT/prebuilt/ https://github.com/mainsail-crew/mainsail/releases/download/v2.11.1/mainsail.zip
+  wget -P $GIT_ROOT/prebuilt/ https://github.com/mainsail-crew/mainsail/releases/download/v2.11.2/mainsail.zip
 fi
 mkdir -p $TARGET_ROOT/root/printer_software/web/mainsail
 unzip $GIT_ROOT/prebuilt/mainsail.zip -d $TARGET_ROOT/root/printer_software/web/mainsail

@@ -54,6 +54,7 @@ Due to the beta stage of Klipper Mod the documentation is not fully-completed. T
 - [Uninstall](docs/UNINSTALL.md): Uninstall Klipper Mod
 - [Slicing](docs/SLICING.md): Configure your Slicer for Klipper
 - [Wifi](docs/WIFI.md): Methods to Configure WiFi
+- [Bed Leveling](docs/BED_LEVELING.md): Leveling the bed, configuring Z offset, and bed mesh settings
 - [Linux Environment](docs/LINUX.md): Klipper Mod Linux environment
 - [Klipper Screen](docs/KLIPPER_SCREEN.md)
 - [Guppy Screen](docs/GUPPY_SCREEN.md)

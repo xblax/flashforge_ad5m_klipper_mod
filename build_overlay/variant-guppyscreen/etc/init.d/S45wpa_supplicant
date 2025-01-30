@@ -1,0 +1,40 @@
+#!/bin/sh
+#
+# Start wpa_supplicant daemon
+#
+
+WPA_SUPPLICANT=/usr/sbin/wpa_supplicant
+PID_FILE=/run/wpa_supplicant.pid
+NICENESS=10
+WPA_ARGS="-Dnl80211 -iwlan0 -c/etc/wpa_supplicant.conf"
+
+start() {
+    start-stop-daemon -S -b -m -p $PID_FILE -N $NICENESS -x $WPA_SUPPLICANT -- $WPA_ARGS
+}
+
+stop() {
+    start-stop-daemon -K -q -p $PID_FILE
+}
+
+restart() {
+    stop
+    sleep 2
+    start
+}
+
+case "$1" in
+    start)
+        start
+        ;;
+    stop)
+        stop
+        ;;
+    restart|reload)
+        restart
+        ;;
+  *)
+        echo "Usage: $0 {start|stop|restart}"
+        exit 1
+esac
+
+exit $?

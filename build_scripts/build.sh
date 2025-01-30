@@ -1,5 +1,5 @@
 # !/bin/bash
-# Build Wrapper Script for ADM5 Klipper Mod
+# Build Wrapper Script for AD5M Klipper Mod
 set -e
 
 SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
@@ -175,6 +175,7 @@ package_variant() {
 	xz -cT`nproc` "$br_image" > "$br_chroot"
 	package_name="Adventurer5M-KlipperMod-$GIT_VERSION-$variant.tgz"
 	package_name_pro="Adventurer5MPro-KlipperMod-$GIT_VERSION-$variant.tgz"
+	mkdir -p $BUILD_PACKAGE
 	tar -cf "$BUILD_PACKAGE/$package_name" -C "$GIT_ROOT/device_files/install" . -C "$br_builddir/images/" ./chroot.tar.xz
 	cp "$BUILD_PACKAGE/$package_name" "$BUILD_PACKAGE/$package_name_pro"
 	log_info "variant-$variant: created $package_name"

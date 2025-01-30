@@ -1,0 +1,7 @@
+config BR2_PACKAGE_PYTHON_FF_AD5M_AUDIO
+	bool "python-ff-ad5m-audio"
+	select BR2_PACKAGE_PYTHON_MIDO
+	help
+	  Basic audio tool for pwm frequency and midi sound.
+
+	  https://github.com/consp/flashforge_ad5m_audio

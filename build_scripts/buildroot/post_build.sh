@@ -8,7 +8,7 @@ source $BASE_DIR/.mod_env
 create_version()
 {
     pushd $1 > /dev/null
-    version="$(git describe --tags)-ADM5-$(date +%Y%m%d)"
+    version="$(git describe --tags)-AD5M-$(date +%Y%m%d)"
     popd  > /dev/null
     echo $version
 }
@@ -23,7 +23,10 @@ mv $TARGET_ROOT/etc/init.d/S35iptables $TARGET_ROOT/etc/init.o/ || true
 # clean up root, if containing old build artefacts
 rm -rf $TARGET_ROOT/root/setup
 rm -rf $TARGET_ROOT/root/printer_data
-rm -rf $TARGET_ROOT/root/printer_software
+rm -rf $TARGET_ROOT/root/printer_software/klipper
+rm -rf $TARGET_ROOT/root/printer_software/KlipperScreen
+rm -rf $TARGET_ROOT/root/printer_software/moonraker
+rm -rf $TARGET_ROOT/root/printer_software/web
 
 # save build time for fake-hwclock
 date -u '+%Y-%m-%d %H:%M:%S' > $TARGET_ROOT/etc/fake-hwclock.data
@@ -34,7 +37,7 @@ KLIPPER_MOD_VERSION=$(git describe --tags)
 popd
 
 cat << EOF > $TARGET_ROOT/etc/os-release
-NAME=Buildroot-ADM5
+NAME=Buildroot-AD5M
 VERSION=-$KLIPPER_MOD_VERSION
 ID=buildroot
 VERSION_ID=$KLIPPER_MOD_VERSION
@@ -117,7 +120,7 @@ cp $GIT_ROOT/prebuilt/moonraker-plugins/timelapse/timelapse.py "$TARGET_ROOT/roo
 log_info "Install Mainsail"
 if [ ! -f $GIT_ROOT/prebuilt/mainsail.zip ]
 then
-  wget -P $GIT_ROOT/prebuilt/ https://github.com/mainsail-crew/mainsail/releases/download/v2.9.1/mainsail.zip
+  wget -P $GIT_ROOT/prebuilt/ https://github.com/mainsail-crew/mainsail/releases/download/v2.11.2/mainsail.zip
 fi
 mkdir -p $TARGET_ROOT/root/printer_software/web/mainsail
 unzip $GIT_ROOT/prebuilt/mainsail.zip -d $TARGET_ROOT/root/printer_software/web/mainsail
@@ -131,7 +134,7 @@ sed -i 's\"port": null\"port": 7125\g' $TARGET_ROOT/root/printer_software/web/ma
 log_info "Install Fluidd"
 if [ ! -f $GIT_ROOT/prebuilt/fluidd.zip ]
 then
-  wget -P $GIT_ROOT/prebuilt/ https://github.com/fluidd-core/fluidd/releases/download/v1.28.0/fluidd.zip
+  wget -P $GIT_ROOT/prebuilt/ https://github.com/fluidd-core/fluidd/releases/download/v1.30.0/fluidd.zip
 fi
 mkdir -p $TARGET_ROOT/root/printer_software/web/fluidd
 unzip $GIT_ROOT/prebuilt/fluidd.zip -d $TARGET_ROOT/root/printer_software/web/fluidd
@@ -148,9 +151,9 @@ cp -r $GIT_ROOT/printer_configs/* $TARGET_ROOT/root/printer_data/config/
 ###############################
 # Fix dbus user if not present
 ###############################
-if ! grep dbus $TARGET_ROOT/etc/groups;
+if ! grep dbus $TARGET_ROOT/etc/group;
 then
-    echo "dbus:x:101:dbus" >> $TARGET_ROOT/etc/groups
+    echo "dbus:x:101:dbus" >> $TARGET_ROOT/etc/group
 fi
 if ! grep dbus $TARGET_ROOT/etc/passwd;
 then
@@ -197,4 +200,17 @@ then
     cp -r screen.py start.sh docs README.md LICENSE ks_includes panels styles scripts $TARGET_ROOT/root/printer_software/KlipperScreen/
     create_version ./ > $TARGET_ROOT/root/printer_software/KlipperScreen/.version
     popd
+fi
+
+if [ "$MOD_VARIANT" == "guppyscreen" ]
+then
+    # files are in the overlay
+    log_info "Installing guppyscreen"
+    ## add calibration data for tslib uinput calibrated device
+    rm -f "$TARGET_ROOT/etc/ts.conf"
+    ln -fs /mnt/orig_root/opt/tslib-1.12/etc/pointercal "$TARGET_ROOT/etc/pointercal"
+    ln -fs /mnt/orig_root/opt/tslib-1.12/etc/ts.conf "$TARGET_ROOT/etc/ts.conf"
+
+    # config symlink
+    ln -s /root/printer_data/config/guppyconfig.json $TARGET_ROOT/root/printer_software/guppyscreen/guppyconfig.json
 fi

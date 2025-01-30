@@ -8,4 +8,4 @@ This includes:
 
 The gcode M300 call is not quick enough to perform music like the ender printers are. Use the midi format for this.
 
-Source availabel [here](https://github.com/consp/flashforge_ad5m_audio).
+Source available [here](https://github.com/consp/flashforge_ad5m_audio).

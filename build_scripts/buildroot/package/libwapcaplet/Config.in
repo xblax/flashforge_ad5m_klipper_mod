@@ -1,0 +1,8 @@
+config BR2_PACKAGE_LIBWAPCAPLET
+	bool "libwapcaplet"
+	help
+          LibWapcaplet is a string internment library, written in C. 
+          It provides reference counted string interment and rapid string 
+          comparison functionality. It was developed as part of the NetSurf project.
+
+          https://www.netsurf-browser.org/projects/libwapcaplet/

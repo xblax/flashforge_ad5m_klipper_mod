@@ -1,6 +1,6 @@
 # Linux Environment
 
-Klipper Mod for the ADM5 is based on [Buildroot](https://buildroot.org/) for embedded Linux systems. 
+Klipper Mod for the AD5M is based on [Buildroot](https://buildroot.org/) for embedded Linux systems. 
 
 Klipper Mod is not a conventional Linux distribution such as Debian/Linux that many Klipper users may know from the Rapsberry Pi. For example you won't find a package manager or systemd.
 

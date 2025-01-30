@@ -5,7 +5,7 @@
 
 BIN=/usr/bin/Xorg
 PIDFILE=/var/run/xorg.pid
-NICENESS=10
+NICENESS=1 
 
 # ":0.0 vt01" makes sure Xorg finds the correct terminal.
 # -allowMouseOpenFail allows the server to start up even if the mouse device

@@ -1,6 +1,6 @@
 # WiFi
 
-WiFi in Klipper Mod for the ADM5 is controlled by the [iNet wireless daemon](https://iwd.wiki.kernel.org/) (iwd). 
+WiFi in Klipper Mod for the AD5M is controlled by the [iNet wireless daemon](https://iwd.wiki.kernel.org/) (iwd). 
 
 Wifi network settings are stored in `/var/lib/iwd` and the iwd daemon is configured in `/etc/iwd`. For the configuration file format look [here](https://iwd.wiki.kernel.org/networkconfigurationsettings).
 

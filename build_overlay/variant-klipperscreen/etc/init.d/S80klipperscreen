@@ -5,7 +5,7 @@
 
 KLIPPERSCREEN_SCRIPT=/root/printer_software/KlipperScreen/start.sh
 PID_FILE=/run/klipperscreen.pid
-KLIPPERSCREEN_NICENESS=10
+KLIPPERSCREEN_NICENESS=2
 
 start() {
     # fix loaders, for now we do this dynamicly, can problable be moved to a overlay file

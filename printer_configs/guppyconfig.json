@@ -1,0 +1,70 @@
+{
+  "default_printer": "ff5m",
+  "display_brightness": 90,
+  "display_rotate": 0,
+  "display_sleep_sec": 600,
+  "guppy_init_script": "/etc/init.d/S80guppyscreen",
+  "log_path": "/root/printer_data/logs/guppyscreen.log",
+  "printers": {
+    "ff5m": {
+      "default_macros": {
+        "cooldown": "SET_HEATER_TEMPERATURE HEATER=extruder TARGET=0\nSET_HEATER_TEMPERATURE HEATER=heater_bed TARGET=0",
+        "load_filament": "LOAD_FILAMENT",
+        "unload_filament": "UNLOAD_FILAMENT"
+      },
+      "fans": [
+        {
+          "display_name": "Chamber",
+          "id": "fan_generic chamber_fan"
+        },
+        {
+          "display_name": "Internal",
+          "id": "fan_generic internal_fan"
+        },
+        {
+          "display_name": "External",
+          "id": "fan_generic external_fan"
+        },
+        {
+          "display_name": "Part fan",
+          "id": "fan"
+        }
+      ],
+      "leds": null,
+      "log_level": "debug",
+      "monitored_sensors": [
+        {
+          "color": "red",
+          "controllable": true,
+          "display_name": "Extruder",
+          "id": "extruder"
+        },
+        {
+          "color": "purple",
+          "controllable": true,
+          "display_name": "Bed",
+          "id": "heater_bed"
+        },
+        {
+          "color": "blue",
+          "controllable": false,
+          "display_name": "TVOC Level",
+          "id": "temperature_sensor TVOC_Level"
+        },
+        {
+          "color": "orange",
+          "controllable": false,
+          "display_name": "Load Cell",
+          "id": "temperature_sensor Load_Cell"
+        }
+      ],
+      "moonraker_api_key": false,
+      "moonraker_host": "127.0.0.1",
+      "moonraker_port": 7125
+    }
+  },
+  "prompt_emergency_stop": true,
+  "thumbnail_path": "/root/printer_data/thumbnails",
+  "touch_calibrated": false,
+  "wpa_supplicant": "/var/run/wpa_supplicant/wlan0"
+}

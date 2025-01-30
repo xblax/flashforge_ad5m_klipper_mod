@@ -1,19 +1,19 @@
 
 # Install
 
-Klipper Mod for the ADM5 is designed to be fully removable and not break any functions of the stock software. 
+Klipper Mod for the AD5M is designed to be fully removable and not break any functions of the stock software. 
 
 > [!CAUTION]
-> *If you want to install this Klipper Mod to your ADM5 (Pro) then be aware, that you risk to loose your warranty or damage the printer. Proceed at your own risk if you want to try this mod!*
+> *If you want to install this Klipper Mod to your AD5M (Pro) then be aware, that you risk to loose your warranty or damage the printer. Proceed at your own risk if you want to try this mod!*
 
 ## Installation
 
 The mod uses the same installation mechanism as the stock software:
-1) Download the latest `Adventurer5M-KlipperMod*.tgz` update file from the [Release](https://github.com/xblax/flashforge_adm5_klipper_mod/releases) page onto a USB flash drive.
+1) Download the latest `Adventurer5M-KlipperMod*.tgz` update file from the [Release](https://github.com/xblax/flashforge_ad5m_klipper_mod/releases) page onto a USB flash drive.
 2) Plug in the drive before starting the printer. 
 3) Successful installation will be indicated on the display when finished.
 
-The mod installer currently requires that printers were updated to version 2.4.5 of the stock Flashforge firmware.
+The mod installer currently requires that printers were updated to at least version 2.4.5 of the stock Flashforge firmware. Please check the release page for versions that are known to work.
 
 After installation the printer will by default start the Klipper Mod system instead of the stock Flashforge software. It is still possible to start the stock software without uninstalling the mod, if needed. See section [Dual Boot](#dual-boot) below.
 
@@ -38,7 +38,7 @@ It is also possible to install a custom network configuration via the custom fil
 
 ### Install Log File
 
-During the installation process a log file `klipper_mod_install.log` is written to the USB drive. This log file is helpful to understand the reason for installation failures. Please provide this file if you ask for help in the [GitHub Discussion](https://github.com/xblax/flashforge_adm5_klipper_mod/discussions) forums.
+During the installation process a log file `klipper_mod_install.log` is written to the USB drive. This log file is helpful to understand the reason for installation failures. Please provide this file if you ask for help in the [GitHub Discussion](https://github.com/xblax/flashforge_ad5m_klipper_mod/discussions) forums.
 
 ## Updating
 

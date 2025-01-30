@@ -1,0 +1,39 @@
+#!/bin/sh
+#
+# Start guppyscreen
+#
+
+GUPPYSCREEN=/root/printer_software/guppyscreen/guppyscreen
+PID_FILE=/run/guppyscreen.pid
+NICENESS=10
+
+start() {
+    start-stop-daemon -S -b -m -p $PID_FILE -N $NICENESS --exec /bin/sh -- -c $GUPPYSCREEN
+}
+
+stop() {
+    start-stop-daemon -K -q -p $PID_FILE
+}
+
+restart() {
+    stop
+    sleep 2
+    start
+}
+
+case "$1" in
+    start)
+        start
+        ;;
+    stop)
+        stop
+        ;;
+    restart|reload)
+        restart
+        ;;
+  *)
+        echo "Usage: $0 {start|stop|restart}"
+        exit 1
+esac
+
+exit $?

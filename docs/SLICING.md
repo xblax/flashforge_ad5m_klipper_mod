@@ -9,7 +9,8 @@ Existing AD5M profiles can be used a baseline. But make sure to configure at lea
 
 * GCODE output style should be _klipper_
 * Do _*not*_ use the default FlashForge OrcaSlicer settings, they do not contain proper start/end sequences. 
-* Edit the printer profile to use the [START_PRINT](../printer_configs/macros.cfg#L10) and [END_PRINT](../printer_configs/macros.cfg#L46) as described in macros.cfg as start/end macros.
+* Edit the printer profile to use the [START_PRINT](../printer_configs/macros.cfg#L16) and [END_PRINT](../printer_configs/macros.cfg#L56) as described in macros.cfg as start/end macros.
+* No further command from the old configuration should be present. Please, take care that this will make your sliced GCODE no longer suitable for the stock firmware.
 
 > **Example:**  
 > `START_PRINT BED_TEMP={first_layer_bed_temperature[0]} EXTRUDER_TEMP={first_layer_temperature[0]}`

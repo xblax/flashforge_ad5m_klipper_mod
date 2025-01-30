@@ -30,7 +30,8 @@ do_setup()
 
     # saftey check, only install on supported versions
     FF_VERSION="$(cat /root/version)"
-    if [ "$FF_VERSION" != "2.4.5" ]
+    MIN_VERSION="2.4.5"
+    if [ "${FF_VERSION//./}" -lt "${MIN_VERSION//./}" ]
     then
         echo "Printer software version not supported."
         xzcat $WORK_DIR/img/install_fail_vers.img.xz > /dev/fb0

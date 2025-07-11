@@ -3,8 +3,8 @@
 # Start moonraker
 #
 
-PYTHON=/root/printer_software/moonraker/moonraker-env/bin/python3
-MOONRAKER=/root/printer_software/moonraker/moonraker/moonraker.py
+PYTHON=/usr/bin/python3
+MOONRAKER=/opt/moonraker/moonraker/moonraker.py
 PRINTER_DATA=/root/printer_data
 PRINTER_DATA_TMP=/root/printer_data/tmp
 PID_FILE=/run/moonraker.pid

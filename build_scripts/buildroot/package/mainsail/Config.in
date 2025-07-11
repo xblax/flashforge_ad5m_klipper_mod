@@ -1,0 +1,6 @@
+config BR2_PACKAGE_MAINSAIL
+	bool "mainsail"
+	help
+	  Mainsail is the popular web interface for managing and controlling 3D printers with Klipper.
+
+	  https://github.com/mainsail-crew/mainsail

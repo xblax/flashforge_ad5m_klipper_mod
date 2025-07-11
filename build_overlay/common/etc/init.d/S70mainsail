@@ -1,9 +1,9 @@
 #!/bin/sh
 #
-# Starts busbox httpd for fluidd.
+# Starts busybox httpd for mainsail.
 #
 
-WEBROOT=/root/printer_software/web/mainsail
+WEBROOT=/opt/mainsail
 PID_FILE=/run/httpd_mainsail.pid
 
 start() {

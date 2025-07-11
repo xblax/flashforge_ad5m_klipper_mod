@@ -1,0 +1,4 @@
+# Klippain shaketune plugin of AD5M Klipper Mod
+
+BR2_PACKAGE_KLIPPER=y
+BR2_PACKAGE_KLIPPAIN_SHAKETUNE=y

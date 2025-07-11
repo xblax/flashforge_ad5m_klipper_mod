@@ -1,0 +1,25 @@
+From 0c67413bc8ec12c2f196d4de1a01b03ea08df66a Mon Sep 17 00:00:00 2001
+From: minicx <minicx@disroot.org>
+Date: Mon, 16 Jun 2025 07:19:35 +0300
+Subject: [PATCH] Change path to klipper
+
+---
+ shaketune/shaketune_config.py | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/shaketune/shaketune_config.py b/shaketune/shaketune_config.py
+index fad5d2d..523813b 100644
+--- a/shaketune/shaketune_config.py
++++ b/shaketune/shaketune_config.py
+@@ -12,7 +12,7 @@ from pathlib import Path
+ 
+ from .helpers.console_output import ConsoleOutput
+ 
+-KLIPPER_FOLDER = Path.home() / 'klipper'
++KLIPPER_FOLDER = '/opt/klipper'
+ KLIPPER_LOG_FOLDER = Path.home() / 'printer_data/logs'
+ RESULTS_BASE_FOLDER = Path.home() / 'printer_data/config/K-ShakeTune_results'
+ RESULTS_SUBFOLDERS = {
+-- 
+2.49.0
+

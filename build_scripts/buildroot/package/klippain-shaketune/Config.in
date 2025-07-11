@@ -1,0 +1,15 @@
+config BR2_PACKAGE_KLIPPAIN_SHAKETUNE
+	bool "klippain-shaketune"
+	depends on BR2_PACKAGE_PYTHON3
+	depends on BR2_PACKAGE_KLIPPER
+	select BR2_PACKAGE_PYTHON_GIT
+	select BR2_PACKAGE_PYTHON_MATPLOTLIB
+	select BR2_PACKAGE_PYTHON_NUMPY
+	select BR2_PACKAGE_PYTHON_SCIPY
+	select BR2_PACKAGE_PYTHON_PYWAVELETS
+	select BR2_PACKAGE_PYTHON_ZSTANDARD
+	select BR2_PACKAGE_OPENBLAS
+	help
+	  Klipper streamlined input shaper workflow and calibration tools
+
+	  https://github.com/Frix-x/klippain-shaketune

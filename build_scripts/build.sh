@@ -136,7 +136,14 @@ package_sdk()
 variant_env()
 {
 	variant=$1
-    br_builddir="$BUILDROOT_OUT/variant-$variant"
+
+	# add plugins suffix to build directory name if plugins are used
+	plugin_suffix=""
+	if [ -n "$WITH_PLUGINS" ]; then
+		plugin_suffix="-$(echo "$WITH_PLUGINS" | tr ' ' '-')"
+	fi
+
+    br_builddir="$BUILDROOT_OUT/variant-$variant$plugin_suffix"
 	br_image="$br_builddir/images/rootfs.tar"
 	br_chroot="$br_builddir/images/chroot.tar.xz"
 }
@@ -145,7 +152,23 @@ defconfig_variant() {
     variant_env $1
     pushd $br_builddir
   	# merge config fragments to .config
-  	"$BUILDROOT_GIT"/support/kconfig/merge_config.sh "$BUILDROOT_CONFIGS/sdk" "$BUILDROOT_CONFIGS/base" "$BUILDROOT_CONFIGS/variant-$variant"
+  	merge_configs=("$BUILDROOT_CONFIGS/sdk" "$BUILDROOT_CONFIGS/base" "$BUILDROOT_CONFIGS/variant-$variant")
+  	
+  	# add plugin configs if WITH_PLUGINS is set
+  	if [ -n "$WITH_PLUGINS" ]; then
+  		log_info "Adding plugins to variant-$variant: $WITH_PLUGINS"
+  		for plugin in $WITH_PLUGINS; do
+  			plugin_config="$BUILDROOT_CONFIGS/plugin-$plugin"
+  			if [ -f "$plugin_config" ]; then
+  				merge_configs+=("$plugin_config")
+  			else
+  				log_error "Plugin config not found: $plugin_config"
+  				exit 1
+  			fi
+  		done
+  	fi
+  	
+  	"$BUILDROOT_GIT"/support/kconfig/merge_config.sh "${merge_configs[@]}"
     popd > /dev/null
 }
 
@@ -173,8 +196,15 @@ package_variant() {
 	variant_env $1
 	rm -f "$br_chroot"
 	xz -cT`nproc` "$br_image" > "$br_chroot"
-	package_name="Adventurer5M-KlipperMod-$GIT_VERSION-$variant.tgz"
-	package_name_pro="Adventurer5MPro-KlipperMod-$GIT_VERSION-$variant.tgz"
+
+	# add plugins suffix to package name if plugins are used
+	plugin_suffix=""
+	if [ -n "$WITH_PLUGINS" ]; then
+		plugin_suffix="-$(echo "$WITH_PLUGINS" | tr ' ' '-')"
+	fi
+
+	package_name="Adventurer5M-KlipperMod-$GIT_VERSION-$variant$plugin_suffix.tgz"
+	package_name_pro="Adventurer5MPro-KlipperMod-$GIT_VERSION-$variant$plugin_suffix.tgz"
 	mkdir -p $BUILD_PACKAGE
 	tar -cf "$BUILD_PACKAGE/$package_name" -C "$GIT_ROOT/device_files/install" . -C "$br_builddir/images/" ./chroot.tar.xz
 	cp "$BUILD_PACKAGE/$package_name" "$BUILD_PACKAGE/$package_name_pro"

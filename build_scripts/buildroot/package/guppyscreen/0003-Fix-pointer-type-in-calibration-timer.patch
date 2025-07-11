@@ -1,0 +1,39 @@
+From 2f348dcfec381db683ceb2be973da5b815624194 Mon Sep 17 00:00:00 2001
+From: minicx <minicx@disroot.org>
+Date: Tue, 8 Jul 2025 01:00:32 +0300
+Subject: [PATCH] Fix pointer type in calibration timer callbacks
+
+Explicitly cast the timer’s `user_data` (an `lv_tc_screen_t *`) back to
+`lv_obj_t *` when invoking `lv_tc_screen_start` and `lv_tc_screen_step`.
+This aligns the argument types with their function signatures and
+resolves the incompatible-pointer errors in the recalibrate and
+start-delay timer callbacks.
+
+Signed-off-by: minicx <minicx@disroot.org>
+---
+ lv_touch_calibration/lv_tc_screen.c | 4 ++--
+ 1 file changed, 2 insertions(+), 2 deletions(-)
+
+diff --git a/lv_touch_calibration/lv_tc_screen.c b/lv_touch_calibration/lv_tc_screen.c
+index 2192db8..41ed936 100644
+--- a/lv_touch_calibration/lv_tc_screen.c
++++ b/lv_touch_calibration/lv_tc_screen.c
+@@ -297,7 +297,7 @@ static void lv_tc_screen_recalibrate_timer(lv_timer_t *timer) {
+ 
+     if(timer->repeat_count == 0) {
+         //Restart when timed out
+-        lv_tc_screen_start(tCScreenObj);
++        lv_tc_screen_start((lv_obj_t*)tCScreenObj);
+         return;
+     }
+     lv_label_set_text_fmt(lv_obj_get_child(tCScreenObj->recalibrateBtnObj, 0), LV_TC_RECALIBRATE_TXT LV_TC_RECALIBRATE_TIMEOUT_FORMAT, (int)timer->repeat_count);
+@@ -307,5 +307,5 @@ static void lv_tc_screen_start_delay_timer(lv_timer_t *timer) {
+     lv_tc_screen_t *tCScreenObj = (lv_tc_screen_t*)timer->user_data;
+ 
+     lv_point_t point = {0, 0};
+-    lv_tc_screen_step(tCScreenObj, STEP_FIRST, point);
++    lv_tc_screen_step((lv_obj_t*)tCScreenObj, STEP_FIRST, point);
+ }
+-- 
+2.49.0
+

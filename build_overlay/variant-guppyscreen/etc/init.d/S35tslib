@@ -11,9 +11,9 @@ NICENESS=9
 # variables must be present or ts_uinput will fail. uinput needs to be loaded
 
 export TSLIB_TSDEVICE=/dev/input/event0
-export   TSLIB_PLUGINDIR=/usr/lib/ts
-export  TSLIB_CONFFILE=/etc/ts.conf
-export  TSLIB_CALIBFILE=/etc/pointercal
+export TSLIB_PLUGINDIR=/usr/lib/ts
+export TSLIB_CONFFILE=/etc/ts.conf
+export TSLIB_CALIBFILE=/etc/pointercal
 export TSLIB_FBDEVICE=/dev/fb0
 
 TSLIB_ARGS=""

@@ -2,17 +2,19 @@
 #
 # Start klipperscreen
 #
-
-KLIPPERSCREEN_SCRIPT=/root/printer_software/KlipperScreen/start.sh
+PYTHON=/usr/bin/python3
+KLIPPERSCREEN=/opt/klipperscreen/screen.py
 PID_FILE=/run/klipperscreen.pid
 KLIPPERSCREEN_NICENESS=2
 
 start() {
-    # fix loaders, for now we do this dynamicly, can problable be moved to a overlay file
+    # fix loaders, if they were not created correctly during the system build.
     /usr/bin/gdk-pixbuf-query-loaders > /usr/lib/gdk-pixbuf-2.0/2.10.0/loaders.cache
-    # goto the dir to execute the script
-    cd $KLIPPERSCREEN_DIR
-    start-stop-daemon -S -b -m -p $PID_FILE -N $KLIPPERSCREEN_NICENESS --exec /bin/sh -- -c $KLIPPERSCREEN_SCRIPT
+    
+    export DISPLAY=:0
+    export HOME=/root
+    
+    start-stop-daemon -S -b -m -p $PID_FILE -N $KLIPPERSCREEN_NICENESS --exec $PYTHON $KLIPPERSCREEN
 }
 
 stop() {

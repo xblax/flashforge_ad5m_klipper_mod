@@ -11,12 +11,11 @@ MULTICORE=-j$(nproc)
 #####################################################
 
 # initialize a buildroot build dir with config
-buildroot_prepare() # args: path config_generator variant_name
+buildroot_prepare() # args: path config_generator
 {
 	br_path="$1";
 	br_name=$(basename "$1")
 	br_config_generator="$2"
-	mod_variant_name="$3"
 
 	mkdir -p "$br_path"
 	pushd "$br_path" > /dev/null
@@ -24,7 +23,6 @@ buildroot_prepare() # args: path config_generator variant_name
 	# setup make environment, use external tree
     if [ ! -f Makefile ]; then
   		make O="$PWD" BR2_EXTERNAL="$BUILDROOT_EXT" -C "$BUILDROOT_GIT" $MULTICORE allnoconfig
-  		echo "MOD_VARIANT=\"$variant\"" > .mod_env
     fi
 
 	# backup old config
@@ -104,7 +102,7 @@ defconfig_sdk() {
 }
 
 prepare_sdk() {
-	buildroot_prepare "$BUILDROOT_SDK" "defconfig_sdk" "sdk"
+	buildroot_prepare "$BUILDROOT_SDK" "defconfig_sdk"
 }
 
 build_sdk() {
@@ -174,7 +172,7 @@ defconfig_variant() {
 
 prepare_variant() {
 	variant_env $1
-	buildroot_prepare "$br_builddir" "defconfig_variant $variant" "$variant"
+	buildroot_prepare "$br_builddir" "defconfig_variant $variant"
 }
 
 build_variant() {
@@ -218,7 +216,9 @@ package_variant() {
 package_uninstall()
 {
 	package_name="Adventurer5M-KlipperMod-uninstall.tgz"
+	package_name_pro="Adventurer5MPro-KlipperMod-uninstall.tgz"
 	tar -cf "$BUILD_PACKAGE/$package_name" -C "$GIT_ROOT/device_files/uninstall" .
+	cp "$BUILD_PACKAGE/$package_name" "$BUILD_PACKAGE/$package_name_pro"
 	log_info "uninstall: created $package_name"
 }
 

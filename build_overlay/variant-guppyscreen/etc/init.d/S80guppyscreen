@@ -3,7 +3,7 @@
 # Start guppyscreen
 #
 
-GUPPYSCREEN=/root/printer_software/guppyscreen/guppyscreen
+GUPPYSCREEN=/opt/guppyscreen/guppyscreen
 PID_FILE=/run/guppyscreen.pid
 NICENESS=10
 

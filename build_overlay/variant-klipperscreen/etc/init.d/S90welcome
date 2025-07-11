@@ -12,8 +12,6 @@ start() {
     backlight 50
     if ! kill -s 0 `cat $KLIPPERSCREEN_PID_FILE`; then
         xzcat /usr/share/klipper_mod/fb/mod_start.img.xz > /dev/fb0
-    else 
-        xzcat /usr/share/klipper_mod/fb/klipperscreen_starting.img.xz > /dev/fb0
     fi
 }
 

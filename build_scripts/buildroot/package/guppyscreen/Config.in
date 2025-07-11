@@ -1,8 +1,10 @@
 config BR2_PACKAGE_GUPPYSCREEN
 	bool "guppyscreen"
-    select BR2_PACKAGE_TSLIB
+	depends on BR2_PACKAGE_WPA_SUPPLICANT
+	depends on BR2_PACKAGE_MOONRAKER
     select BR2_PACKAGE_LIBEVDEV
+	select BR2_PACKAGE_LIBEVENT
 	help
-	  Build and install guppyscreen
+	  A native Touch UI for 3D Printers running Klipper/Moonraker.
 
 	  https://github.com/ballaswag/guppyscreen

@@ -54,7 +54,7 @@ do_setup()
     rm -f $MOD_INIT_FILE_OLD
     rm -rf $CHROOT_DIR
 
-    # check free space, we require 512MB before installation for saftey reasons
+    # check free space, we require 512MB before installation for safety reasons
     FREE_SPACE=$(df /data | tail -1 | tr -s ' ' | cut -d' ' -f4)
     MIN_SPACE="524228"
     if [ "$FREE_SPACE" -lt "$MIN_SPACE" ]

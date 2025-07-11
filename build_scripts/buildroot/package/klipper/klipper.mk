@@ -1,0 +1,50 @@
+################################################################################
+#
+# klipper
+#
+################################################################################
+
+KLIPPER_VERSION = 2b8d7addbdcebfd94b37b9678b9e6742b54e6cae
+KLIPPER_SITE = https://github.com/loss-and-quick/klipper.git
+KLIPPER_SITE_METHOD = git
+
+KLIPPER_LICENSE = GPL-3.0
+KLIPPER_LICENSE_FILES = COPYING
+
+KLIPPER_DEPENDENCIES = \
+	python3 \
+	python-greenlet \
+	python-cffi \
+	python-jinja2 \
+	python-markupsafe \
+	python-serial \
+	python-can \
+	python-setuptools \
+	python-msgspec
+
+define KLIPPER_BUILD_C_HELPER
+	$(RM) -rf $(@D)/klippy/chelper/c_helper.so
+	$(TARGET_MAKE_ENV)
+    cd $(@D)/klippy/chelper; \
+    $(TARGET_CC) $(TARGET_CFLAGS) \
+		-Wall -g -O2 -shared -fPIC \
+        -flto -fwhole-program -fno-use-linker-plugin \
+      -o c_helper.so *.c \
+      $(TARGET_LDFLAGS)
+endef
+
+define KLIPPER_INSTALL_TARGET_CMDS
+    mkdir -p $(TARGET_DIR)/opt/klipper
+	cp -a $(@D)/klippy $(@D)/docs $(@D)/config $(TARGET_DIR)/opt/klipper/
+
+	$(INSTALL) -m 0644 $(@D)/README.md $(@D)/COPYING  $(TARGET_DIR)/opt/klipper/
+
+    printf "%s-%s-%s\n" \
+      "$(KLIPPER_VERSION)" "Buildroot" "$(PKG)" \
+      > $(TARGET_DIR)/opt/klipper/klippy/.version
+endef
+
+
+KLIPPER_POST_BUILD_HOOKS += KLIPPER_BUILD_C_HELPER
+
+$(eval $(generic-package))

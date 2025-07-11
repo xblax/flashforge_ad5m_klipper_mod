@@ -1,0 +1,15 @@
+config BR2_PACKAGE_KLIPPER
+	bool "klipper"
+	depends on BR2_PACKAGE_PYTHON3
+	select BR2_PACKAGE_PYTHON_GREENLET
+	select BR2_PACKAGE_PYTHON_CFFI
+	select BR2_PACKAGE_PYTHON_JINJA2
+	select BR2_PACKAGE_PYTHON_MARKUPSAFE
+	select BR2_PACKAGE_PYTHON_SERIAL
+	select BR2_PACKAGE_PYTHON_CAN
+	select BR2_PACKAGE_PYTHON_SETUPTOOLS
+	select BR2_PACKAGE_PYTHON_MSGSPEC
+	help
+	  Klipper is a 3d-printer firmware
+
+	  https://github.com/Klipper3d/klipper

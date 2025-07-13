@@ -44,13 +44,16 @@ define KLIPPER_INSTALL_TARGET_CMDS
 
 	$(INSTALL) -m 0644 $(@D)/README.md $(@D)/COPYING  $(TARGET_DIR)/opt/klipper/
 
-    printf "%s-%s-%s\n" \
-      "$(KLIPPER_VERSION)" "Buildroot" "$(PKG)" \
+    printf "%s-%s\n" \
+      "$(KLIPPER_VERSION)" "Buildroot" \
       > $(TARGET_DIR)/opt/klipper/klippy/.version
 endef
 
 define KLIPPER_BUILD_MCU_FIRMWARES
 	$(if $(KLIPPER_MCU_CONFIGS_LIST),
+		printf "%s-%s\n" \
+			"$(KLIPPER_VERSION)" "Buildroot" \
+			> $(@D)/klippy/.version
 		$(foreach config,$(KLIPPER_MCU_CONFIGS_LIST),
 			$(call KLIPPER_BUILD_MCU_FIRMWARE,$(config))
 		)

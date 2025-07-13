@@ -13,3 +13,17 @@ config BR2_PACKAGE_KLIPPER
 	  Klipper is a 3d-printer firmware
 
 	  https://github.com/Klipper3d/klipper
+
+config BR2_PACKAGE_KLIPPER_CONFIGS
+    string "Klipper MCU Configuration Files"
+    depends on BR2_PACKAGE_KLIPPER
+    help
+      Specify a space-separated list of MCU configuration files for firmware 
+      compilation. Each file must be a valid Klipper configuration file in 
+      the .config format.
+
+      Example: "/path/to/mcu1.config /path/to/mcu2.config"
+
+      Note: Configuration file names must be unique.
+
+      If this field is left empty, no firmware will be generated.

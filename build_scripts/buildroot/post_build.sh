@@ -5,21 +5,20 @@ SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 
 source "$SCRIPT_DIR/../env.sh"
 
-BUILD_CONTEXT_NAME="$(basename "$BASE_DIR")"
+BUILD_DIR_NAME="$(basename "$BASE_DIR")"
 
-if [[ "$BUILD_CONTEXT_NAME" =~ ^variant-(.+)$ ]]; then
-    BUILD_CONTEXT_TYPE="variant"
+if [[ "$BUILD_DIR_NAME" =~ ^variant-(.+)$ ]]; then
 
     rest="${BASH_REMATCH[1]}"
 
     IFS='-' read -r -a parts <<< "$rest"
 
-    BUILD_CONTEXT_NAME="${parts[0]}"
+    BUILD_VARIANT="${parts[0]}"
 
     if [ "${#parts[@]}" -gt 1 ]; then
-        BUILD_CONTEXT_PLUGINS=( "${parts[@]:1}" )
+        BUILD_PLUGINS=( "${parts[@]:1}" )
     else
-        BUILD_CONTEXT_PLUGINS=()
+        BUILD_PLUGINS=()
     fi
 fi
 
@@ -112,14 +111,14 @@ fi
 log_info "D-Bus user and group configuration verified and any missing entries have been added."
 
 
-if [ "$BUILD_CONTEXT_NAME" == "klipperscreen" ]; then
+if [ "$BUILD_VARIANT" == "klipperscreen" ]; then
     log_info "Detected 'klipperscreen' build variant. Commencing Klipperscreen-specific setup procedures."
     # Klipperscreen relies heavily on TSLIB for its touchscreen input capabilities.
     # Therefore, the TSLIB configuration is installed as part of its setup.
     install_tslib_requirements
     log_info "Klipperscreen-specific setup successfully completed."
 
-elif [ "$BUILD_CONTEXT_NAME" == "guppyscreen" ]; then
+elif [ "$BUILD_VARIANT" == "guppyscreen" ]; then
     log_info "Detected 'guppyscreen' build variant. Commencing Guppyscreen-specific setup procedures."
     # Similar to Klipperscreen, Guppyscreen also utilizes TSLIB for handling
     # touchscreen interactions, so the TSLIB configuration is a prerequisite.

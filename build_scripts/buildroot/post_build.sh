@@ -9,9 +9,19 @@ BUILD_CONTEXT_NAME="$(basename "$BASE_DIR")"
 
 if [[ "$BUILD_CONTEXT_NAME" =~ ^variant-(.+)$ ]]; then
     BUILD_CONTEXT_TYPE="variant"
-    BUILD_CONTEXT_NAME="${BASH_REMATCH[1]}"
-fi
 
+    rest="${BASH_REMATCH[1]}"
+
+    IFS='-' read -r -a parts <<< "$rest"
+
+    BUILD_CONTEXT_NAME="${parts[0]}"
+
+    if [ "${#parts[@]}" -gt 1 ]; then
+        BUILD_CONTEXT_PLUGINS=( "${parts[@]:1}" )
+    else
+        BUILD_CONTEXT_PLUGINS=()
+    fi
+fi
 
 # Paths
 TARGET_ROOT="$TARGET_DIR"

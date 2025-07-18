@@ -1,7 +1,7 @@
 # Guppyscreen variant of ADM5 Klipper Mod
 
 # Variant Overlays
-BR2_ROOTFS_OVERLAY="../../build_overlay/common ../../build_overlay/variant-guppyscreen"
+BR2_ROOTFS_OVERLAY="../../build_overlays/common ../../build_overlays/variant-guppyscreen"
 
 # wpa-supplicant 
 BR2_PACKAGE_WPA_SUPPLICANT=y

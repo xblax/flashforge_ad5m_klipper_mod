@@ -1,4 +1,4 @@
 # Lite variant of AD5M Klipper Mod (without GUI application)
 
 # Variant Overlays
-BR2_ROOTFS_OVERLAY="../../build_overlay/common ../../build_overlay/variant-lite"
+BR2_ROOTFS_OVERLAY="../../build_overlays/common ../../build_overlays/variant-lite"

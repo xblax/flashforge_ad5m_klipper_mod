@@ -134,3 +134,13 @@ elif [ "$BUILD_VARIANT" == "guppyscreen" ]; then
 else
     log_info "Skipping screen-specific configuration steps."
 fi
+
+for overlay in "$BUILD_OVERLAYS"/plugin-*; do
+    plugin_name="${overlay##*/plugin-}"
+    for target_plugin in "${BUILD_PLUGINS[@]}"; do
+        if [[ "$target_plugin" == "$plugin_name" ]]; then
+            log_info "Copying $plugin_name plugin overlay to rootfs."
+            cp -a "$overlay"/. "$TARGET_ROOT/"
+        fi
+    done
+done

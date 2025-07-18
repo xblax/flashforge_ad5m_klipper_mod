@@ -9,6 +9,8 @@ export GIT_ROOT=$(realpath "$ENV_DIR/..")
 export GIT_SUBMODULES=$GIT_ROOT/submodules
 # Build system scripts / configuration files
 export BUILD_SCRIPTS=$GIT_ROOT/build_scripts
+# Build system overlays
+export BUILD_OVERLAYS=$GIT_ROOT/build_overlay
 # Location for all build artifacts
 export BUILD_OUT=$GIT_ROOT/build_output
 # Location for all packaged artifcates we want to keep

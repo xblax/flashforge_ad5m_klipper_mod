@@ -138,7 +138,7 @@ variant_env()
 	# add plugins suffix to build directory name if plugins are used
 	plugin_suffix=""
 	if [ -n "$WITH_PLUGINS" ]; then
-		plugin_suffix="-$(echo "$WITH_PLUGINS" | tr ' ' '-')"
+		plugin_suffix="-$(echo "$WITH_PLUGINS" | tr ' ' '\n' | sort | tr '\n' '-' | sed 's/-$//')"
 	fi
 
     br_builddir="$BUILDROOT_OUT/variant-$variant$plugin_suffix"
@@ -198,7 +198,7 @@ package_variant() {
 	# add plugins suffix to package name if plugins are used
 	plugin_suffix=""
 	if [ -n "$WITH_PLUGINS" ]; then
-		plugin_suffix="-$(echo "$WITH_PLUGINS" | tr ' ' '-')"
+		plugin_suffix="-$(echo "$WITH_PLUGINS" | tr ' ' '\n' | sort | tr '\n' '-' | sed 's/-$//')"
 	fi
 
 	package_name="Adventurer5M-KlipperMod-$GIT_VERSION-$variant$plugin_suffix.tgz"

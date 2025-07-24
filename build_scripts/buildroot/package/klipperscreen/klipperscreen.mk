@@ -4,19 +4,11 @@
 #
 ################################################################################
 
-KLIPPERSCREEN_VERSION = v0.4.5
+KLIPPERSCREEN_VERSION = v0.4.6
 KLIPPERSCREEN_SITE = https://github.com/KlipperScreen/KlipperScreen.git
 KLIPPERSCREEN_SITE_METHOD = git
 KLIPPERSCREEN_LICENSE = AGPL-3.0-only
 KLIPPERSCREEN_LICENSE_FILES = LICENSE
-
-# Must patch lastest klipperscreen to use iwd
-#	python-sdbus -> systemd
-#	python-sdbus-networkmanager -> networkmanager
-# Due that:
-# #### [2024_05_24](https://github.com/KlipperScreen/KlipperScreen/commit/524aa0e7dc2b27c93534d356ba19963b793f38d8)
-# Drop python 3.7 support, last version for it is v0.4.1: `git reset --hard v0.4.1`
-# Drop old WiFi manager, only maintain sdbus-networkmanager
 
 KLIPPERSCREEN_DEPENDENCIES = \
 	libevdev \

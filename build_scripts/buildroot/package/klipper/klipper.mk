@@ -71,6 +71,7 @@ define KLIPPER_BUILD_MCU_FIRMWARE
 	mkdir -p $(TARGET_DIR)/opt/klipper/firmware
 	cp -f $(@D)/out/klipper.bin $(TARGET_DIR)/opt/klipper/firmware/$(notdir $(basename $(1))).bin
 	cp -f $(@D)/out/klipper.elf $(TARGET_DIR)/opt/klipper/firmware/$(notdir $(basename $(1))).elf
+	cp -f $(@D)/out/klipper.hex $(TARGET_DIR)/opt/klipper/firmware/$(notdir $(basename $(1))).hex
 endef
 
 KLIPPER_POST_BUILD_HOOKS += KLIPPER_BUILD_C_HELPER

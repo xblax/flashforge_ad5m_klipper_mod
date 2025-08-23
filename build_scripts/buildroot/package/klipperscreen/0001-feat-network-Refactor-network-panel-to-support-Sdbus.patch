@@ -1,7 +1,8 @@
-From a5de265010d5774c9a24fdbacd823006981ea305 Mon Sep 17 00:00:00 2001
+From 36fc4ceb7bf1a2da1e6375d35bd4125e8ac71f78 Mon Sep 17 00:00:00 2001
 From: minicx <minicx@disroot.org>
-Date: Mon, 7 Jul 2025 23:43:35 +0300
-Subject: [PATCH 1/1] feat(network): Refactor network panel to support SdbusNm and IwdNm via D-Bus
+Date: Sun, 24 Aug 2025 01:47:50 +0300
+Subject: [PATCH] feat(network): Refactor network panel to support SdbusNm and
+ IwdNm via D-Bus
 
 - Added support for IwdNm network manager alongside SdbusNm.
 
@@ -360,7 +361,7 @@ index 00000000..4a0e2b30
 +        )
 \ No newline at end of file
 diff --git a/panels/network.py b/panels/network.py
-index c8da7ac9..3233f5cf 100644
+index 4dd52e65..3233f5cf 100644
 --- a/panels/network.py
 +++ b/panels/network.py
 @@ -6,7 +6,14 @@ import gi
@@ -396,7 +397,7 @@ index c8da7ac9..3233f5cf 100644
 -            message = (
 -                _("Failed to initialize") + "\n"
 -                + "This panel needs NetworkManager installed into the system\n"
--                + "And the apropriate permissions, without them it will not function.\n"
+-                + "And the appropriate permissions, without them it will not function.\n"
 -                + f"\n{e}\n"
 -            )
 -            self.error_box.add(
@@ -691,5 +692,5 @@ index c8da7ac9..3233f5cf 100644
              self.reload_button.show()
              self.reload_networks()
 -- 
-2.50.0
+2.50.1
 

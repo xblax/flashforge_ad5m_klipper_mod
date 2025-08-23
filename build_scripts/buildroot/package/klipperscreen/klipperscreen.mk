@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-KLIPPERSCREEN_VERSION = v0.4.6
+KLIPPERSCREEN_VERSION = 6b6f63b6639e5b85a2b3f4b0b0cd7677ac9cda3d
 KLIPPERSCREEN_SITE = https://github.com/KlipperScreen/KlipperScreen.git
 KLIPPERSCREEN_SITE_METHOD = git
 KLIPPERSCREEN_LICENSE = AGPL-3.0-only

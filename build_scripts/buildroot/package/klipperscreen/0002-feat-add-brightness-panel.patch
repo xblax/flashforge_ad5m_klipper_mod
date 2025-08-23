@@ -1,0 +1,362 @@
+From 7c776500001374b096c2dd8cf3084032b0c78d37 Mon Sep 17 00:00:00 2001
+From: minicx <minicx@disroot.org>
+Date: Sun, 24 Aug 2025 01:49:35 +0300
+Subject: [PATCH] feat: add brightness panel
+
+Inspired by draft PR [#1443](https://github.com/KlipperScreen/KlipperScreen/pull/1443): refactored and improved implementation of the brightness control panel.
+
+Signed-off-by: minicx <minicx@disroot.org>
+---
+ ks_includes/config.py |   2 +-
+ panels/brightness.py  | 325 ++++++++++++++++++++++++++++++++++++++++++
+ 2 files changed, 326 insertions(+), 1 deletion(-)
+ create mode 100644 panels/brightness.py
+
+diff --git a/ks_includes/config.py b/ks_includes/config.py
+index 65f7461e..d2a3a24a 100644
+--- a/ks_includes/config.py
++++ b/ks_includes/config.py
+@@ -167,7 +167,7 @@ class KlipperScreenConfig:
+                 strs = (
+                     'default_printer', 'language', 'print_sort_dir', 'theme', 'screen_blanking_printing', 'font_size',
+                     'print_estimate_method', 'screen_blanking', "screen_on_devices", "screen_off_devices", 'print_view',
+-                    "lock_password"
++                    "lock_password", "brightness_command"
+                 )
+                 numbers = (
+                     'job_complete_timeout', 'job_error_timeout', 'move_speed_xy', 'move_speed_z',
+diff --git a/panels/brightness.py b/panels/brightness.py
+new file mode 100644
+index 00000000..38d4daaa
+--- /dev/null
++++ b/panels/brightness.py
+@@ -0,0 +1,325 @@
++import logging
++import subprocess
++import os
++import threading
++import time
++from pathlib import Path
++import gi
++gi.require_version("Gtk", "3.0")
++from gi.repository import Gtk, GLib, Gdk
++from ks_includes.screen_panel import ScreenPanel
++
++class Panel(ScreenPanel):
++    def __init__(self, screen, title):
++        title = title or _("Brightness")
++        super().__init__(screen, title)
++        
++        self.brightness = 0
++        self.min_brightness = 0
++        self.max_brightness = 255
++        self.backlight_device = None
++        self.brightness_path = None
++        self.brightness_command = None
++        self.update_timer = None
++        self.last_change_time = 0
++        
++        # Main grid container like MainMenu
++        self.main_grid = Gtk.Grid(row_homogeneous=False, column_homogeneous=False, hexpand=True, vexpand=True)
++        
++        if not self._setup_backlight():
++            return
++            
++        self._setup_interface()
++        
++        self._start_monitoring()
++    
++    def _setup_backlight(self):
++        try:
++            self.brightness_command = self._screen._config.get_main_config().get('brightness_command')
++            
++            backlight_dir = Path("/sys/class/backlight/")
++            if backlight_dir.exists():
++                backlight_devices = [d.name for d in backlight_dir.iterdir() if d.is_dir()]
++                logging.debug(f"Available backlight devices: {backlight_devices}")
++            else:
++                backlight_devices = []
++            
++            if not self.brightness_command and not backlight_devices:
++                self._screen.show_popup_message(_("Brightness control not available"), level=3)
++                self.back()
++                return False
++            
++            if not self.brightness_command and backlight_devices:
++                self.backlight_device = backlight_devices[0]
++                device_path = backlight_dir / self.backlight_device
++                self.brightness_path = device_path / "brightness"
++                
++                self._read_brightness_range(device_path)
++                self._read_current_brightness()
++                
++                self.brightness_command = f"echo {{value}} | sudo tee {self.brightness_path}"
++            
++            if self.brightness_command and not backlight_devices:
++                # Set max brightness as baseline for custom commands
++                self.brightness = self.max_brightness
++                self._apply_brightness_change(self.brightness)
++
++            return True
++            
++        except Exception as e:
++            logging.error(f"Backlight setup error: {e}")
++            self._screen.show_popup_message(_("Brightness control initialization error"), level=3)
++            self.back()
++            return False
++    
++    def _read_brightness_range(self, device_path):
++        try:
++            max_brightness_path = device_path / "max_brightness"
++            if max_brightness_path.exists():
++                with open(max_brightness_path, 'r') as f:
++                    self.max_brightness = int(f.read().strip())
++            
++            min_brightness_path = device_path / "min_brightness"  
++            if min_brightness_path.exists():
++                with open(min_brightness_path, 'r') as f:
++                    self.min_brightness = int(f.read().strip())
++                    
++            logging.info(f"Brightness range: {self.min_brightness} - {self.max_brightness}")
++            
++        except Exception as e:
++            logging.warning(f"Could not read brightness range: {e}")
++            self.min_brightness = 0
++            self.max_brightness = 255
++    
++    def _read_current_brightness(self):
++        try:
++            if self.brightness_path and self.brightness_path.exists():
++                with open(self.brightness_path, 'r') as f:
++                    self.brightness = int(f.read().strip())
++                logging.debug(f"Current brightness: {self.brightness}")
++        except Exception as e:
++            logging.warning(f"Could not read current brightness: {e}")
++            self.brightness = self.min_brightness
++    
++    def _setup_interface(self):
++        control_panel = self._create_control_panel()
++        
++        if self._screen.vertical_mode:
++            # Vertical: control panel takes full width across 2 rows
++            self.main_grid.attach(control_panel, 0, 0, 1, 2)
++        else:
++            # Horizontal: control panel takes single cell
++            self.main_grid.attach(control_panel, 0, 0, 1, 1)
++        
++        self.content.add(self.main_grid)
++    
++    def _create_control_panel(self):
++        # Main control container
++        main_box = Gtk.Box(orientation=Gtk.Orientation.VERTICAL, spacing=15)
++        main_box.set_margin_left(30)
++        main_box.set_margin_right(30)
++        main_box.set_margin_top(30)
++        main_box.set_margin_bottom(30)
++        
++        # Brightness display
++        self.brightness_label = Gtk.Label()
++        self.brightness_label.get_style_context().add_class("brightness-value")
++        self._update_brightness_label()
++        main_box.pack_start(self.brightness_label, False, False, 10)
++        
++        # Brightness slider
++        self.scale = self._create_brightness_scale()
++        main_box.pack_start(self.scale, True, True, 10)
++        
++        # Quick buttons
++        button_box = self._create_quick_buttons()
++        main_box.pack_start(button_box, False, False, 15)
++        
++        # Device info
++        info_box = self._create_info_panel()
++        main_box.pack_start(info_box, False, False, 0)
++        
++        return main_box
++    
++    def _create_brightness_scale(self):
++        step_increment = max(1, (self.max_brightness - self.min_brightness) / 100)
++        page_increment = max(1, (self.max_brightness - self.min_brightness) / 10)
++        
++        adj = Gtk.Adjustment(
++            value=self.brightness,
++            lower=self.min_brightness,
++            upper=self.max_brightness,
++            step_increment=step_increment,
++            page_increment=page_increment
++        )
++        
++        scale = Gtk.Scale(
++            adjustment=adj,
++            digits=0,
++            hexpand=True,
++            vexpand=False,
++            valign=Gtk.Align.CENTER,
++            has_origin=True
++        )
++        
++        scale.get_style_context().add_class("option_slider")
++        scale.get_style_context().add_class("brightness-slider")
++        
++        # Connect event handlers
++        scale.connect("button-release-event", self._on_brightness_change)
++        scale.connect("key-release-event", self._on_brightness_change)
++        scale.connect("value-changed", self._on_value_changed)
++        
++        return scale
++    
++    def _create_quick_buttons(self):
++        button_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=10)
++        button_box.set_halign(Gtk.Align.CENTER)
++        
++        quick_values = [
++            (_("Minimum"), self.min_brightness),
++            ("25%", self.min_brightness + (self.max_brightness - self.min_brightness) * 0.25),
++            ("50%", self.min_brightness + (self.max_brightness - self.min_brightness) * 0.5),
++            ("75%", self.min_brightness + (self.max_brightness - self.min_brightness) * 0.75),
++            (_("Maximum"), self.max_brightness)
++        ]
++        
++        for label, value in quick_values:
++            button = Gtk.Button(label=label)
++            button.get_style_context().add_class("brightness-quick-btn")
++            button.connect("clicked", lambda btn, v=int(value): self._set_quick_brightness(v))
++            button_box.pack_start(button, False, False, 0)
++        
++        return button_box
++    
++    def _create_info_panel(self):
++        info_box = Gtk.Box(orientation=Gtk.Orientation.HORIZONTAL, spacing=5)
++        info_box.set_halign(Gtk.Align.CENTER)
++        
++        device_label = Gtk.Label()
++        device_text = f"Device: {self.backlight_device}" if self.backlight_device else "Custom command"
++        device_label.set_markup(f"<small>{device_text}</small>")
++        device_label.get_style_context().add_class("brightness-info")
++        info_box.pack_start(device_label, False, False, 0)
++        
++        return info_box
++    
++    def _update_brightness_label(self):
++        percentage = int((self.brightness - self.min_brightness) / (self.max_brightness - self.min_brightness) * 100)
++        self.brightness_label.set_markup(f"<big><b>{percentage}%</b></big>\n<small>({self.brightness}/{self.max_brightness})</small>")
++    
++    def _on_value_changed(self, widget):
++        self.brightness = int(widget.get_value())
++        self._update_brightness_label()
++        self.last_change_time = time.time()
++        
++        if self.update_timer:
++            GLib.source_remove(self.update_timer)
++        
++        self.update_timer = GLib.timeout_add(300, self._delayed_brightness_update)
++    
++    def _on_brightness_change(self, widget, event):
++        if self.update_timer:
++            GLib.source_remove(self.update_timer)
++            self.update_timer = None
++        
++        self._apply_brightness_change(int(widget.get_value()))
++    
++    def _delayed_brightness_update(self):
++        self.update_timer = None
++        current_time = time.time()
++        
++        if current_time - self.last_change_time >= 0.25:
++            self._apply_brightness_change(self.brightness)
++            return False
++        
++        return True
++    
++    def _set_quick_brightness(self, value):
++        self.scale.set_value(value)
++        self._apply_brightness_change(value)
++    
++    def _apply_brightness_change(self, value):
++        def apply_in_thread():
++            try:
++                self._set_brightness_system(int(value))
++                GLib.idle_add(lambda: self._on_brightness_applied(value))
++            except Exception as e:
++                GLib.idle_add(lambda: self._on_brightness_error(e))
++        
++        # Execute in separate thread to avoid UI blocking
++        thread = threading.Thread(target=apply_in_thread, daemon=True)
++        thread.start()
++    
++    def _set_brightness_system(self, value):
++        if not self.brightness_command:
++            raise RuntimeError("Brightness control command not configured")
++        
++        bash_command = self.brightness_command.format(value=value)
++        logging.debug(f"Executing command: {bash_command}")
++        
++        result = subprocess.run(
++            bash_command,
++            shell=True,
++            check=True,
++            capture_output=True,
++            text=True,
++            timeout=5
++        )
++        
++        logging.info(f"Brightness set to: {value}")
++        return result
++    
++    def _on_brightness_applied(self, value):
++        self.brightness = value
++        self._update_brightness_label()
++    
++    def _on_brightness_error(self, error):
++        logging.error(f"Brightness setting error: {error}")
++        self._screen.show_popup_message(_("Failed to change brightness"), level=2)
++        
++        # Restore previous value
++        self._read_current_brightness()
++        self.scale.set_value(self.brightness)
++        self._update_brightness_label()
++    
++    def _start_monitoring(self):
++        if self.brightness_path and self.brightness_path.exists():
++            def monitor_brightness():
++                try:
++                    while True:
++                        time.sleep(2)  # Check every 2 seconds
++                        old_brightness = self.brightness
++                        self._read_current_brightness()
++                        
++                        if abs(self.brightness - old_brightness) > 1:
++                            # Brightness changed externally
++                            GLib.idle_add(self._update_from_external_change)
++                except Exception as e:
++                    logging.warning(f"Brightness monitoring error: {e}")
++            
++            monitor_thread = threading.Thread(target=monitor_brightness, daemon=True)
++            monitor_thread.start()
++    
++    def _update_from_external_change(self):
++        current_time = time.time()
++        
++        # Update only if there are no recent user changes
++        if current_time - self.last_change_time > 1.0:
++            self.scale.set_value(self.brightness)
++            self._update_brightness_label()
++            logging.debug(f"Brightness updated externally: {self.brightness}")
++    
++    def on_show(self):
++        super().on_show()
++        # Update current brightness
++        self._read_current_brightness()
++        self.scale.set_value(self.brightness)
++        self._update_brightness_label()
++    
++    def on_hide(self):
++        super().on_hide()
++        # Clear timers
++        if self.update_timer:
++            GLib.source_remove(self.update_timer)
++            self.update_timer = None
+\ No newline at end of file
+-- 
+2.50.1
+

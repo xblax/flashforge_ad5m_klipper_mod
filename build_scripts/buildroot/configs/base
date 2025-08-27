@@ -102,7 +102,7 @@ BR2_PACKAGE_FFMPEG_EXTRACONF=""
 BR2_PACKAGE_X264=y
 
 BR2_PACKAGE_KLIPPER=y
-BR2_PACKAGE_KLIPPER_CONFIGS="../../build_scripts/components/mcu_configs/eboard ../../build_scripts/components/mcu_configs/mcu"
+BR2_PACKAGE_KLIPPER_CONFIGS="../../build_scripts/components/mcu_configs/ffad5m/eboard ../../build_scripts/components/mcu_configs/ffad5m/mainboard"
 
 BR2_PACKAGE_MOONRAKER=y
 

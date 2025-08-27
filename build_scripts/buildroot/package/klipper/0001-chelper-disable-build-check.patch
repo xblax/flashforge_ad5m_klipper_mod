@@ -1,0 +1,30 @@
+From e212caa209d9eaf403ab2d292205b2467bf1362e Mon Sep 17 00:00:00 2001
+From: xblax <xblax@incy.net>
+Date: Wed, 27 Aug 2025 22:24:15 +0200
+Subject: [PATCH] chelper: disable build check
+
+Does not work for embedded without GCC on target. Chelper must
+be prebuild via cross-toolchain.
+
+Signed-off-by: xblax <xblax@incy.net>
+---
+ klippy/chelper/__init__.py | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/klippy/chelper/__init__.py b/klippy/chelper/__init__.py
+index 60ba91e7d..495cf8413 100644
+--- a/klippy/chelper/__init__.py
++++ b/klippy/chelper/__init__.py
+@@ -280,6 +280,9 @@ def check_build_c_library():
+     srcfiles = get_abs_files(srcdir, SOURCE_FILES)
+     ofiles = get_abs_files(srcdir, OTHER_FILES)
+     destlib = get_abs_files(srcdir, [DEST_LIB])[0]
++    # Note: disabled build check - does not work for embedded without GCC on target
++    return destlib
++
+     if not check_build_code(srcfiles+ofiles+[__file__], destlib):
+         # Code already built
+         return destlib
+-- 
+2.47.2
+

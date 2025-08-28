@@ -32,7 +32,7 @@ define KLIPPER_BUILD_C_HELPER
 	$(TARGET_MAKE_ENV)
     cd $(@D)/klippy/chelper; \
     $(TARGET_CC) $(TARGET_CFLAGS) \
-		-Wall -g -O2 -shared -fPIC \
+		-Wall -shared -fPIC \
         -flto -fwhole-program -fno-use-linker-plugin \
       -o c_helper.so *.c \
       $(TARGET_LDFLAGS)

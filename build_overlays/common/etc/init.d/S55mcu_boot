@@ -4,7 +4,11 @@
 #
 
 start() {
-    /usr/libexec/boot_eboard_mcu
+    # boot eboard mcu
+    /usr/libexec/boot_eboard_mcu &
+    # reset mainboard mcu
+    /mnt/orig_root/lib/ld-linux.so.3 --library-path /mnt/orig_root/lib:/mnt/orig_root/usr/lib /mnt/orig_root/opt/PROGRAM/control/2.2.3/NationsCommand -c --pn /dev/ttyS5 -r &
+    wait
 }
 
 case "$1" in

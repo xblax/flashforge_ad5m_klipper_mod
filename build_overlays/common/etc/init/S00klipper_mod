@@ -57,7 +57,7 @@ check_usb_marker() {
             if [ -e /dev/$sd$i ]; then
                 mount -t vfat -o ro,codepage=437,iocharset=utf8 /dev/$sd$i /mnt || continue
                 # check for mod marker usb
-                usb_mod_marker=$(ls -1 /mnt/ | grep "^klipper_mod" | head -n1)
+                usb_mod_marker=$(ls -1 /mnt/ | grep "^klipper_mod_" | head -n1)
                 # check for flashforge update on usb
                 usb_update_marker=$(ls -1 /mnt/ | grep "^Adventurer.*tgz" | head -n1)
                 [ -n "$usb_update_marker" ] || usb_update_marker=$(ls -1 /mnt/ | grep "^flashforge_init.sh" | head -n1)

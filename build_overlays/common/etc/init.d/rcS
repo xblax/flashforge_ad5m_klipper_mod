@@ -23,5 +23,12 @@ for i in /etc/init.d/S??* ;do
 	    $i start
 	    ;;
     esac
+
+    # Abort init sequence if special marker is detected
+    if [ -f /run/init_break ]; then
+        echo "Stop init after $i (/run/init_break detected)"
+        exit 1
+    fi
+
 done
 

@@ -41,7 +41,7 @@ endef
 
 define KLIPPER_INSTALL_TARGET_CMDS
     mkdir -p $(TARGET_DIR)/opt/klipper
-	cp -a $(@D)/klippy $(@D)/docs $(@D)/config $(TARGET_DIR)/opt/klipper/
+	cp -r $(@D)/klippy $(@D)/docs $(@D)/config $(@D)/scripts $(TARGET_DIR)/opt/klipper/
 
 	$(INSTALL) -m 0644 $(@D)/README.md $(@D)/COPYING  $(TARGET_DIR)/opt/klipper/
 

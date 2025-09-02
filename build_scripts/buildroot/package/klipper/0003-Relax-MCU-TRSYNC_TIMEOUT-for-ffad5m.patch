@@ -1,0 +1,35 @@
+From 5b47b6ab4aff28f6846b6e9372227cfb4cef08b7 Mon Sep 17 00:00:00 2001
+From: xblax <xblax@incy.net>
+Date: Wed, 3 Sep 2025 00:41:05 +0200
+Subject: [PATCH] Relax MCU TRSYNC_TIMEOUT for ffad5m
+
+Relax timeout from 25 to 100ms to prevent MCU timeout errors, i.e.
+"Error during homing stepper_x: Communication timeout during homing"
+
+The strict timeout of 25ms was actually introduced in
+https://github.com/Klipper3d/klipper/commit/95047784 to support
+multi MCU homing and limit overshoot due to endstop being processed
+by other MCU than the steppers.
+
+For single MCU printers the default timeout is even 250ms. FFAD5M
+has the movement steppers and endstops on the same MCU.
+---
+ klippy/mcu.py | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/klippy/mcu.py b/klippy/mcu.py
+index 146b5baca..6dbf98cef 100644
+--- a/klippy/mcu.py
++++ b/klippy/mcu.py
+@@ -230,7 +230,7 @@ class MCU_trsync:
+             s.note_homing_end()
+         return params['trigger_reason']
+ 
+-TRSYNC_TIMEOUT = 0.025
++TRSYNC_TIMEOUT = 0.100
+ TRSYNC_SINGLE_MCU_TIMEOUT = 0.250
+ 
+ class TriggerDispatch:
+-- 
+2.47.2
+

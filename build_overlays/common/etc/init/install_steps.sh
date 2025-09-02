@@ -1,5 +1,6 @@
 #!/bin/sh
-# This script is called once after inital setup
+# This script is called once during install after initial
+# setup of the chroot (executed within the chroot)
 set -x
 
 # prepare swap
@@ -59,6 +60,18 @@ if [ -d /media/klipper_mod/ ]; then
     rsync -rltvK /media/klipper_mod/* /
 fi
 umount /media
+
+##############################
+# update klipper firmware
+##############################
+if /etc/init.d/S54mcu_update start; then
+  sleep 3
+else
+  # display mcu update failure screen for longer time
+  # update must be restarted in this case
+  sleep 300
+  exit 1
+fi
 
 ##############################
 # install done

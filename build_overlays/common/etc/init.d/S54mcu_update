@@ -19,6 +19,7 @@ start() {
             xzcat /usr/share/klipper_mod/fb/mcu_update_error.img.xz > /dev/fb0
             # create marker file to abort init sequence
             touch /run/init_break
+            exit 1
         fi
 
     fi

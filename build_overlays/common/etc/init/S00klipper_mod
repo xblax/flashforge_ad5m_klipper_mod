@@ -184,7 +184,7 @@ setup() {
     # flashforge installer mounts flash drive directly to /mnt
     # mount bind it inside the chroot for user provided overlay
     mount -o bind /mnt $chroot_dir/media
-    chroot $chroot_dir /etc/init/setup_chroot.sh
+    chroot $chroot_dir /etc/init/install_steps.sh
 }
 
 case "$1" in

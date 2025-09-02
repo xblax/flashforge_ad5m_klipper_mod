@@ -1,0 +1,33 @@
+From a503ce5e6120af1ff4748ed94f92f2480eb1ae8c Mon Sep 17 00:00:00 2001
+From: consp <none@yourbusiness.com>
+Date: Fri, 15 Mar 2024 19:42:11 +0100
+Subject: [PATCH] remove camera menu for ffad5m_klipper_mod
+
+removed camera from being able to load since it will kill the printer
+---
+ screen.py | 9 +++++----
+ 1 file changed, 5 insertions(+), 4 deletions(-)
+
+diff --git a/screen.py b/screen.py
+index 113587d4..22375e2d 100755
+--- a/screen.py
++++ b/screen.py
+@@ -1090,10 +1090,11 @@ class KlipperScreen(Gtk.Window):
+             powerdevs = self.apiclient.send_request("machine/device_power/devices")
+             if powerdevs is not False:
+                 self.printer.configure_power_devices(powerdevs)
+-        if "webcam" in self.server_info["components"]:
+-            cameras = self.apiclient.send_request("server/webcams/list")
+-            if cameras is not False:
+-                self.printer.configure_cameras(cameras['webcams'])
++        # Removed since it will kill the machine
++#       if "webcam" in self.server_info["components"]:
++#            cameras = self.apiclient.send_request("server/webcams/list")
++#            if cameras is not False:
++#                self.printer.configure_cameras(cameras['webcams'])
+         if "spoolman" in self.server_info["components"]:
+             self.printer.enable_spoolman()
+ 
+-- 
+2.47.2
+

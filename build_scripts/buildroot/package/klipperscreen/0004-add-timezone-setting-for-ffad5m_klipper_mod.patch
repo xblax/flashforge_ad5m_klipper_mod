@@ -1,0 +1,119 @@
+From 0887e6c7f95f495287dd04a150d97b7873e4c984 Mon Sep 17 00:00:00 2001
+From: consp <none@yourbusiness.com>
+Date: Mon, 18 Mar 2024 22:31:55 +0100
+Subject: [PATCH] add timezone setting for ffad5m_klipper_mod
+
+---
+ ks_includes/config.py | 18 +++++++++++++++++-
+ panels/base_panel.py  |  4 ++--
+ screen.py             | 20 ++++++++++++++++++++
+ 3 files changed, 39 insertions(+), 3 deletions(-)
+
+diff --git a/ks_includes/config.py b/ks_includes/config.py
+index d2a3a24a..74ae1c0f 100644
+--- a/ks_includes/config.py
++++ b/ks_includes/config.py
+@@ -7,6 +7,8 @@ import logging
+ import os
+ import pathlib
+ import re
++import zoneinfo
++
+ from io import StringIO
+ 
+ SCREEN_BLANKING_OPTIONS = [
+@@ -167,7 +169,7 @@ class KlipperScreenConfig:
+                 strs = (
+                     'default_printer', 'language', 'print_sort_dir', 'theme', 'screen_blanking_printing', 'font_size',
+                     'print_estimate_method', 'screen_blanking', "screen_on_devices", "screen_off_devices", 'print_view',
+-                    "lock_password", "brightness_command"
++                    "lock_password", "brightness_command", "timezone"
+                 )
+                 numbers = (
+                     'job_complete_timeout', 'job_error_timeout', 'move_speed_xy', 'move_speed_z',
+@@ -275,6 +277,10 @@ class KlipperScreenConfig:
+                 "value": "3600", "callback": screen.set_screenblanking_printing_timeout, "options": [
+                     {"name": _("Never"), "value": "off"}]
+             }},
++            {"timezone": {
++                "section": "main", "name": _("Timezone"), "type": "dropdown",
++                "value": "UTC", "callback": screen.set_timezone, "options": []
++            }},
+             {"24htime": {"section": "main", "name": _("24 Hour Time"), "type": "binary",
+                          "tooltip": _("Disable for 12hs with am / pm"),
+                          "value": "True"}},
+@@ -369,6 +375,16 @@ class KlipperScreenConfig:
+                 "value": f"{num}"
+             })
+ 
++        # get list index from /usr/share/zoneinfo/Etc
++        # posix is too complicated for now
++        index = self.configurable_options.index(
++            [i for i in self.configurable_options if list(i)[0] == "timezone"][0])
++        for name in sorted(zoneinfo.available_timezones()):
++            self.configurable_options[index]['timezone']['options'].append({
++                "name": name,
++                "value": name
++                })
++
+         for item in self.configurable_options:
+             name = list(item)[0]
+             vals = item[name]
+diff --git a/panels/base_panel.py b/panels/base_panel.py
+index 0b795453..164a8251 100644
+--- a/panels/base_panel.py
++++ b/panels/base_panel.py
+@@ -374,10 +374,10 @@ class BasePanel(ScreenPanel):
+ 
+         self.titlelbl.set_label(f"{printer} {title}")
+ 
+-    def update_time(self):
++    def update_time(self, force=False):
+         now = datetime.now()
+         confopt = self._config.get_main_config().getboolean("24htime", True)
+-        if now.minute != self.time_min or self.time_format != confopt:
++        if now.minute != self.time_min or self.time_format != confopt or force:
+             if confopt:
+                 self.control['time'].set_text(f'{now:%H:%M }')
+             else:
+diff --git a/screen.py b/screen.py
+index 22375e2d..8e96b915 100755
+--- a/screen.py
++++ b/screen.py
+@@ -13,6 +13,7 @@ import locale
+ import re
+ import sys
+ import gi
++import time
+ 
+ gi.require_version("Gtk", "3.0")
+ from gi.repository import Gtk, Gdk, GLib, Pango
+@@ -712,6 +713,25 @@ class KlipperScreen(Gtk.Window):
+             self.screensaver.reset_timeout()
+         logging.debug(f"Blanking timeout: {time} DPMS:{self.use_dpms}")
+ 
++    def set_timezone(self, timezone):
++        logging.info("Setting timezone to %s" % timezone)
++        tzpath = "/usr/share/zoneinfo"
++        tzfile = "/root/printer_data/config/timezone"
++        try:
++            try:
++                os.unlink(tzfile)
++            except:
++                # allowed to fail if file not present
++                pass
++            os.symlink(os.path.join(tzpath, timezone), tzfile)
++        except OSError:
++            logging.info("no rights")
++        except Exception as e:
++            logging.error(e)
++            pass
++        time.tzset() # update timezone info
++        self.base_panel.update_time(force=True)
++
+     def show_printer_select(self, widget=None):
+         self.base_panel.show_heaters(False)
+         self.show_panel("printer_select", remove_all=True)
+-- 
+2.47.2
+

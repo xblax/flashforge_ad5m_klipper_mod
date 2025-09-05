@@ -20,7 +20,8 @@ KLIPPER_DEPENDENCIES = \
 	python-serial \
 	python-can \
 	python-setuptools \
-	python-msgspec
+	python-msgspec \
+	python-numpy
 
 ifneq ($(BR2_PACKAGE_KLIPPER_CONFIGS),)
 KLIPPER_DEPENDENCIES += host-arm-gnu-toolchain host-python3

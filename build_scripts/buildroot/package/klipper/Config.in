@@ -9,6 +9,7 @@ config BR2_PACKAGE_KLIPPER
 	select BR2_PACKAGE_PYTHON_CAN
 	select BR2_PACKAGE_PYTHON_SETUPTOOLS
 	select BR2_PACKAGE_PYTHON_MSGSPEC
+	select BR2_PACKAGE_PYTHON_NUMPY
 	help
 	  Klipper is a 3d-printer firmware
 

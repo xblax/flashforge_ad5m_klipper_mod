@@ -13,6 +13,7 @@ insmod /mnt/orig_root/lib/modules/8821cu.ko
 insmod /lib/modules/uinput.ko 2> /dev/null
 
 # mount swap
+sysctl vm.swappiness=15
 swapon /mnt/swap
 # set hostname
 hostname -F /etc/hostname

@@ -2,21 +2,40 @@
 #
 # Start klipperscreen
 #
+set -m
 PYTHON=/usr/bin/python3
 KLIPPERSCREEN=/opt/klipperscreen/screen.py
+KLIPPERSCREEN_LOG=/root/printer_data/logs/KlipperScreen.log
 PID_FILE=/run/klipperscreen.pid
 KLIPPERSCREEN_NICENESS=2
+
+runloop() {
+    export DISPLAY=:0
+    export HOME=/root
+    export LANG=en_US.UTF8
+    export LC_ALL=en_US.UTF8
+
+    # stop klipper screen when run loop is stopped
+    trap 'kill 0' EXIT INT TERM
+
+    while true;
+    do
+        xzcat /usr/share/klipper_mod/fb/klipperscreen_starting.img.xz > /dev/fb0
+        $PYTHON $KLIPPERSCREEN &
+        wait
+        if [ "$?" -ne 0 ]; then
+            echo "Klipperscreen exited with an error, please check the logs"
+            cp "$KLIPPERSCREEN_LOG" "$KLIPPERSCREEN_LOG.err"
+            sleep 5
+        fi
+    done
+}
 
 start() {
     # fix loaders, if they were not created correctly during the system build.
     /usr/bin/gdk-pixbuf-query-loaders > /usr/lib/gdk-pixbuf-2.0/2.10.0/loaders.cache
-    
-    export DISPLAY=:0
-    export HOME=/root
-    
-    xzcat /usr/share/klipper_mod/fb/klipperscreen_starting.img.xz > /dev/fb0
 
-    start-stop-daemon -S -b -m -p $PID_FILE -N $KLIPPERSCREEN_NICENESS --exec $PYTHON $KLIPPERSCREEN
+    start-stop-daemon -S -b -m -p $PID_FILE -N $KLIPPERSCREEN_NICENESS --exec "$0" runloop
 }
 
 stop() {
@@ -38,6 +57,9 @@ case "$1" in
         ;;
     restart|reload)
         restart
+        ;;
+    runloop)
+        runloop
         ;;
   *)
         echo "Usage: $0 {start|stop|restart}"

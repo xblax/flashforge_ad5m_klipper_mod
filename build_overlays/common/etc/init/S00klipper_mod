@@ -16,6 +16,10 @@ log_file_debug="/root/mod_init_debug.log"
 # marker files in mod root home
 mod_marker_skip="$chroot_dir/root/.reboot_stock_once"
 mod_marker_remove="$chroot_dir/root/.reboot_and_remove"
+mod_mcu_update_script="$chroot_dir/usr/libexec/mcu_update.sh"
+mod_mcu_update_screen="$chroot_dir/usr/share/klipper_mod/fb/mcu_update_stock.img.xz"
+mod_mcu_update_screen_ok="$chroot_dir/usr/share/klipper_mod/fb/mcu_update_ok.img.xz"
+mod_mcu_update_screen_error="$chroot_dir/usr/share/klipper_mod/fb/mcu_update_error.img.xz"
 # marker files on usb
 usb_marker_skip="klipper_mod_skip"
 usb_marker_remove="klipper_mod_remove"
@@ -29,6 +33,30 @@ continue_flashforge_boot() {
     # the flashforge sofware might fail to initialize (probably related to MCU state)
     sleep 5
     exit 0
+}
+
+ensure_stock_firmware() {
+	if [ ! -f "$mod_mcu_update_script" ]; then
+	    echo "Warning: Skip MCU check, update script not found."
+	    return
+	fi
+
+    if ! $mod_mcu_update_script check_stock; then
+        echo "Restoring stock MCU firmware."
+        xzcat "$mod_mcu_update_screen" > /dev/fb0 || true
+
+        if ! $mod_mcu_update_script update_stock; then
+            echo "MCU update failed."
+            xzcat "$mod_mcu_update_screen_error" > /dev/fb0 || true
+
+            # stop further boot and display error message
+            kill -9 $PPID
+            sync
+            exit 1
+        fi
+
+        xzcat "$mod_mcu_update_screen_ok" > /dev/fb0 || true
+    fi
 }
 
 uninstall() {
@@ -96,10 +124,12 @@ check_usb_marker() {
     # allow to boot into stock linux, if skip marker is present
     if [ "$usb_mod_marker" = "$usb_marker_skip" ]; then
         echo "Skip Klipper Mod init due to skip marker '$usb_mod_marker' found on $usb_drive."
+        ensure_stock_firmware
         continue_flashforge_boot
     # remove mod, if remove marker is present
     elif [ "$usb_mod_marker" = "$usb_marker_remove" ]; then
         echo "Uninstall Klipper Mod due to remove maker '$usb_mod_marker' found on $usb_drive."
+        ensure_stock_firmware
         uninstall
         continue_flashforge_boot
     fi
@@ -119,12 +149,14 @@ check_mod_marker() {
         echo "Skip Klipper Mod init once due to skip maker $mod_marker_skip."
         rm -f $mod_marker_skip
         sync
+        ensure_stock_firmware
         continue_flashforge_boot
     fi
 
     # remove mod, if remove marker is present
     if [ -f $mod_marker_remove ]; then
         echo "Uninstall Klipper Mod due to remove maker $mod_marker_remove."
+        ensure_stock_firmware
         uninstall
         continue_flashforge_boot
     fi
@@ -216,6 +248,9 @@ case "$1" in
         ;;
     uninstall)
         uninstall
+        ;;
+    ensure_stock_firmware)
+        ensure_stock_firmware
         ;;
     *)
         echo "Usage: $0 {start|stop}"

@@ -4,7 +4,7 @@
 #
 ################################################################################
 
-KLIPPER_VERSION = v0.13.0-259-g0b603f5cb-ffad5m
+KLIPPER_VERSION = v0.13.0-285-gfc2aaae69-ffadm5
 KLIPPER_SITE = https://github.com/xblax/klipper.git
 KLIPPER_SITE_METHOD = git
 

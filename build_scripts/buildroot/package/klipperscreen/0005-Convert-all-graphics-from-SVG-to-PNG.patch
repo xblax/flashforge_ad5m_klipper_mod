@@ -1,0 +1,205 @@
+From d56efb67c9fd0d17dbad0c16ccd10dbc41b6a39d Mon Sep 17 00:00:00 2001
+From: xblax <xblax@incy.net>
+Date: Sun, 7 Sep 2025 03:08:51 +0200
+Subject: [PATCH] Convert all graphics from SVG to PNG
+
+This avoids gkd-pixbuf SVG loader dependencies.
+svg2png.sh is called by buildroot as post-patch hook.
+---
+ ks_includes/KlippyGtk.py         |  2 +-
+ panels/spoolman.py               |  4 ++--
+ screen.py                        |  2 +-
+ styles/base.css                  |  4 ++--
+ styles/colorized/style.css       |  4 ++--
+ styles/material-dark/style.css   |  4 ++--
+ styles/material-darker/style.css |  4 ++--
+ styles/material-light/style.css  |  4 ++--
+ styles/z-bolt/style.css          |  4 ++--
+ svg2png.sh                       | 12 ++++++++++++
+ 10 files changed, 28 insertions(+), 16 deletions(-)
+ create mode 100755 svg2png.sh
+
+diff --git a/ks_includes/KlippyGtk.py b/ks_includes/KlippyGtk.py
+index 6ca7b92e..9ca8e3bd 100644
+--- a/ks_includes/KlippyGtk.py
++++ b/ks_includes/KlippyGtk.py
+@@ -133,7 +133,7 @@ class KlippyGtk:
+     @lru_cache(maxsize=500)
+     def _PixbufFromIcon(filename, themedir, width, height):
+         filename = os.path.join(themedir, filename)
+-        for ext in ["svg", "png"]:
++        for ext in ["png"]:
+             file = f"{filename}.{ext}"
+             pixbuf = KlippyGtk.PixbufFromFile(file, width, height) if os.path.exists(file) else None
+             if pixbuf is not None:
+diff --git a/panels/spoolman.py b/panels/spoolman.py
+index 3c3e6cb6..2194a708 100644
+--- a/panels/spoolman.py
++++ b/panels/spoolman.py
+@@ -115,10 +115,10 @@ class SpoolmanSpool(GObject.GObject):
+             if SpoolmanSpool._spool_icon is None:
+                 klipperscreendir = pathlib.Path(__file__).parent.resolve().parent
+                 _spool_icon_path = os.path.join(
+-                    klipperscreendir, "styles", SpoolmanSpool.theme_path, "images", "spool.svg"
++                    klipperscreendir, "styles", SpoolmanSpool.theme_path, "images", "spool.png"
+                 )
+                 if not os.path.isfile(_spool_icon_path):
+-                    _spool_icon_path = os.path.join(klipperscreendir, "styles", "spool.svg")
++                    _spool_icon_path = os.path.join(klipperscreendir, "styles", "spool.png")
+                 SpoolmanSpool._spool_icon = pathlib.Path(_spool_icon_path).read_text()
+ 
+             loader = GdkPixbuf.PixbufLoader()
+diff --git a/screen.py b/screen.py
+index 8e96b915..a5d56b12 100755
+--- a/screen.py
++++ b/screen.py
+@@ -157,7 +157,7 @@ class KlipperScreen(Gtk.Window):
+         self.gtk = KlippyGtk(self)
+         self.base_css = ""
+         self.load_base_styles()
+-        self.set_icon_from_file(os.path.join(klipperscreendir, "styles", "icon.svg"))
++        self.set_icon_from_file(os.path.join(klipperscreendir, "styles", "icon.png"))
+         self.base_panel = BasePanel(self)
+         self.change_theme(self.theme)
+         self.overlay = Gtk.Overlay()
+diff --git a/styles/base.css b/styles/base.css
+index c03d2ec7..25ef6f81 100644
+--- a/styles/base.css
++++ b/styles/base.css
+@@ -60,7 +60,7 @@ treeview.view check {
+ 
+ treeview.view check:checked {
+     background-image: none;
+-    -gtk-icon-source: url("./styles/complete.svg");
++    -gtk-icon-source: url("./styles/complete.png");
+ }
+ 
+ button {
+@@ -665,4 +665,4 @@ flowbox button {
+ 
+ keyboard_box {
+     padding: 0 20em;
+-}
+\ No newline at end of file
++}
+diff --git a/styles/colorized/style.css b/styles/colorized/style.css
+index 15b7b555..67917cad 100644
+--- a/styles/colorized/style.css
++++ b/styles/colorized/style.css
+@@ -126,7 +126,7 @@ treeview.view check {
+ treeview.view check:checked {
+     background-image: none;
+     background-color: @solarized-base02;
+-    -gtk-icon-source: url("./styles/colorized/images/complete.svg");
++    -gtk-icon-source: url("./styles/colorized/images/complete.png");
+ }
+ 
+ entry {
+@@ -280,4 +280,4 @@ textview .time {
+ 
+ .dialog-primary {
+      border-bottom-color: @solarized-green;
+-}
+\ No newline at end of file
++}
+diff --git a/styles/material-dark/style.css b/styles/material-dark/style.css
+index 58178690..ec0de012 100644
+--- a/styles/material-dark/style.css
++++ b/styles/material-dark/style.css
+@@ -105,7 +105,7 @@ switch:checked {
+ }
+ 
+ treeview.view check:checked {
+-    -gtk-icon-source: url("./styles/material-dark/images/complete.svg");
++    -gtk-icon-source: url("./styles/material-dark/images/complete.png");
+ }
+ 
+ entry {
+@@ -247,4 +247,4 @@ button.active {
+ 
+ .dialog-primary {
+      border-bottom-color: @color1;
+-}
+\ No newline at end of file
++}
+diff --git a/styles/material-darker/style.css b/styles/material-darker/style.css
+index a59d5562..a6098cab 100644
+--- a/styles/material-darker/style.css
++++ b/styles/material-darker/style.css
+@@ -103,7 +103,7 @@ switch:checked {
+ }
+ 
+ treeview.view check:checked {
+-    -gtk-icon-source: url("./styles/material-darker/images/complete.svg");
++    -gtk-icon-source: url("./styles/material-darker/images/complete.png");
+ }
+ 
+ label {
+@@ -241,4 +241,4 @@ textview .time {
+ 
+ .keyboard_pad {
+     background-color: #090909;
+-}
+\ No newline at end of file
++}
+diff --git a/styles/material-light/style.css b/styles/material-light/style.css
+index daad1a7e..a7898062 100644
+--- a/styles/material-light/style.css
++++ b/styles/material-light/style.css
+@@ -124,7 +124,7 @@ switch:checked {
+ }
+ 
+ treeview.view check:checked {
+-    -gtk-icon-source: url("./styles/material-light/images/complete.svg");
++    -gtk-icon-source: url("./styles/material-light/images/complete.png");
+ }
+ 
+ treeview.view check,
+@@ -314,4 +314,4 @@ textview .time {
+ .dialog-primary {
+     background-color: @color1;
+     border-bottom-color: @color1;
+-}
+\ No newline at end of file
++}
+diff --git a/styles/z-bolt/style.css b/styles/z-bolt/style.css
+index 73867f6e..1e63d977 100644
+--- a/styles/z-bolt/style.css
++++ b/styles/z-bolt/style.css
+@@ -84,7 +84,7 @@ switch:checked {
+ }
+ 
+ treeview.view check:checked {
+-    -gtk-icon-source: url("./styles/z-bolt/images/complete.svg");
++    -gtk-icon-source: url("./styles/z-bolt/images/complete.png");
+ }
+ 
+ entry {
+@@ -216,4 +216,4 @@ textview .time {
+ 
+ .dialog-primary {
+     border-bottom-color: @color1;
+-}
+\ No newline at end of file
++}
+diff --git a/svg2png.sh b/svg2png.sh
+new file mode 100755
+index 00000000..3299d6d0
+--- /dev/null
++++ b/svg2png.sh
+@@ -0,0 +1,12 @@
++#!/bin/bash
++# Recursively convert all SVG files into PNG files
++
++# Starting directory (defaults to current directory if not given)
++START_DIR="${1:-.}"
++
++# Find all SVGs and convert
++find "$START_DIR" -type f -name "*.svg" | while IFS= read -r file; do
++    out="${file%.svg}.png"
++    echo "svg2png: $(basename "$file")"
++    rsvg-convert "$file" -o "$out"
++done
+-- 
+2.47.2
+

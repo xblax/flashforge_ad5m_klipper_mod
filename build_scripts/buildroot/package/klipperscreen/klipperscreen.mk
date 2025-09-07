@@ -18,13 +18,19 @@ KLIPPERSCREEN_DEPENDENCIES = \
 	python-gobject \
 	python-pycairo \
 	python-websocket-client \
-	python-psutil
+	python-psutil \
+	host-librsvg
 
 ifeq ($(BR2_PACKAGE_PYTHON_SDBUS_NETWORKMANAGER),y)
 KLIPPERSCREEN_DEPENDENCIES += python-sdbus-networkmanager
 else
 KLIPPERSCREEN_DEPENDENCIES += iwd dbus
 endif
+
+define KLIPPERSCREEN_POST_PATCH_SVG2PNG
+	$(@D)/svg2png.sh $(@D)
+endef
+KLIPPERSCREEN_POST_PATCH_HOOKS += KLIPPERSCREEN_POST_PATCH_SVG2PNG
 
 define KLIPPERSCREEN_INSTALL_TARGET_CMDS
 	mkdir -p $(TARGET_DIR)/opt/klipperscreen

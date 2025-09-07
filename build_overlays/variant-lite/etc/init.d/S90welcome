@@ -4,11 +4,11 @@
 #
 
 start() {
-    # set to first, the LCD values are not initialized properly
+    # set backlight to 0% first, the LCD values are not initialized properly
     # which is done when disable/enable is triggered. Otherwise
     # 1% would be 100% and 100% would be 1%
-    backlight 0
-    backlight 50
+    backlight 0%
+    backlight 50%
     xzcat /usr/share/klipper_mod/fb/mod_start.img.xz > /dev/fb0
 }
 

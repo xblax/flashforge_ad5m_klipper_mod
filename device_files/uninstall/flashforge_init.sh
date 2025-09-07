@@ -27,6 +27,10 @@ do_setup()
     rm -f "$MOD_INIT_LOG_PREFIX"*
     rm -rf "$MOD_DIR"
 
+    # unconditionally restore stock MCU version
+    xzcat $WORK_DIR/img/mcu_update_stock.img.xz > /dev/fb0
+    /bin/sh $WORK_DIR/mcu_update.sh update_stock
+
     # update end image
     xzcat $WORK_DIR/img/uninstall_ok.img.xz > /dev/fb0
 }

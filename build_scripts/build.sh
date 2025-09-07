@@ -217,7 +217,7 @@ package_uninstall()
 {
 	package_name="Adventurer5M-KlipperMod-uninstall.tgz"
 	package_name_pro="Adventurer5MPro-KlipperMod-uninstall.tgz"
-	tar -cf "$BUILD_PACKAGE/$package_name" -C "$GIT_ROOT/device_files/uninstall" .
+	tar -cf "$BUILD_PACKAGE/$package_name" -C "$GIT_ROOT/device_files/uninstall" . -C "$GIT_ROOT/build_overlays/common/usr/libexec" ./mcu_update.sh
 	cp "$BUILD_PACKAGE/$package_name" "$BUILD_PACKAGE/$package_name_pro"
 	log_info "uninstall: created $package_name"
 }

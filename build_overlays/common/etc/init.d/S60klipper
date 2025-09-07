@@ -15,6 +15,7 @@ start() {
     mkdir -p $(dirname $KLIPPER_LOG) # make sure the log directory exists
     export HOME=/root
     start-stop-daemon -S -b -m -p $PID_FILE -N $KLIPPER_NICENESS --exec $PYTHON -- $KLIPPER $KLIPPER_CONF -l $KLIPPER_LOG -a $KLIPPER_UDS
+    ionice -c 2 -n 0 -p $(cat "$PID_FILE")
 }
 
 stop() {

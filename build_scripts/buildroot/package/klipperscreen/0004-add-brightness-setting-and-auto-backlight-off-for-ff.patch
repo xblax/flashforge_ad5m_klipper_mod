@@ -1,0 +1,115 @@
+From 2324b91210b76ec487ac448fa99b08418bca9431 Mon Sep 17 00:00:00 2001
+From: consp <none@yourbusiness.com>
+Date: Wed, 13 Mar 2024 20:32:18 +0100
+Subject: [PATCH] add brightness setting and auto-backlight-off for
+ ffad5m_klipper_mod
+
+Co-authored-by: xblax <xblax@incy.net>
+---
+ ks_includes/config.py              | 18 +++++++++++++++++-
+ ks_includes/widgets/screensaver.py |  4 ++++
+ screen.py                          |  9 +++++++++
+ 3 files changed, 30 insertions(+), 1 deletion(-)
+
+diff --git a/ks_includes/config.py b/ks_includes/config.py
+index c0dbe813..4e97b9c4 100644
+--- a/ks_includes/config.py
++++ b/ks_includes/config.py
+@@ -22,6 +22,10 @@ SCREEN_BLANKING_OPTIONS = [
+     14400,  # 4 Hours
+ ]
+ 
++SCREEN_BRIGHTNESS_OPTIONS = [
++    10, 20, 30, 40, 50, 60, 70, 80, 90, 100
++]
++
+ klipperscreendir = pathlib.Path(__file__).parent.resolve().parent
+ home = os.path.expanduser("~/")
+ printer_data_config = os.path.join(home, "printer_data", "config")
+@@ -168,7 +172,7 @@ class KlipperScreenConfig:
+                 )
+                 strs = (
+                     'default_printer', 'language', 'print_sort_dir', 'theme', 'screen_blanking_printing', 'font_size',
+-                    'print_estimate_method', 'screen_blanking', "screen_on_devices", "screen_off_devices", 'print_view',
++                    'print_estimate_method', 'screen_blanking', 'screen_brightness', "screen_on_devices", "screen_off_devices", 'print_view',
+                     "lock_password", "timezone"
+                 )
+                 numbers = (
+@@ -277,6 +281,10 @@ class KlipperScreenConfig:
+                 "value": "3600", "callback": screen.set_screenblanking_printing_timeout, "options": [
+                     {"name": _("Never"), "value": "off"}]
+             }},
++            {"screen_brightness": {
++                "section": "main", "name": _("Screen Brightness"), "type": "dropdown",
++                "value": "70", "callback": screen.set_screen_brightness, "options": []
++            }},
+             {"timezone": {
+                 "section": "main", "name": _("Timezone"), "type": "dropdown",
+                 "value": "UTC", "callback": screen.set_timezone, "options": []
+@@ -375,6 +383,14 @@ class KlipperScreenConfig:
+                 "value": f"{num}"
+             })
+ 
++        index = self.configurable_options.index(
++            [i for i in self.configurable_options if list(i)[0] == "screen_brightness"][0])
++        for num in SCREEN_BRIGHTNESS_OPTIONS:
++            self.configurable_options[index]['screen_brightness']['options'].append({
++                "name": f"{num}%",
++                "value": f"{num}"
++            })
++
+         # get list index from /usr/share/zoneinfo/Etc
+         # posix is too complicated for now
+         index = self.configurable_options.index(
+diff --git a/ks_includes/widgets/screensaver.py b/ks_includes/widgets/screensaver.py
+index 64ceb018..bbd26ded 100644
+--- a/ks_includes/widgets/screensaver.py
++++ b/ks_includes/widgets/screensaver.py
+@@ -65,6 +65,8 @@ class ScreenSaver:
+ 
+         self.blackbox.show_all()
+         self.screen.power_devices(None, self.config.get_main_config().get("screen_off_devices", ""), on=False)
++        # ff ad5m brightness disable
++        self.screen.set_screen_brightness(0, update=False)  # turn off
+         return False
+ 
+     def close(self, widget=None):
+@@ -82,6 +84,8 @@ class ScreenSaver:
+         for dialog in self.screen.dialogs:
+             logging.info(f"Restoring Dialog {dialog}")
+             dialog.show()
++        # ff ad5m brightness enable
++        self.screen.set_screen_brightness(self.screen.brightness, update=False) # turn on
+         self.screen.gtk.set_cursor(self.screen.show_cursor, window=self.screen.get_window())
+         self.screen.power_devices(None, self.config.get_main_config().get("screen_on_devices", ""), on=True)
+         self.screen.lock_screen.relock()
+diff --git a/screen.py b/screen.py
+index 8e96b915..2275aa25 100755
+--- a/screen.py
++++ b/screen.py
+@@ -179,6 +179,7 @@ class KlipperScreen(Gtk.Window):
+             return
+         self.base_panel.activate()
+         self.use_dpms = self._config.get_main_config().getboolean("use_dpms", fallback=True)
++        self.set_screen_brightness(self._config.get_main_config().get('screen_brightness'))
+         self.use_dpms &= functions.dpms_loaded
+         self.set_dpms(self.use_dpms)
+         self.lock_screen = LockScreen(self)
+@@ -713,6 +714,14 @@ class KlipperScreen(Gtk.Window):
+             self.screensaver.reset_timeout()
+         logging.debug(f"Blanking timeout: {time} DPMS:{self.use_dpms}")
+ 
++    def set_screen_brightness(self, brightness, update=True):
++        if not isinstance(brightness, int):
++            brightness = int(brightness)
++        if update:
++            self.brightness = brightness
++        logging.debug(f"setting brightness to {brightness}")
++        data = subprocess.check_output([f'backlight {brightness}%'], shell=True, timeout=10)
++
+     def set_timezone(self, timezone):
+         logging.info("Setting timezone to %s" % timezone)
+         tzpath = "/usr/share/zoneinfo"
+-- 
+2.47.2
+

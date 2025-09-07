@@ -1,4 +1,4 @@
-From d56efb67c9fd0d17dbad0c16ccd10dbc41b6a39d Mon Sep 17 00:00:00 2001
+From fb48bd603a04092265370c44783c64ffe4d21856 Mon Sep 17 00:00:00 2001
 From: xblax <xblax@incy.net>
 Date: Sun, 7 Sep 2025 03:08:51 +0200
 Subject: [PATCH] Convert all graphics from SVG to PNG
@@ -50,7 +50,7 @@ index 3c3e6cb6..2194a708 100644
  
              loader = GdkPixbuf.PixbufLoader()
 diff --git a/screen.py b/screen.py
-index 8e96b915..a5d56b12 100755
+index 2275aa25..524a2799 100755
 --- a/screen.py
 +++ b/screen.py
 @@ -157,7 +157,7 @@ class KlipperScreen(Gtk.Window):

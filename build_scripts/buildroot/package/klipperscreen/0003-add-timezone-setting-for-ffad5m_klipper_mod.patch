@@ -1,4 +1,4 @@
-From 0887e6c7f95f495287dd04a150d97b7873e4c984 Mon Sep 17 00:00:00 2001
+From 8ab24285a22fcf24b6f5aaa8ac997818ef9c59a4 Mon Sep 17 00:00:00 2001
 From: consp <none@yourbusiness.com>
 Date: Mon, 18 Mar 2024 22:31:55 +0100
 Subject: [PATCH] add timezone setting for ffad5m_klipper_mod
@@ -10,7 +10,7 @@ Subject: [PATCH] add timezone setting for ffad5m_klipper_mod
  3 files changed, 39 insertions(+), 3 deletions(-)
 
 diff --git a/ks_includes/config.py b/ks_includes/config.py
-index d2a3a24a..74ae1c0f 100644
+index 65f7461e..c0dbe813 100644
 --- a/ks_includes/config.py
 +++ b/ks_includes/config.py
 @@ -7,6 +7,8 @@ import logging
@@ -26,8 +26,8 @@ index d2a3a24a..74ae1c0f 100644
                  strs = (
                      'default_printer', 'language', 'print_sort_dir', 'theme', 'screen_blanking_printing', 'font_size',
                      'print_estimate_method', 'screen_blanking', "screen_on_devices", "screen_off_devices", 'print_view',
--                    "lock_password", "brightness_command"
-+                    "lock_password", "brightness_command", "timezone"
+-                    "lock_password"
++                    "lock_password", "timezone"
                  )
                  numbers = (
                      'job_complete_timeout', 'job_error_timeout', 'move_speed_xy', 'move_speed_z',

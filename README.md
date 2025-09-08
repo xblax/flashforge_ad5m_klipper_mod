@@ -13,15 +13,16 @@ Klipper Mod for the AD5M is designed to be fully removable and not break any fun
 > [!CAUTION]
 > *If you want to install this mod to your AD5M (Pro) then be aware, that you risk to loose your warranty or damage the printer. Proceed at your own risk if you want to try this mod!*
 
-*This mod is currently in beta stage.* Many features are implemented already but they need to be tested thoroughly and polished a bit by early adopters.
+*This mod is currently in beta stage.* Starting with the v00.06-beta release, the mod updates the Klipper version (and MCU firmware) to the current Klipper upstream release v0.13-xxx with reverse engineered
+support for the AD5M hardware. The stability is already promising, but it still needs to undergo long-term testing.
 
 ## Feature Overview
 
-- [Klipper](https://www.klipper3d.org/) 0.11 ‒ with improved configuration and default macros
+- [Klipper](https://www.klipper3d.org/) 0.13 ‒ improved configuration and default macros
 - [Moonraker](https://github.com/Arksine/moonraker) on port 7125
 - [Mainsail](https://docs.mainsail.xyz/) on port 4000
 - [Fluidd](https://docs.fluidd.xyz/) on port 4001
-- [KlipperScreen](https://klipperscreen.readthedocs.io/en/latest/) ‒ separate  build variant
+- [KlipperScreen](https://klipperscreen.readthedocs.io/en/latest/) ‒ separate build variant
 - [Guppyscreen](https://github.com/ballaswag/guppyscreen) ‒ separate preview build variant
 - Camera streaming via [ustreamer](https://github.com/pikvm/ustreamer) on port 8080
 - [Moonraker-timelapse](https://github.com/mainsail-crew/moonraker-timelapse) support
@@ -31,13 +32,14 @@ Klipper Mod for the AD5M is designed to be fully removable and not break any fun
 - [Audio](https://pypi.org/project/ff-adm5-audio/) via buzzer (can play simple Midis)
 - [LCD backlight](https://pypi.org/project/ff-ad5m-backlight/) control 
 - Automatic USB flash drive mounting
+- Automatic MCU firmware update for updated klipper
 - "Dual boot" with stock Flashforge software
 
 All features of the mod run directly on the printer built-in system (Allwinner T113-S3 with 128MB RAM). No additional hardware is required. 
 
 ## Getting Started
 
-Download test latest [Release Build](https://github.com/xblax/flashforge_ad5m_klipper_mod/releases) and read through the documentation for [Installation](docs/INSTALL.md) and [Slicing](docs/SLICING.md). Also make yourself familiar with the [Uninstall](docs/UNINSTALL.md) methods, to get rid of the mod if you don't like it.
+Download the latest [Release Build](https://github.com/xblax/flashforge_ad5m_klipper_mod/releases) and read through the documentation for [Installation](docs/INSTALL.md) and [Slicing](docs/SLICING.md). Also make yourself familiar with the [Uninstall](docs/UNINSTALL.md) methods, to get rid of the mod if you don't like it.
 
 The Klipper Mod for AD5M (Pro) is currently provided in three variants: 
 - Default headless variant without an on-screen GUI control application

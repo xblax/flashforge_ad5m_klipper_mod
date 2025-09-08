@@ -7,6 +7,8 @@ There are multiple options to uninstall Klipper Mod from an AD5M (Pro) printer.
 >
 > If you just want to go back to go back to the stock software occasionally, consider to use on of the Dual Boot options described in the [Install](INSTALL.md) documentation. 
 
+During uninstall of Klipper Mod the MCU firmware version also downgraded to the stock version.
+
 ### Uninstall via USB
 
 Download the `Adventurer5M-KlipperMod-uninstall.tgz` file from the [Release](https://github.com/xblax/flashforge_ad5m_klipper_mod/releases) page onto a USB flash drive, similar to the [Install](INSTALL.md) procedure.

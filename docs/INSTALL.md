@@ -10,8 +10,9 @@ Klipper Mod for the AD5M is designed to be fully removable and not break any fun
 
 The mod uses the same installation mechanism as the stock software:
 1) Download the latest `Adventurer5M-KlipperMod*.tgz` update file from the [Release](https://github.com/xblax/flashforge_ad5m_klipper_mod/releases) page onto a USB flash drive.
-2) Plug in the drive before starting the printer. 
-3) Successful installation will be indicated on the display when finished.
+2) Plug in the drive before starting the printer
+3) During installation, the MCU firmware is updated to match the Klipper version used by the mod 
+4) Successful installation will be indicated on the display when finished
 
 The mod installer currently requires that printers were updated to at least version 2.4.5 of the stock Flashforge firmware. Please check the release page for versions that are known to work.
 
@@ -19,7 +20,7 @@ After installation the printer will by default start the Klipper Mod system inst
 
 ### Install on 5M Pro
 
-The installation archives must be renamed to `Adventurer5MPro-*.tgz`. Otherwise the install files are not detected by the 5M Pro printers.
+The installation archives are identical to the regular 5M. They must be named `Adventurer5MPro-*.tgz`, otherwise the install files are not detected by the 5M Pro printers.
 
 ### Install Custom Files
 
@@ -61,3 +62,5 @@ There are multiple options to boot the stock Flashforge software, while the mod 
 - USB drive: put a file named `klipper_mod_skip` on a USB drive and plug it in before printer start
 - SSH: log in via SSH and run the command `reboot-stock-system` to restart and boot the stock software
 - Klipper Macro: Execute the Klipper macro `REBOOT_STOCK_SYSTEM`
+
+When using the dual boot feature, the MCU firmware is automatically downgraded to stock firmware and again updated when starting Klipper Mod.

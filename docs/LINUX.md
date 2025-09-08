@@ -11,7 +11,7 @@ Klipper Mod is not a conventional Linux distribution such as Debian/Linux that m
 
 ## Important Paths
 
-- `/root/printer_software` contains the Klipper and Moonraker installation
+- Core components of the Klipper ecosystem are installed to `/opt`, i.e. `/opt/klipper`, `/opt/moonraker` etc.
 - `/root/printer_data` contains printer config files, G-Codes, the moonraker database, log files
 - `/var/lib/iwd` contains the [WiFi](WIFI.md) network profiles
 - `/etc/init.d/` contains the init scripts for default services
@@ -20,6 +20,6 @@ Klipper Mod is not a conventional Linux distribution such as Debian/Linux that m
 
 The mod is self-contained in a [chroot](https://en.wikipedia.org/wiki/Chroot) environment. Therefore it's relatively safe to change the printer configuration or modify the Klipper Mod Linux environment without breaking the printer's stock functionality.
 
-Be careful if you insist to break out of the jail. The host system is mounted read-only to `/mnt/orig_root`. The printer data partition is mounted to `/mnt/data`.
+The host system is mounted read-only to `/mnt/orig_root`. The printer data partition is mounted to `/mnt/data`. Be careful if you insist to break out of the jail. You can get a shell in the host system environment via the `jailbreak` command.
 
 The mod system itself lives in the `.klipper_mod` folder on the printer data partition. Do not attempt to delete it while running the mod.

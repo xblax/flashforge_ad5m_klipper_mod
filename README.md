@@ -64,3 +64,4 @@ Due to the beta stage of Klipper Mod the documentation is not fully-completed. T
 - [LCD](docs/LCD.md)
 - [Buzzer](docs/BUZZER.md)
 - [Build Instructions](docs/BUILDING.md)
+- [Known Issues](docs/KNOWN_ISSUES.md)

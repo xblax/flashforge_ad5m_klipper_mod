@@ -23,7 +23,7 @@ To support automatic timelapse creation via Moonraker-timelapse add `TIMELAPSE_T
 
 ## Automatic Bed Leveling and Nozzle Priming
 
-The `START_PRINT` macro will do automatically bed leveling if no bed mesh profile is loaded. If you want to level the bed before each print you can set the `FORCE_LEVEL=true` parameter.
+The `START_PRINT` macro will do automatically bed leveling if no bed mesh profile is loaded. If you want to level the bed before each print you can set the `FORCE_LEVELING=true` parameter.
 
 Alternatively, save a `default` profile that is loaded on Klipper Start or manually trigger bed leveling via the provided `AUTOMATIC_BED_LEVEL` macro.
 

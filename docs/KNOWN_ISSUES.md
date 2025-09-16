@@ -15,6 +15,10 @@ the calibration. It's not a limitation for everyday use. It's recommened to run 
 If the printer was idle for multiple hours and a new print is started, timeouts during homing or print start can happen. 
 This can be avoided by restarting KLipper or the printer, it was not used for a long time since the last print.
 
-- Guppy Screen:  
+* Guppy Screen:  
 Guppy Screen upstream development has currently stopped and fixing relates issues is not a priortiy for this mod. 
 Also see [Guppy Screen](GUPPY_SCREEN.md) for known issues with it. Use it as-is or provide a pull request to improve it's integration. 
+
+* USB device failures:  
+USB devices connected to the screen can ocassionaly fail to be detected due to poor shielding of the USB connection in the printer. 
+In most cases a reboot will fix the issue. For external connected webcams it's recommended to use a short USB cable.

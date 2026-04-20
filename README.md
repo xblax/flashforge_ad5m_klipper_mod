@@ -24,6 +24,7 @@ support for the AD5M hardware. The stability is already promising, but it still 
 - [Fluidd](https://docs.fluidd.xyz/) on port 4001
 - [KlipperScreen](https://klipperscreen.readthedocs.io/en/latest/) ‒ separate build variant
 - [Guppyscreen](https://github.com/ballaswag/guppyscreen) ‒ separate preview build variant
+- [HelixScreen](https://github.com/prestonbrown/helixscreen) ‒ separate preview build variant
 - Camera streaming via [ustreamer](https://github.com/pikvm/ustreamer) on port 8080
 - [Moonraker-timelapse](https://github.com/mainsail-crew/moonraker-timelapse) support
 - Network access: Ethernet LAN and WiFi via [iwd](https://iwd.wiki.kernel.org/)
@@ -41,10 +42,11 @@ All features of the mod run directly on the printer built-in system (Allwinner T
 
 Download the latest [Release Build](https://github.com/xblax/flashforge_ad5m_klipper_mod/releases) and read through the documentation for [Installation](docs/INSTALL.md) and [Slicing](docs/SLICING.md). Also make yourself familiar with the [Uninstall](docs/UNINSTALL.md) methods, to get rid of the mod if you don't like it.
 
-The Klipper Mod for AD5M (Pro) is currently provided in three variants: 
+The Klipper Mod for AD5M (Pro) is currently provided in four variants: 
 - Default headless variant without an on-screen GUI control application
 - Beta Klipper Screen variant with fully-fledged [KlipperScreen](docs/KLIPPER_SCREEN.md) installation. If you encounter any issues that could be caused by resource exhaustion (mostly system RAM), please check if the issue also occurs with the default variant.
 - Alpha Guppy Screen variant for a more ligthweight UI on the limited hardwareof the 5m/5mpro. If you encounter any issues that could be caused by resource exhaustion (mostly system RAM), please check if the issue also occurs with the default variant.
+- Preview [HelixScreen](docs/HELIX_SCREEN.md) variant ‒ a modern LVGL-based touchscreen UI for Klipper. If you encounter any issues that could be caused by resource exhaustion (mostly system RAM), please check if the issue also occurs with the default variant.
 
 You are welcome to participate int the [GitHub Discussions](https://github.com/xblax/flashforge_ad5m_klipper_mod/discussions) or open a new [Issue](https://github.com/xblax/flashforge_ad5m_klipper_mod/issues) if you find any bugs.
 
@@ -59,6 +61,7 @@ Due to the beta stage of Klipper Mod the documentation is not fully-completed. T
 - [Linux Environment](docs/LINUX.md): Klipper Mod Linux environment
 - [Klipper Screen](docs/KLIPPER_SCREEN.md)
 - [Guppy Screen](docs/GUPPY_SCREEN.md)
+- [Helix Screen](docs/HELIX_SCREEN.md)
 - [Camera](docs/CAMERA.md)
 - [USB](docs/USB.md)
 - [LCD](docs/LCD.md)

@@ -1,7 +1,7 @@
 # Top Level Makefile for Flashfore AD5M Klipper Mod
 SHELL := /bin/bash
 BUILD := build_scripts/build.sh
-VARIANTS = lite klipperscreen guppyscreen
+VARIANTS = lite klipperscreen guppyscreen helixscreen
 
 CONFIGS_DIR := build_scripts/buildroot/configs
 AVAILABLE_PLUGINS := $(patsubst $(CONFIGS_DIR)/plugin-%,%,$(wildcard $(CONFIGS_DIR)/plugin-*))

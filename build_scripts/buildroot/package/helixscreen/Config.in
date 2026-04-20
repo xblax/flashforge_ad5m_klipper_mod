@@ -1,0 +1,9 @@
+config BR2_PACKAGE_HELIXSCREEN
+	bool "helixscreen"
+	select BR2_PACKAGE_LIBEVDEV
+	select BR2_PACKAGE_OPENSSL
+	select BR2_PACKAGE_TSLIB
+	help
+	  HelixScreen is an LVGL-based touchscreen UI for Klipper 3D printers.
+
+	  https://github.com/prestonbrown/helixscreen

@@ -131,6 +131,13 @@ elif [ "$BUILD_VARIANT" == "guppyscreen" ]; then
     log_info "  Creating symbolic link for Guppyscreen's main configuration file: /opt/guppyscreen/guppyconfig.json -> /root/printer_data/config/guppyconfig.json. This links the runtime configuration to a user-editable location."
     ln -fs /root/printer_data/config/guppyconfig.json "$TARGET_ROOT/opt/guppyscreen/guppyconfig.json"
     log_info "Guppyscreen-specific setup successfully completed."
+
+elif [ "$BUILD_VARIANT" == "helixscreen" ]; then
+    log_info "Detected 'helixscreen' build variant. Commencing HelixScreen-specific setup procedures."
+    # HelixScreen uses the same tslib-backed touch pipeline as the other GUI
+    # variants; install the standard tslib calibration symlinks.
+    install_tslib_requirements
+    log_info "HelixScreen-specific setup successfully completed."
 else
     log_info "Skipping screen-specific configuration steps."
 fi
